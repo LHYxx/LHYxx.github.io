@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content>
     <link rel="shortcut icon" href="/img/book.png">
-    <title>小新xx</title>
+    <title>matplotlib基础教程--2-小新xx</title>
     
         
             <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
@@ -16,7 +16,6 @@
     
     <link rel="stylesheet" href="/css/adagio.css">
 </head>
-
 <body>
     <div class="container-fluid">
     <nav class="nav">
@@ -66,11 +65,11 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 
-                <li class="nav-item pl-2 pr-2 active">
+                <li class="nav-item pl-2 pr-2 ">
                     <a class="nav-link" href="/index.html">主页</a>
                 </li>
                 
-                <li class="nav-item pl-2 pr-2 active">
+                <li class="nav-item pl-2 pr-2 ">
                     <a class="nav-link" href="/">LHYxx</a>
                 </li>
                 
@@ -84,75 +83,157 @@
 
     <div class="jumbotron jumbotron-fluid">
     <div class="container">
-        <h1 class="mt-4 article-title page-title">ARCHIVE: 2019</h1>
+        
+        <h1 class="mt-4 article-title page-title">matplotlib基础教程--2</h1>
+        
+        <p class="lead text-gray mt-3">By 小新; Published on 2019-09-04</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/语法/">语法</a>
+                </li>
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/matplotlib/">matplotlib</a>
+                </li>
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/可视化/">可视化</a>
+                </li>
+                
+            </ul>
+        </div>
+        
     </div>
 </div>
     <div class="container">
-        <div class="row mt-3">
-            <div class="col-md-9">
-                
+        <div class="row">
+            <div class="col-md-9 pt-2">
                 <div class="row">
-                    <div class="col">
-                        <a href="/2019/08/18/hexo-tutorial/" class="index-card-link">
-                            <div class="card-body index-card-box">
-                                <h4 class="card-title text-dark article-title">hexo + github pages 搭建个人博客</h4>
-                                <h6 class="card-subtitle mt-2 text-muted">
-                                    By 小新
-                                    ; Published on 2019-08-18</h6>
-                            </div>
-                        </a>
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><p>接着上次的内容，今天继续记录一下matplotlib.pyplot画图方法。<br>教程1 主要记录了 <code>plt.plot()</code> 方法，一般用来画线。<br>这次学习一下画 <strong>饼图</strong>。</p>
+<h2 id="测试数据"><a href="#测试数据" class="headerlink" title="测试数据"></a>测试数据</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">labels = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;]</span><br><span class="line">sizes = [1, 2, 3, 4, 5]</span><br><span class="line">explode = [0, 0, 0, 0, 0.2]</span><br><span class="line">colors = [&apos;red&apos;, &apos;blue&apos;, &apos;green&apos;, &apos;yellow&apos;, &apos;pink&apos;]</span><br></pre></td></tr></table></figure>
+
+<h2 id="饼图"><a href="#饼图" class="headerlink" title="饼图"></a>饼图</h2><p>饼图最基本由两部分构成，labels， 每个label所占比重。对应测试数据中的labels和sizes。<br>如下代码创建饼图</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fig = plt.figure()  # 创建画布</span><br><span class="line">plt.pie(sizes, labels=labels, colors=colors, explode=explode, autopct=&apos;%1.1f%%&apos;, shadow=False, startangle=90, textprops=&#123;&apos;fontsize&apos;: 16&#125;)  # 画饼图</span><br><span class="line"></span><br><span class="line">plt.axis(&apos;equal&apos;)  # 设置饼图为正圆（而不是椭圆）</span><br><span class="line">plt.legend(labels, loc=&apos;best&apos;)  # 设置图例说明</span><br></pre></td></tr></table></figure>
+
+<p><img src="Figure_1.png" alt="图例1"></p>
+<p>创建饼图的 <code>plt.pie()</code> 函数参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>数据类型</th>
+<th>解释说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>x</td>
+<td>元组或列表</td>
+<td>sizes,即数据分布</td>
+</tr>
+<tr>
+<td>labels</td>
+<td>元组或列表</td>
+<td>各个部分对应的标签</td>
+</tr>
+<tr>
+<td>explode</td>
+<td>元组或列表</td>
+<td>突出显示的部分</td>
+</tr>
+<tr>
+<td>colors</td>
+<td>元组或列表</td>
+<td>颜色</td>
+</tr>
+<tr>
+<td>autopct</td>
+<td>格式化字符串</td>
+<td>格式化显示百分比数据</td>
+</tr>
+<tr>
+<td>pctdistance</td>
+<td>数值</td>
+<td>设置百分比标签与圆心的距离；</td>
+</tr>
+<tr>
+<td>shadow</td>
+<td>布尔</td>
+<td>是否添加饼图的阴影效果</td>
+</tr>
+<tr>
+<td>labeldistance</td>
+<td>数值</td>
+<td>设置各扇形的标签label与圆心的距离；</td>
+</tr>
+<tr>
+<td>startangle</td>
+<td>数值</td>
+<td>饼图的初试角度</td>
+</tr>
+<tr>
+<td>radius</td>
+<td>数值</td>
+<td>半径</td>
+</tr>
+<tr>
+<td>counterclock</td>
+<td>布尔</td>
+<td>是否逆时针</td>
+</tr>
+<tr>
+<td>wedgeprops</td>
+<td>字典</td>
+<td>设置饼图内外边界的属性，如边界线的粗细、颜色等</td>
+</tr>
+<tr>
+<td>textprops</td>
+<td>字典</td>
+<td>设置饼图中文本的属性，如字体大小、颜色等</td>
+</tr>
+<tr>
+<td>center</td>
+<td>元组</td>
+<td>指定饼图的中心点位置，默认为原点（0, 0）</td>
+</tr>
+<tr>
+<td>frame</td>
+<td>布尔</td>
+<td>是否要显示饼图背后的图框，如果设置为True的话，需要同时控制图框x轴、y轴的范围和饼图的中心位置</td>
+</tr>
+</tbody></table>
+<h2 id="颜色"><a href="#颜色" class="headerlink" title="颜色"></a>颜色</h2><p>附一张颜色表<br><img src="colors.png" alt="颜色表"></p>
+<h2 id="修改图例字号"><a href="#修改图例字号" class="headerlink" title="修改图例字号"></a>修改图例字号</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">leg = plt.gca().get_legend()  # 取得图例</span><br><span class="line">ltext = leg.get_texts()  # 取得图例文字</span><br><span class="line">plt.setp(ltext, fontsize=12)  # 设置字体</span><br></pre></td></tr></table></figure></article>
+                        </main>
+                        
+                        
                     </div>
                 </div>
-                <hr class="row">
-                
-                <div class="row">
-                    <div class="col">
-                        <a href="/2019/08/16/article/" class="index-card-link">
-                            <div class="card-body index-card-box">
-                                <h4 class="card-title text-dark article-title">markdown语法介绍</h4>
-                                <h6 class="card-subtitle mt-2 text-muted">
-                                    By 小新
-                                    ; Published on 2019-08-16</h6>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <hr class="row">
-                
-                <div class="row">
-                    <div class="col">
-                        <a href="/2019/08/16/hello-world/" class="index-card-link">
-                            <div class="card-body index-card-box">
-                                <h4 class="card-title text-dark article-title">Hello World</h4>
-                                <h6 class="card-subtitle mt-2 text-muted">
-                                    By Anonymous
-                                    ; Published on 2019-08-16</h6>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <hr class="row">
-                
-                <div class="paginator">
-                    <div class="row">
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
     <div class="col">
         <nav aria-label="paginator" class="paginator">
             <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
                 <li class="page-item  disabled ">
                     <a class="page-link"
-                        href="/"
+                        href=""
                         aria-label="Previous">
                         <span aria-hidden="true">&laquo;
-                            Newer</span>
+                            No more</span>
                         <span class="sr-only">Previous</span>
                     </a>
                 </li>
-                <li class="page-item  disabled ">
+                <li class="page-item ">
                     <a class="page-link"
-                        href="/"
+                        href="/2019/09/01/matplotlib基础教程/"
                         aria-label="Next">
                         <span
-                            aria-hidden="true">Older
+                            aria-hidden="true">matplotlib基础教程--1
                             &raquo;</span>
                         <span class="sr-only">Next</span>
                     </a>
@@ -161,19 +242,19 @@
             <ul class="pagination d-md-none justify-content-center">
                 <li class="page-item  disabled ">
                     <a class="page-link"
-                        href="/"
+                        href=""
                         aria-label="Previous">
                         <span aria-hidden="true">&laquo;
-                            Newer</span>
+                            No more</span>
                         <span class="sr-only">Previous</span>
                     </a>
                 </li>
-                <li class="page-item  disabled ">
+                <li class="page-item ">
                     <a class="page-link"
-                        href="/"
+                        href="/2019/09/01/matplotlib基础教程/"
                         aria-label="Next">
                         <span
-                            aria-hidden="true">Older
+                            aria-hidden="true">matplotlib基础教程--1
                             &raquo;</span>
                         <span class="sr-only">Next</span>
                     </a>
@@ -185,123 +266,32 @@
 
 
 
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-3 mt-3">
-                
-    <div class="row">
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
     <div class="col">
         <h6>APPLAUSE FOR ME</h6>
         <div id="applause-easy"></div>
     </div>
 </div>
-    <hr class="row">
-
-
-    <div class="row">
-    <div class="col">
-        <h6>FEATURED TAGS</h6>
-        <div class="tags">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/语法/">语法</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/matplotlib/">matplotlib</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/可视化/">可视化</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/教程/">教程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/introduction/">introduction</a><span class="tag-list-count">1</span></li></ul>
-        </div>
-    </div>
-</div>
-    <hr class="row">
-
-
-    <div class="row">
-    <div class="col">
-        <h6>ABOUT ME</h6>
-        <div class="row">
-            <div class="col">
-                <div class="row justify-content-center">
-                    <div class="col-8 text-center">
-                        <img src="/img/background1.jpg" alt="avatar" class="img-thumbnail">
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#测试数据"><span class="toc-text">测试数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#饼图"><span class="toc-text">饼图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#颜色"><span class="toc-text">颜色</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改图例字号"><span class="toc-text">修改图例字号</span></a></li></ol>
+                        </div>
                     </div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col text-center">
-                        <p class="text-muted">而世之奇伟、瑰怪，非常之观，常在于险远，而人之所罕至焉，故非有志者不能至也</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="mt-2 sidebar-socialmedia">
-            <div class="row">
-    <div class="col text-center">
-        <ul class="list-inline">
-            
-            <li class="list-inline-item">
-                
-                <a href="https://github.com/LHYxx">
-                    <span class="fa-stack fa-2x icon-link">
-                        <i class="fas fa-circle fa-stack-2x"></i>
-                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                    </span>
-                </a>
-                
-            </li>
-            
-            <li class="list-inline-item">
-                
-                <a href="https://www.zhihu.com/people/zhihu_name">
-                    <span class="fa-stack fa-2x icon-link">
-                        <i class="fas fa-circle fa-stack-2x"></i>
-                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
-                    </span>
-                </a>
-                
-            </li>
-            
-        </ul>
-    </div>
-</div>
-
-        </div>
-    </div>
-</div>
-    <hr class="row">
-
-
-    <div class="row">
-    <div class="col">
-        <h6>CONTACT</h6>
-        <address>
-            <strong>小新</strong><br>
-            作者联系地址
-        </address>
-    </div>
-</div>
-    <hr class="row">
-
-
-    <div class="row">
-    <div class="col">
-        <h6>ARCHIVES</h6>
-        <div class="archive">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a></li></ul>
-        </div>
-    </div>
-</div>
-    <hr class="row">
-
-
-    <div class="row">
-    <div class="col">
-        <ul class="list-inline">
-            <h6>FRIENDS</h6>
-            
-            <li class="list-inline-item"><a href="https://www.scu.edu.cn"><span class="text-muted">海纳百川</span></a>
-            </li>
-            
-            <li class="list-inline-item"><a href="https://www.tij.edu.cn"><span class="text-muted">实事求是</span></a>
-            </li>
-            
-        </ul>
-    </div>
-</div>
-    <hr class="row">
-
             </div>
         </div>
     </div>
@@ -403,6 +393,6 @@ $(document).ready(function() {
 
 
 
+    
 </body>
-
 </html>
