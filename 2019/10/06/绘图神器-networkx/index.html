@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>可视化|绘"图"神器-networkx-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid" style="background-image: url()">
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">可视化|绘"图"神器-networkx</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2019-10-06</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/可视化/">可视化</a>
+                </li>
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/networkx/">networkx</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><p>绘图神器-networkx<br>最近做图网络相关内容，需要用到对于网络进行可视化，所以用到了networkx这个包。<br>networkx 是一个专门针对图结构进行操作的工具。包括无向图、有向图。<br>下面记录一下networkx的使用方法。</p>
+<p>老样子，首先要import<br><code>import networkx</code></p>
+<h2 id="图的创建和清空"><a href="#图的创建和清空" class="headerlink" title="图的创建和清空"></a>图的创建和清空</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">G = nx.Graph() # 创建无向图</span><br><span class="line">G = nx.DiGraph() # 创建有向图</span><br><span class="line">G = nx.MultiGraph() # 创建多重无向图</span><br><span class="line">G = nx.MultiDigraph() # 创建多重有向图</span><br><span class="line">G.clear() #清空图</span><br></pre></td></tr></table></figure>
+
+<h2 id="节点操作"><a href="#节点操作" class="headerlink" title="节点操作"></a>节点操作</h2><h3 id="增加节点"><a href="#增加节点" class="headerlink" title="增加节点"></a>增加节点</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">G = nx.Graph()                 #建立一个空的无向图G</span><br><span class="line">G.add_node(&apos;a&apos;)                  #添加一个节点1</span><br><span class="line">G.add_nodes_from([&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;])    #加点集合</span><br><span class="line">G.add_cycle([&apos;f&apos;,&apos;g&apos;,&apos;h&apos;,&apos;j&apos;])         #加环</span><br><span class="line"></span><br><span class="line">nx.draw(G, with_labels=True)  # 画图，with_labels表示图中带有节点名称label</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="Figure_1.png" alt="Figure_1" title="figure1"></p>
+<h3 id="访问节点"><a href="#访问节点" class="headerlink" title="访问节点"></a>访问节点</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(&apos;图中所有的节点&apos;, G.nodes())</span><br><span class="line">print(&apos;图中节点的个数&apos;, G.number_of_nodes())</span><br></pre></td></tr></table></figure>
+
+<p>G.nodes()返回所有节点组成的列表。</p>
+<h3 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">G.remove_node(1)    #删除指定节点</span><br><span class="line">G.remove_nodes_from([&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;])    #删除集合中的节点</span><br></pre></td></tr></table></figure>
+
+<h2 id="边操作"><a href="#边操作" class="headerlink" title="边操作"></a>边操作</h2><h3 id="增加边"><a href="#增加边" class="headerlink" title="增加边"></a>增加边</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">F = nx.Graph() # 创建无向图</span><br><span class="line">F.add_edge(1,2)   #一次添加一条边</span><br><span class="line">#等价于</span><br><span class="line">e=(3,4)        #e是一个元组</span><br><span class="line">F.add_edge(*e) #这是python中解包裹的过程</span><br><span class="line">F.add_edges_from([(5,6),(6,7)])     #通过添加list来添加多条边</span><br><span class="line"></span><br><span class="line">nx.draw(F, with_labels=True)  # 画图</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="Figure_2.png" alt="Figure_2" title="figure2"></p>
+<h3 id="访问边"><a href="#访问边" class="headerlink" title="访问边"></a>访问边</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(&apos;图中所有的边&apos;, F.edges())</span><br><span class="line">print(&apos;图中边的个数&apos;, F.number_of_edges())</span><br></pre></td></tr></table></figure>
+
+<p>F.edges()返回一个列表，列表中每个元组表示一条边：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[(1, 2), (3, 4), (5, 6), (6, 7)]</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除边"><a href="#删除边" class="headerlink" title="删除边"></a>删除边</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">F.remove_edge(1,2)  # 删除单条边</span><br><span class="line">F.remove_edges_from([(3,4), (5,6)])  # 根据列表删除一组边</span><br></pre></td></tr></table></figure>
+
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><p>图、边、节点都可以有自己的属性，比如weight、color、label、alpha等。<br>图、边和节点的属性都是通过一个字典来保存的，默认字典为空，即没有属性。</p>
+<h3 id="图的属性"><a href="#图的属性" class="headerlink" title="图的属性"></a>图的属性</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">G = nx.Graph(day=&apos;Monday&apos;, name=&apos;graph&apos;, time=&apos;5.00&apos;, color=&apos;red&apos;)    #可以在创建图时分配图的属性</span><br><span class="line">print(G.graph)</span><br><span class="line"></span><br><span class="line">G.graph[&apos;day&apos;] = &apos;Friday&apos;  # 修改图的属性</span><br><span class="line">print(G.graph)</span><br></pre></td></tr></table></figure>
+
+<p>上面的输出如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&apos;day&apos;: &apos;Monday&apos;, &apos;name&apos;: &apos;graph&apos;, &apos;time&apos;: &apos;5.00&apos;, &apos;color&apos;: &apos;red&apos;&#125;</span><br><span class="line">&#123;&apos;day&apos;: &apos;Friday&apos;, &apos;name&apos;: &apos;graph&apos;, &apos;time&apos;: &apos;5.00&apos;, &apos;color&apos;: &apos;red&apos;&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="节点属性"><a href="#节点属性" class="headerlink" title="节点属性"></a>节点属性</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">G = nx.Graph(day=&apos;Monday&apos;, name=&apos;graph&apos;, time=&apos;5.00&apos;, color=&apos;red&apos;)    #可以在创建图时分配图的属性</span><br><span class="line"></span><br><span class="line">G.add_node(1, size=1, color=&apos;blue&apos;, alpha=1, name=&apos;node1&apos;)  # 添加单个节点时，指定节点属性</span><br><span class="line"></span><br><span class="line">G.add_nodes_from([(2, &#123;&apos;size&apos;: 2, &apos;color&apos;: &apos;blue&apos;&#125;), (3, &#123;&apos;size&apos;: 3, &apos;color&apos;: &apos;greed&apos;&#125;)])  # 从列表批量添加节点时，每个节点和属性字典组成tuple</span><br><span class="line"></span><br><span class="line">G.node[1][&apos;size&apos;] = 10  # 修改节点属性</span><br><span class="line"></span><br><span class="line">nx.draw(G, with_labels=True)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>上面代码产生的图如下：<br><img src="Figure_3.png" alt="Figure_3" title="figure3"><br>注意，这里节点的属性和画出的图没有关系。例如，代码中指定节点的color属性为blue，然而画出的图中节点color还是红色。所以说节点的属性和画出的节点的样子这里是没有关系的。<br>具体如何设置节点画出来的样子，后面会讲到。</p>
+<h3 id="边属性"><a href="#边属性" class="headerlink" title="边属性"></a>边属性</h3><p>边属性和节点属性大同小异。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">G.add_edge(1,2,weight=10)                    #在添加边时分配属性</span><br><span class="line">print(G.edges(data=True))</span><br><span class="line"></span><br><span class="line">G.add_edges_from([(1,3), (4,5)], len=22)     #从集合中添加边时分配属性</span><br><span class="line">print(G.edges(data=&apos;len&apos;))</span><br><span class="line"></span><br><span class="line">G.add_edges_from([(3,4,&#123;&apos;hight&apos;:10&#125;),(1,4,&#123;&apos;high&apos;:&apos;unknow&apos;&#125;)])  # 从集合添加边时，如果每个边带有不同的属性，将边和属性字典组成tuple</span><br><span class="line">print(G.edges(data=True))</span><br><span class="line"></span><br><span class="line">G[1][2][&apos;weight&apos;] = 100000                   # 可以通过G[][][]来添加或修改边的属性</span><br><span class="line">print(G.edges(data=True))</span><br></pre></td></tr></table></figure>
+
+<p>上面的输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[(1, 2, &#123;&apos;weight&apos;: 10&#125;)]</span><br><span class="line">[(1, 2, None), (1, 3, 22), (4, 5, 22)]</span><br><span class="line">[(1, 2, &#123;&apos;weight&apos;: 10&#125;), (1, 3, &#123;&apos;len&apos;: 22&#125;), (1, 4, &#123;&apos;high&apos;: &apos;unknow&apos;&#125;), (3, 4, &#123;&apos;hight&apos;: 10&#125;), (4, 5, &#123;&apos;len&apos;: 22&#125;)]</span><br><span class="line">[(1, 2, &#123;&apos;weight&apos;: 100000&#125;), (1, 3, &#123;&apos;len&apos;: 22&#125;), (1, 4, &#123;&apos;high&apos;: &apos;unknow&apos;&#125;), (3, 4, &#123;&apos;hight&apos;: 10&#125;), (4, 5, &#123;&apos;len&apos;: 22&#125;)]</span><br></pre></td></tr></table></figure>
+
+<p>注意：边的weight属性是一个特殊属性，表示边的权重，只能设置为数字类型。</p>
+<h2 id="无向图和有向图之间的转换"><a href="#无向图和有向图之间的转换" class="headerlink" title="无向图和有向图之间的转换"></a>无向图和有向图之间的转换</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#有向图转化成无向图</span><br><span class="line">H=DG.to_undirected()</span><br><span class="line">#或者</span><br><span class="line">H=nx.Graph(DG)</span><br><span class="line"></span><br><span class="line">#无向图转化成有向图</span><br><span class="line">F = H.to_directed()</span><br><span class="line">#或者</span><br><span class="line">F = nx.DiGraph(H)</span><br></pre></td></tr></table></figure>
+
+<h2 id="一些常用函数"><a href="#一些常用函数" class="headerlink" title="一些常用函数"></a>一些常用函数</h2><ul>
+<li><p>G.degree()<br>返回图中所有节点及其度数<br>输出：[(0, 2), (1, 2), (2, 2), (3, 2), (4, 2)]<br>元组中第一位是节点，第二位是该节点的度数。例子中节点0到4的度数都是2.<br>等价：nx.degree(G)</p>
+</li>
+<li><p>G.nodes()<br>返回图中所有节点<br>输出：[0, 1, 2, 3, 4]<br>等价：nx.nodes(G)</p>
+</li>
+<li><p>G.nodes().data()<br>返回图中所有节点，并且带有属性<br>输出：[(0, {‘size’: 10}), (1, {}), (2, {}), (3, {}), (4, {})]<br>例子中只有节点0有size属性，其他节点均没有指定属性，因此属性字典为空<br>等价：nx.nodes(G).data()</p>
+</li>
+<li><p>G.edges()<br>返回所有的边<br>输出：[(0, 1), (0, 4), (1, 2), (2, 3), (3, 4)]<br>等价：nx.edges(G)</p>
+</li>
+<li><p>G.edges().data()<br>返回所有的边，并且带有属性<br>输出：[(0, 1, {‘weight’: 9}), (0, 4, {}), (1, 2, {}), (2, 3, {}), (3, 4, {})]<br>例子中只有边0-1有weight属性，其他边都没有属性，因此属性字典为空<br>等价：nx.edges(G).data()</p>
+</li>
+<li><p>nx.density(G)<br>返回图G的密度</p>
+</li>
+<li><p>G.nodes()[0]<br>选中某个node，返回该node的属性。例子中是选中node 0.<br>输出：{‘size’: 10, ‘color’: ‘red’}<br>等价：G.node[0]</p>
+</li>
+<li><p>G[0][1]<br>选中某个edge，返回改edge的属性。例子中是选中边0-1<br>例如：{‘weight’: 9}</p>
+</li>
+<li><p>nx.get_node_attributes(G, ‘size’)<br>返回图中有size属性的节点，及其属性<br>输出：{0: 10, 1: 2}<br>例子中，节点0的size为10， 节点1的size为2.</p>
+</li>
+<li><p>nx.get_edge_attributes(G, ‘weight’)<br>返回图中有weight属性的边，及其属性值<br>输出：{(0, 1): 9}<br>例子中，只有边0-1有weight属性，weight为9</p>
+</li>
+<li><p>遍历图中的节点可以用如下方法：</p>
+<ul>
+<li><code>for node in G</code></li>
+<li><code>for node in G.node</code></li>
+<li><code>for node in G.nodes()</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="画图"><a href="#画图" class="headerlink" title="画图"></a>画图</h2><p>终于开始画图了<br>最基本的画图方法，使用draw()函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">G = nx.Graph()</span><br><span class="line">G.add_nodes_from([x for x in range(5)])  # 加点</span><br><span class="line">G.add_edges_from([(a, (a+1)%5) for a in range(5)])  # 连线</span><br><span class="line"></span><br><span class="line">nx.draw(G, with_labels=True)  # 画图G，with_labels是否显示标签</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<h3 id="一些画图属性参数"><a href="#一些画图属性参数" class="headerlink" title="一些画图属性参数"></a>一些画图属性参数</h3><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>node_size</td>
+<td>节点大小，默认300</td>
+</tr>
+<tr>
+<td>node_color</td>
+<td>节点颜色，默认red</td>
+</tr>
+<tr>
+<td>node_shape</td>
+<td>节点形状，默认’o’</td>
+</tr>
+<tr>
+<td>alpha</td>
+<td>透明度，默认1，不透明</td>
+</tr>
+<tr>
+<td>width</td>
+<td>边的宽度，默认1</td>
+</tr>
+<tr>
+<td>edge_color</td>
+<td>边的颜色，默认黑色</td>
+</tr>
+<tr>
+<td>style</td>
+<td>边的样式，默认为实线，可选择solid、dashed、dotted、dashdot</td>
+</tr>
+<tr>
+<td>with_labels</td>
+<td>节点是否带标签，默认True</td>
+</tr>
+<tr>
+<td>font_size</td>
+<td>字体大小，默认12</td>
+</tr>
+<tr>
+<td>font_color</td>
+<td>节点标签的字的颜色，默认黑色</td>
+</tr>
+</tbody></table>
+<h3 id="节点布局"><a href="#节点布局" class="headerlink" title="节点布局"></a>节点布局</h3><p><code>pos = nx.kamada_kawai_layout(G)</code><br>布局种类如下：</p>
+<ul>
+<li>circular_layout：节点在一个圆环上均匀分布</li>
+<li>random_layout：节点随机分布</li>
+<li>shell_layout：节点在同心圆上分布</li>
+<li>spring_layout： 用Fruchterman-Reingold算法排列节点（这个算法我不了解，样子类似多中心放射状）</li>
+<li>spectral_layout：根据图的拉普拉斯特征向量排列节</li>
+</ul>
+<h3 id="画图函数"><a href="#画图函数" class="headerlink" title="画图函数"></a>画图函数</h3><h4 id="nx-draw-函数"><a href="#nx-draw-函数" class="headerlink" title="nx.draw()函数"></a>nx.draw()函数</h4><p>该函数画整个图</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">G = nx.Graph()</span><br><span class="line">G.add_nodes_from([x for x in range(10)])</span><br><span class="line">G.add_edges_from([(a, (a+1)%5) for a in range(10)])</span><br><span class="line"></span><br><span class="line">pos = nx.circular_layout(G)  # 环形布局</span><br><span class="line">nx.draw(G, </span><br><span class="line">	pos=pos, with_labels=True, </span><br><span class="line">	node_size=300, node_color=&apos;blue&apos;, node_shape=&apos;*&apos;, </span><br><span class="line">	alpha=0.5, edge_color=&apos;red&apos;, </span><br><span class="line">	width=3, style=&apos;dotted&apos;, </span><br><span class="line">	font_size=15)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>效果图如下：<br><img src="Figure_4.png" alt="Figure_4" title="figure4"></p>
+<h4 id="nx-draw-networkx-nodes-画点"><a href="#nx-draw-networkx-nodes-画点" class="headerlink" title="nx.draw_networkx_nodes() 画点"></a>nx.draw_networkx_nodes() 画点</h4><p>该函数参数与nx.draw()函数相同，不过该函数只画图中的点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">G = nx.Graph()</span><br><span class="line">G.add_nodes_from([x for x in range(10)])</span><br><span class="line">G.add_edges_from([(a, (a+1)%5) for a in range(10)])</span><br><span class="line">pos = nx.circular_layout(G)</span><br><span class="line"># 点和布局都没变，与前面一样，不过下面使用draw_networkx_nodes函数</span><br><span class="line">nx.draw_networkx_nodes(G, pos=pos, with_labels=True, node_size=300, node_color=&apos;blue&apos;, node_shape=&apos;*&apos;, alpha=0.5, edge_color=&apos;red&apos;, width=3, style=&apos;dotted&apos;, font_size=15)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>效果图如下：<br><img src="Figure_5.png" alt="Figure_5" title="figure5"></p>
+<h4 id="nx-draw-networkx-edges-画线"><a href="#nx-draw-networkx-edges-画线" class="headerlink" title="nx.draw_networkx_edges() 画线"></a>nx.draw_networkx_edges() 画线</h4><p>同理，该函数只画线<br><code>nx.draw_networkx_edges(G, pos=pos, with_labels=True, node_size=300, node_color=&#39;blue&#39;, node_shape=&#39;*&#39;, alpha=0.5, edge_color=&#39;red&#39;, width=3, style=&#39;dotted&#39;, font_size=15)</code><br>效果图如下：<br><img src="Figure_6.png" alt="Figure_6" title="figure6"></p>
+<h4 id="draw-networkx-edge-labels-画线的标签"><a href="#draw-networkx-edge-labels-画线的标签" class="headerlink" title="draw_networkx_edge_labels 画线的标签"></a>draw_networkx_edge_labels 画线的标签</h4><p>该函数只画线的标签<br>因此整合前面三个函数，我们就可以画点、线和标签。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nx.draw_networkx_nodes(G, pos=pos, with_labels=True, node_size=300, node_color=&apos;blue&apos;, node_shape=&apos;*&apos;, alpha=0.5, edge_color=&apos;red&apos;, width=3, style=&apos;dotted&apos;, font_size=15)</span><br><span class="line">nx.draw_networkx_edges(G, pos=pos, with_labels=True, node_size=300, node_color=&apos;blue&apos;, node_shape=&apos;*&apos;, alpha=0.5, edge_color=&apos;red&apos;, width=3, style=&apos;dotted&apos;, font_size=15)</span><br><span class="line">nx.draw_networkx_edge_labels(G, pos=pos, alpha=1, font_size=10)</span><br></pre></td></tr></table></figure>
+
+<p>效果图如下：<br><img src="Figure_7.png" alt="Figure_7" title="figure7"></p>
+<h3 id="画不同种类的点"><a href="#画不同种类的点" class="headerlink" title="画不同种类的点"></a>画不同种类的点</h3><p>有时候一个网络中有多种不同的节点或者不同的边，我们在可视化的时候，想要用不同颜色或者不同形状来表示不同类型的节点；或者我们希望节点的大小也能够根据节点的属性来动态调整。<br>此时，图中所有的点都是一个样子就不够了。我们需要为不同的节点设定不同的样式。</p>
+<p>例如我们有如下数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">A = [1, 2, 3, 4, 5]</span><br><span class="line">B = [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;, &apos;e&apos;]</span><br><span class="line">C = [&apos;A&apos;, &apos;B&apos;, &apos;C&apos;, &apos;D&apos;, &apos;E&apos;]</span><br></pre></td></tr></table></figure>
+
+<p>有A,B,C三种类型的点，我们想让这三种类型的点区分开来<br>代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">G = nx.Graph()</span><br><span class="line"># 添加点的时候指定属性</span><br><span class="line">G.add_nodes_from(A, color=&apos;red&apos;, size=100)</span><br><span class="line">G.add_nodes_from(B, color=&apos;blue&apos;, size=300)</span><br><span class="line">G.add_nodes_from(C, color=&apos;yellow&apos;, size=500)</span><br><span class="line"></span><br><span class="line"># 将各个点的属性抽取出来，组成列表</span><br><span class="line">colors = [G.node[i][&apos;color&apos;] for i in G.nodes()]</span><br><span class="line">sizes = [G.node[i][&apos;size&apos;] for i in G.nodes()]</span><br><span class="line"></span><br><span class="line">pos = nx.circular_layout(G)</span><br><span class="line"># 画图的时候指定属性即可</span><br><span class="line">nx.draw(G, pos=pos, with_labels=True, node_size=sizes, node_color=colors, node_shape=&apos;*&apos;, alpha=1, font_size=20)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>效果图如下：<br><img src="Figure_8.png" alt="Figure_8" title="figure8"><br>不过这里只设置了不同的node_size 和 node_color，其他属性貌似不支持传入列表迭代，例如node_shape和alpha好像都不可以。<br>如果想不同的点设置不同的node_shape或者alpha似乎只能通过分别画点来实现。</p>
+<p>这样我们就将节点的属性和画图时的样式联系起来了。<br>当然也可以根据节点的度数来设置节点的大小，以此来凸显网络中较为重要的节点：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">G = nx.Graph()  # 创建一个新的图G</span><br><span class="line">G.add_nodes_from([x for x in range(100)])  # 添加100个节点</span><br><span class="line">edges = [(a, b) for a, b in zip(np.random.randint(1, 100, 150), np.random.randint(1, 100, 150))]  # 随机产生150条边（可能有重复的边）</span><br><span class="line">G.add_edges_from(edges)  # 添加边</span><br><span class="line"></span><br><span class="line">sizes = [30 + G.degree(v) * 100 for v in G.nodes()]  # 得到每个节点的度数</span><br><span class="line"></span><br><span class="line">pos = nx.spring_layout(G)</span><br><span class="line">nx.draw(G, pos=pos, with_labels=True, node_size=sizes, node_color=sizes, node_shape=&apos;o&apos;, alpha=0.7, font_size=20)  # 将节点的度数设置为node_size 和 node_color</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>效果图如下：<br><img src="Figure_9.png" alt="Figure_9" title="figure9"></p>
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2019/10/05/十年之约-伊始-国庆七十周年/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">十年之约|伊始-国庆七十周年
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2019/10/05/十年之约-伊始-国庆七十周年/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">十年之约|伊始-国庆七十周年
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#图的创建和清空"><span class="toc-text">图的创建和清空</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#节点操作"><span class="toc-text">节点操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#增加节点"><span class="toc-text">增加节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#访问节点"><span class="toc-text">访问节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除节点"><span class="toc-text">删除节点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边操作"><span class="toc-text">边操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#增加边"><span class="toc-text">增加边</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#访问边"><span class="toc-text">访问边</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除边"><span class="toc-text">删除边</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#属性"><span class="toc-text">属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#图的属性"><span class="toc-text">图的属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#节点属性"><span class="toc-text">节点属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#边属性"><span class="toc-text">边属性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#无向图和有向图之间的转换"><span class="toc-text">无向图和有向图之间的转换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一些常用函数"><span class="toc-text">一些常用函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#画图"><span class="toc-text">画图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一些画图属性参数"><span class="toc-text">一些画图属性参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#节点布局"><span class="toc-text">节点布局</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#画图函数"><span class="toc-text">画图函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nx-draw-函数"><span class="toc-text">nx.draw()函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nx-draw-networkx-nodes-画点"><span class="toc-text">nx.draw_networkx_nodes() 画点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nx-draw-networkx-edges-画线"><span class="toc-text">nx.draw_networkx_edges() 画线</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#draw-networkx-edge-labels-画线的标签"><span class="toc-text">draw_networkx_edge_labels 画线的标签</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#画不同种类的点"><span class="toc-text">画不同种类的点</span></a></li></ol></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>
