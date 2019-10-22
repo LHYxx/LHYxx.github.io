@@ -129,8 +129,7 @@
                 <div class="row">
                     <div class="col-12">
                         <main>
-                            <article class="article-text page-content"><p>绘图神器-networkx<br>最近做图网络相关内容，需要用到对于网络进行可视化，所以用到了networkx这个包。<br>networkx 是一个专门针对图结构进行操作的工具。包括无向图、有向图。<br>下面记录一下networkx的使用方法。</p>
-<p>老样子，首先要import<br><code>import networkx</code></p>
+                            <article class="article-text page-content"><p>绘图神器-networkx<br>最近做图网络相关内容，需要用到对于网络进行可视化，所以用到了networkx这个包。<br>networkx 是一个专门针对图结构进行操作的工具。包括无向图、有向图。<br>下面记录一下networkx的使用方法。<br>老样子，首先要import<br><code>import networkx</code></p>
 <h2 id="图的创建和清空"><a href="#图的创建和清空" class="headerlink" title="图的创建和清空"></a>图的创建和清空</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">G = nx.Graph() # 创建无向图</span><br><span class="line">G = nx.DiGraph() # 创建有向图</span><br><span class="line">G = nx.MultiGraph() # 创建多重无向图</span><br><span class="line">G = nx.MultiDigraph() # 创建多重有向图</span><br><span class="line">G.clear() #清空图</span><br></pre></td></tr></table></figure>
 
 <h2 id="节点操作"><a href="#节点操作" class="headerlink" title="节点操作"></a>节点操作</h2><h3 id="增加节点"><a href="#增加节点" class="headerlink" title="增加节点"></a>增加节点</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">G = nx.Graph()                 #建立一个空的无向图G</span><br><span class="line">G.add_node(&apos;a&apos;)                  #添加一个节点1</span><br><span class="line">G.add_nodes_from([&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;])    #加点集合</span><br><span class="line">G.add_cycle([&apos;f&apos;,&apos;g&apos;,&apos;h&apos;,&apos;j&apos;])         #加环</span><br><span class="line"></span><br><span class="line">nx.draw(G, with_labels=True)  # 画图，with_labels表示图中带有节点名称label</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
@@ -294,12 +293,12 @@
     <div class="col">
         <nav aria-label="paginator" class="paginator">
             <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
-                <li class="page-item  disabled ">
+                <li class="page-item ">
                     <a class="page-link"
-                        href=""
+                        href="/2019/10/22/A-Simple-Theoretical-Model-of-Importance-for-Summarization/"
                         aria-label="Previous">
                         <span aria-hidden="true">&laquo;
-                            No more</span>
+                            文章笔记|A Simple Theoretical Model of Importance for Summarization</span>
                         <span class="sr-only">Previous</span>
                     </a>
                 </li>
@@ -315,12 +314,12 @@
                 </li>
             </ul>
             <ul class="pagination d-md-none justify-content-center">
-                <li class="page-item  disabled ">
+                <li class="page-item ">
                     <a class="page-link"
-                        href=""
+                        href="/2019/10/22/A-Simple-Theoretical-Model-of-Importance-for-Summarization/"
                         aria-label="Previous">
                         <span aria-hidden="true">&laquo;
-                            No more</span>
+                            文章笔记|A Simple Theoretical Model of Importance for Summarization</span>
                         <span class="sr-only">Previous</span>
                     </a>
                 </li>
