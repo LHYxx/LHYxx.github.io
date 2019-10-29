@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>数学手册|赋范空间概念-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid" style="background-image: url()">
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">数学手册|赋范空间概念</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2019-10-29</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/数学/">数学</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><p>数学真的是一门很神奇很伟大的学科。同样，也是一门很难学的学科o(╥﹏╥)o。<br>但是在平常看论文时也能很清楚地感受到数学的重要性，而且也是在机器学习领域非常基础的理论原理。所以估计数学这一关是绕不开了。在学习一个个的模型以及算法中，数学概念越来越多，越来越复杂。好吧，是时候好好补一下数学了。<br>新开一“数学手册“系列，记录一下数学的学习过程。</p>
+<h1 id="赋范空间概念"><a href="#赋范空间概念" class="headerlink" title="赋范空间概念"></a>赋范空间概念</h1><p>范数在机器学习中应用也非常广泛。</p>
+<h2 id="实际背景"><a href="#实际背景" class="headerlink" title="实际背景"></a>实际背景</h2><p>在一个空间中，一个很重要的操作是衡量两个对象之间的距离，这个距离可以反映很多信息，比如两个对象的相似性等等。另外，为了研究线性空间中序列的收敛性和映射的连续性，需要“距离”的概念。<br>在我们小学就开始学的一维实数空间 $\mathbb{R}$ 中，我们衡量两个点之间的距离，使用的是两个数之差的绝对值： $|a-b|$。<br>在二维或者三维几何空间 $\mathbb{R}^2$ 或 $\mathbb{R}^3$ 中，衡量两个点之间的距离使用的是两个向量只差的模： $|\boldsymbol{a}-\boldsymbol{b}|$<br>在更高维度的四维以及四维以上空间中，就没有了几何意义，因此无法直观的衡量两个对象之间的距离。但是我们可以借助绝对值或模的思想，来定义高维线性空间中元素的“模”，这就称为“范数”。</p>
+<h2 id="范数公理"><a href="#范数公理" class="headerlink" title="范数公理"></a>范数公理</h2><p>设X是数域$\mathbb{K}$上的线性空间，范数其实就是一种映射关系：$|\cdot|: X \rightarrow \mathbb{R}$。<br>范数需要满足范数公理：</p>
+<ol>
+<li>正定性：$\|x\| \geq 0$ 且 $\|x\|=0 \Leftrightarrow x=0$</li>
+<li>齐次性：$\|\lambda x\|=|\lambda|\|x\|$</li>
+<li>三角不等式：$\|x+y\| \leq \|x\| + \|y\|$<br>由三角不等式还可以推出不等式：$\|x\|-\|y\| \leq\|x-y\|$<br>满足上述范数公理，则称 $(X, \|\cdot\|)$ 为赋范空间。</li>
+</ol>
+<h2 id="常用向量范数"><a href="#常用向量范数" class="headerlink" title="常用向量范数"></a>常用向量范数</h2><ol>
+<li>向量的1-范数，$ \|x\| _ {1}=\sum _ {k=1}^{n}\left|\xi _ {k}\right| $</li>
+<li>向量的2-范数，$ \|x\| _ {2}=\left(\sum_{k=1}^{n}\left|\xi_{k}\right|^{2}\right)^{\frac{1}{2}}$</li>
+<li>向量的p-范数，$ \|x\| _ {p}=\left(\sum_{k=1}^{n}\left|\xi_{k}\right|^{p}\right)^{\frac{1}{p}}$</li>
+<li>向量的$\infty$-范数，$ \|x\| _ {\infty}=\max _ {1 \leq k \leq n}\left|\xi_{k}\right|$</li>
+</ol>
+<h2 id="由范数导出的度量"><a href="#由范数导出的度量" class="headerlink" title="由范数导出的度量"></a>由范数导出的度量</h2><p>有了范数的定义之后，我们就可以定义两点之间的距离了。<br>定义x, y之间的距离为：$d(x, y) = \|x - y\|$，称为由范数 $\|\cdot\| $导出的度量或距离函数。</p>
+<p>由范数导出的度量的性质：</p>
+<ol>
+<li>度量公理：<ol>
+<li>（正定性）$d(x, y) \geq 0$ 且 $d(x, y)=0 \Leftrightarrow x=y$</li>
+<li>（对称性）$d(x, y) = d(y, x)$</li>
+<li>（三角不等式）$d(x, y) \leq d(x, z) + d(z, y)$</li>
+</ol>
+</li>
+<li>（平移不变性）$d(x+z, y+z) = d(x, y)$</li>
+<li>（齐次性）$d(\lambda x, 0)=|\lambda|d(x, 0)$</li>
+</ol>
+<h3 id="集合与集合之间的距离、点到集合的距离"><a href="#集合与集合之间的距离、点到集合的距离" class="headerlink" title="集合与集合之间的距离、点到集合的距离"></a>集合与集合之间的距离、点到集合的距离</h3><p>定义：设 $A, B \subset(X,\|\cdot\|)$ 是非空集，$x_0 \in X$</p>
+<ol>
+<li>集合A与集合B之间的距离定义为：非负实数 $$d(A, B) \equiv \inf {d(x, y) | x \in A, y \in B}=\inf {\|x-y\| x \in A, y \in B}$$<br>也就是两个集合中距离（范数）最近的两个点的距离（范数）。</li>
+<li>点$x_0$到集合A的距离定义为：非负实数 $$d(x_{0}, A)=d({x_{0}}, A) \equiv \inf\{\|x-x_{0}\| | x \in A\}$$<br>也即是点$x_0$与集合A中距离（范数）最近的点的距离（范数）。</li>
+</ol>
+<h3 id="有界集"><a href="#有界集" class="headerlink" title="有界集"></a>有界集</h3><p>集合的直径定义：$$diam(A) \equiv sup\{\|x-y\| | x,y \in A\}$$<br>当$diam(A) &lt; +\infty$，即A的直径为有限数，称A为有界集。否则为无界集。<br>A为有界集的充要条件为：<br>$$\exists M \geq 0, \text { s.t. }\|x\| \leq M(\forall x \in A)$$</p>
+<h2 id="等价范数"><a href="#等价范数" class="headerlink" title="等价范数"></a>等价范数</h2><p>范数等价的定义<br>对于两个范数 $\|\cdot\| _ {\alpha}, \|\cdot\| _ {\beta}$，若存在常数a, b&gt;0使得，$\forall x \in X$，有<br>$$a\|x\| _ {\alpha} \leq\|x\| _ {\beta} \leq b\|x\| _ {\alpha}$$<br>即两个范数相差一个常数倍。<br>则称这两个范数等价。<br><strong>有限维空间中，任何两种范数都是等价的。</strong></p>
+<h3 id="范数的等价在-有界性-上的体现"><a href="#范数的等价在-有界性-上的体现" class="headerlink" title="范数的等价在 有界性 上的体现"></a>范数的等价在 有界性 上的体现</h3><p>设 $\|\cdot\| _ {\alpha}$ 与 $\|\cdot\| _ {\beta}$ 是线性空间X上的两种等价范数，$A \subset X$，则A在$(X, \|\cdot\| _ {\alpha})$中有界，当且仅当A在$(\|\cdot\| _ {\beta})$中有界</p>
+<h2 id="赋范空间的子空间"><a href="#赋范空间的子空间" class="headerlink" title="赋范空间的子空间"></a>赋范空间的子空间</h2><p>设有$(X, \|\cdot\|)$，Y是X的线性子空间。若$\forall x \in Y$，令$\|x\| _ {Y}=\|x\|$，则$(Y, \|\cdot\| _ {Y})$也是赋范空间，称其为X的赋范子空间。</p>
+<p>按照上面的定义，赋范空间的任何线性子空间都自然地成为其赋范子空间，因此，要验证赋范空间X的某个集合M是X的赋范子空间，只需验证M是非空的,且对X的线性运算是封闭的。</p>
+<h1 id="收敛序列"><a href="#收敛序列" class="headerlink" title="收敛序列"></a>收敛序列</h1><h2 id="序列收敛定义"><a href="#序列收敛定义" class="headerlink" title="序列收敛定义"></a>序列收敛定义</h2><h3 id="实数空间中收敛定义"><a href="#实数空间中收敛定义" class="headerlink" title="实数空间中收敛定义"></a>实数空间中收敛定义</h3><p>实数空间中，如果有<br>$$\lim _ {k \rightarrow \infty}\|x _ {k}-a\|=0$$<br>则称序列$\{x\}$收敛于a，记为$\lim _ {k \rightarrow \infty} x _ {k}=a$。<br>实数空间中收敛与否是按照绝对值来看。如果将绝对值改为一般的范数，就得到了赋范空间中的序列收敛定义。<br>$$\lim _ {k \rightarrow \infty}\|x _ {k}-x _ {0}\|=0$$</p>
+<h3 id="赋范空间中收敛定义"><a href="#赋范空间中收敛定义" class="headerlink" title="赋范空间中收敛定义"></a>赋范空间中收敛定义</h3><p>设$\{x _ {k}\}$ 是 $(X, \|\cdot\|)$中的序列。若存在$x _ 0 \in X$，使得$$\lim _ {k \rightarrow \infty}\|x _ {k}-x _ {0}\|=0$$<br>则称 $\{x_k\}$ 在赋范空间X中收敛，$x_0$称为极限点。<br>或称 $\{x_k\}$ 依范数$\|\cdot\|$收敛于$x_0$。<br>记为$\lim _ {k \rightarrow \infty} x _ {k} = x _ 0$<br>否则称为发散。</p>
+<p><strong>注意</strong></p>
+<ol>
+<li>$\{x_k\}$在X上收敛与否，与X上的范数有关。</li>
+<li>若$\lim _ {k \rightarrow \infty} x _ {k} = x _ 0$，但$x_0 \notin X$，则$\{x_k\}$在X中不收敛。<br>也就是说，数列收敛的极限点必须也在赋范空间X中，才能叫数列在赋范空间X中收敛。</li>
+</ol>
+<h2 id="收敛序列的性质"><a href="#收敛序列的性质" class="headerlink" title="收敛序列的性质"></a>收敛序列的性质</h2><p>若 $\{x_k\}$在 X 中收敛，则</p>
+<ol>
+<li>$\{x_k\}$是X中的有界序列。反之不真。</li>
+<li>$\{x_k\}$的极限是唯一的。</li>
+</ol>
+<h3 id="范数的等价在-序列收敛性-上的体现"><a href="#范数的等价在-序列收敛性-上的体现" class="headerlink" title="范数的等价在 序列收敛性 上的体现"></a>范数的等价在 序列收敛性 上的体现</h3><p>设 $\|\cdot\| _ {\alpha}$ 与 $\|\cdot\| _ {\beta}$ 是线性空间X上的两种等价范数， $\{x_k\}$ 是X中的序列，$x_0 \in X$。<br>则$\{x_k\}$依范数$\|\cdot\| _ {\alpha}$收敛于$x _ 0$，当且仅当$\{x_k\}$依范数$\|\cdot\| _ {\beta}$收敛于于$x _ 0$。</p>
+<p>向量序列收敛，就是依坐标收敛。<br><img src="%E5%90%91%E9%87%8F%E6%94%B6%E6%95%9B.PNG" alt="向量依坐标收敛" title="向量收敛"></p>
+<h2 id="无穷级数"><a href="#无穷级数" class="headerlink" title="无穷级数"></a>无穷级数</h2><p>设$\{x_k\}$是$(X, \|\cdot\|)$中的序列，表达式<br>$$\sum_{k=1}^{\infty} x_{k}=x_{1}+x_{2}+\cdots+x_{k}+\cdots$$<br>称为$(X, \|\cdot\|)$中的无穷级数，简称为级数。</p>
+<p>前n项和记为$S_n$称为部分和，$\{S_n\}$称为部分和序列:<br>$$\forall n \in \mathbb{N}, \sum_{k=1}^{n} x_{k}=x_{1}+x_{2}+\cdots+x_{n}=s_{n}$$</p>
+<h3 id="级数的收敛性"><a href="#级数的收敛性" class="headerlink" title="级数的收敛性"></a>级数的收敛性</h3><p>若 $$\lim _ {n \rightarrow \infty} S _ {n}=S$$<br>则称部分和序列$\{S_n\}$在$(X, \|\cdot\|)$中收敛。</p>
+<h3 id="级数的绝对收敛"><a href="#级数的绝对收敛" class="headerlink" title="级数的绝对收敛"></a>级数的绝对收敛</h3><p>若正项级数$\sum_{k=1}^{\infty} \|x_{k}\|$收敛,则称级数 $\sum_{k=1}^{\infty} x_{k}$ 绝对收敛。<br><strong>注意</strong><br>在一般赋范空间中，绝对收敛的级数不一定是收敛的。因为收敛的极限点不一定在这个赋范空间中。<br>只有当赋范空间是完备的时候（banach空间），绝对收敛的级数才是收敛的。</p>
+<h2 id="连续映射"><a href="#连续映射" class="headerlink" title="连续映射"></a>连续映射</h2><h3 id="映射的连续性"><a href="#映射的连续性" class="headerlink" title="映射的连续性"></a>映射的连续性</h3><p>原来学的对于普通函数来说，连续的定义是：<br>$$<br>\lim _ {x \rightarrow x _ {0}} f(x)=f\left(x _ {0}\right)<br>$$</p>
+<p>$\forall \varepsilon&gt;0, \exists \delta&gt;0$，使得当 $\|x-x_{0}\|&lt;\delta $时，恒有$\|f(x)-f(x_{0})\|&lt;\varepsilon $<br>只要将绝对值改为相应的范数，就得到赋范空间到赋范空间的映射在某点连续的定义：</p>
+<h3 id="赋范空间映射的连续性定义"><a href="#赋范空间映射的连续性定义" class="headerlink" title="赋范空间映射的连续性定义"></a>赋范空间映射的连续性定义</h3><p>设有 $(X, \|\cdot\|)$ 和 $(Y, \|\cdot\|)$, $x_0 \in X$。T是一个从X到Y的映射。若$\forall \varepsilon &gt; 0, \exists \delta &gt; 0$，使得当$\|x-x _ 0\|&lt;\delta$并且$x \in X$时，恒有$\|Tx-Tx _ 0\|&lt; \varepsilon$，则称T在点$x _ 0$处连续。若T在集合$A\subset X$中处处连续，则称T在集合A上连续。若T在X中处处连续，则称T是连续映射。</p>
+<p><strong>映射T连续的充要条件</strong><br>映射$T:(X,\|\cdot|) \rightarrow(Y,|\cdot\|)$在点$x _ 0 \in X$处连续的充要条件是：<br>对于X中的任意序列 $\{x _ n\}$，若 $\lim _ {n \rightarrow \infty} x _ {n}=x _ {0}$，则在Y中有$\lim _ {n \rightarrow \infty} T x _ {n}=T x _ {0}$。<br>也就是说，对于X中所有收敛于$x _ 0$的序列，经过T的映射后，在Y中都收敛于 $Tx _ 0$。</p>
+<p><strong>范数和线性运算都是一种连续映射</strong></p>
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2019/10/22/A-Simple-Theoretical-Model-of-Importance-for-Summarization/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">文章笔记|A Simple Theoretical Model of Importance for Summarization
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2019/10/22/A-Simple-Theoretical-Model-of-Importance-for-Summarization/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">文章笔记|A Simple Theoretical Model of Importance for Summarization
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#赋范空间概念"><span class="toc-text">赋范空间概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#实际背景"><span class="toc-text">实际背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#范数公理"><span class="toc-text">范数公理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用向量范数"><span class="toc-text">常用向量范数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#由范数导出的度量"><span class="toc-text">由范数导出的度量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#集合与集合之间的距离、点到集合的距离"><span class="toc-text">集合与集合之间的距离、点到集合的距离</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#有界集"><span class="toc-text">有界集</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#等价范数"><span class="toc-text">等价范数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#范数的等价在-有界性-上的体现"><span class="toc-text">范数的等价在 有界性 上的体现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#赋范空间的子空间"><span class="toc-text">赋范空间的子空间</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#收敛序列"><span class="toc-text">收敛序列</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#序列收敛定义"><span class="toc-text">序列收敛定义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#实数空间中收敛定义"><span class="toc-text">实数空间中收敛定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#赋范空间中收敛定义"><span class="toc-text">赋范空间中收敛定义</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#收敛序列的性质"><span class="toc-text">收敛序列的性质</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#范数的等价在-序列收敛性-上的体现"><span class="toc-text">范数的等价在 序列收敛性 上的体现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#无穷级数"><span class="toc-text">无穷级数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#级数的收敛性"><span class="toc-text">级数的收敛性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#级数的绝对收敛"><span class="toc-text">级数的绝对收敛</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#连续映射"><span class="toc-text">连续映射</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#映射的连续性"><span class="toc-text">映射的连续性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#赋范空间映射的连续性定义"><span class="toc-text">赋范空间映射的连续性定义</span></a></li></ol></li></ol></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>
