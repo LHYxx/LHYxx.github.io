@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>文章笔记|2019SIGIR-Hot Topic-Aware Retweet Prediction with Masked Self-attentive Model-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid" style="background-image: url()">
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">文章笔记|2019SIGIR-Hot Topic-Aware Retweet Prediction with Masked Self-attentive Model</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2019-11-08</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/paper/">paper</a>
+                </li>
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/social_media/">social_media</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><p>今天这篇论文是一篇2019年SIGIR上的对于社交媒体信息处理的文章。感觉其思想可以借鉴，学习一下。<br>本文的基本任务是转发预测，即给定一个query tweet $t_q$和用户u，预测该用户u是否会转发$t_q$。</p>
+<h1 id="实验数据"><a href="#实验数据" class="headerlink" title="实验数据"></a>实验数据</h1><p>将所有推特按时间排序，得到整个推特序列。然后得到每个用户的按时间排序的推特序列。使用用户在timeline中的转发作为正样本；转发之前的用户的followee发的30个推文作为timeline（环境）；随机选择该用户转发之前的30条推文作为用户历史数据；随机选择推文作者在转发之前的30条推文作为作者历史数据；<br>对于每一次转发，随机选择5个用户没有转发的推文作为负样本，并像前面一样构建timeline和转发历史。<br>数据格式如下：<br>(user, tweet, user-history, author-history, timeline)<br>对所有的转发构建上面这样的数据，并且每一次转发也加入了5个负样本。构成了实验的训练数据。</p>
+<h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><p>本文的motivation是，<strong>用户更容易转发并参与讨论他们感兴趣的推文。并且用户的兴趣通常集中于一个有限的范围，并且短时间内通常很少改变。</strong><br>进一步，用户想要参与的话题很可能会与他们过去曾经发过的话题相似。<br>然而，人们都是由探索精神的，通常也愿意接受一些比较火爆的新事物（这也是为什么社交媒体都会有“热点推荐”这个功能，比如<strong>Twitter</strong>中的<strong>”in case you missed it”</strong>和<strong>Facebook</strong>中的<strong>”top stories”</strong>以及<strong>微博</strong>中的<strong>“热搜”</strong>等）。<br>基于此，本文提出下面的假设：<br>用户的行为也会受他们周围的人（这里采用的是他们的followees）影响。也就是说，用户对于某个话题本身可能并不感兴趣，但是他周围的人大多都参与了这个话题，所以他也会关注这个话题。</p>
+<p>为了验证这个假设，作者分析了“用户历史数据”，“用户转发历史”，“用户的followees的实时推文”之间的差异。分析方法是使用LDA进行话题检测。作者将LDA话题数定为50并衡量这三个集合上的话题分布的KL散度。结果表明，用户转发的推文与用户历史发表的推文的话题分布的差异更小。另外，被转发的推文中，还有一些与用户历史发布推文不太相关的话题。<br><img src="Figure2.png" alt="Figure2.png" title="Figure2"><br><img src="Figure2_description.png" alt="Figure2_description.png" title="Figure2_description"><br>所以说实验验证假设有其合理性。所以下文作者提出一个模型，<strong>整合user的历史信息、author的历史信息以及环境信息，来进行转发预测。</strong></p>
+<h1 id="APPROACH"><a href="#APPROACH" class="headerlink" title="APPROACH"></a>APPROACH</h1><p>首先定义本文的任务。<strong>转发预测是：给定一个查询推特$t _ q$和一个用户u，目标是基于三部分信息预测u是否会转发这个$t _ q$</strong>。这三部分信息具体解释分别是：</p>
+<ul>
+<li>(1)$t _ q$的作者的历史信息$H _ a=\{t _ {a _ 1},t _ {a _ 2},…,t _ {a _ N}\}$</li>
+<li>(2)用户u的历史信息$H _ u=\{t _ {u _ 1},t _ {u _ 2},…,t _ {u _ N}\}$</li>
+<li>(3)用户u的followee的实时环境推文$H _ l=\{t _ {l _ 1},t _ {l _ 2},…,t _ {l _ N}\}$。</li>
+</ul>
+<p>模型架构如图<br><img src="Figure3.png" alt="Figure3.png" title="Figure3"><br><img src="Figure3_description.png" alt="Figure3_description.png" title="Figure3_description"></p>
+<h2 id="Tweet-Feature-Representation"><a href="#Tweet-Feature-Representation" class="headerlink" title="Tweet Feature Representation"></a>Tweet Feature Representation</h2><p>单词表示用预训练的glove词嵌入。每个单词初始化为一个one-hot向量，通过乘以一个词嵌入矩阵 M 映射成为一个连续向量表示：$w _ i=Mword _ i$。词嵌入矩阵维度为 d×|V|，d是词嵌入维度，|V|是词表大小。因此得到一个word-level的特征表示：$t=\{w _ i,w _ 2,…,w _ T\}$，其中T是推特的最大长度，长度不够T的padding到T。<br>然后使用bi-LSTM将word-level的推特表示输入，构建sentence-level的特征表示。每个时刻的输出$u _ t=[h _ t^{(f)}:h _ t^{(b)}]$表示第t个单词的表示。整个过程中，词嵌入矩阵和bi-LSTM是在整个模型上端到端训练的。</p>
+<h2 id="Hierarchical-Attention-Memory-Network"><a href="#Hierarchical-Attention-Memory-Network" class="headerlink" title="Hierarchical Attention Memory Network"></a>Hierarchical Attention Memory Network</h2><p>一方面，user的兴趣会反应在他的历史发布的信息中；另一方面，user的历史兴趣和author的兴趣会影响user是否转发query tweet。<br>因此，<strong>本文提出一个层次注意力记忆网络来建模author和user的兴趣相似性。</strong></p>
+<h3 id="Word-level-encoder"><a href="#Word-level-encoder" class="headerlink" title="Word-level encoder"></a>Word-level encoder</h3><p>先看图3的左半部分，左边的输入是author的历史推特，右边的输入是user的历史推特。计算过程如下：<br>给定一个历史推特集合$t_1,…,t_N$。对于第i个推特，通过词嵌入矩阵M将推特i的每个单词j变成词向量$w_{ij}$。然后将单词作为bi-LSTM的输入，每个时刻的输出$u_ij$作为单词的隐藏状态，注意这时候推特i是由一个d×T的矩阵表示的，d是词向量维度，T是推特的最大长度。因为考虑到一个推特中，每个单词的贡献不一样，所以计算推特中每个单词的注意力来得到推特i的新的表示。word-level encoder和下面的tweet-level encoder作为一个整体，堆叠了H层，第h层就输出一个$O^h$。在第h层中，使用上一层的query vector $O^{h-1}$与推特i计算注意力权重来生成关于word-level的用户历史的注意力概率：<br>$$<br>\begin{aligned}<br>z _ {i,T}^h &amp;= (W _ O^hO^{h-1})^{tr}W _ T^hu _ {i,T} \\<br>a _ {i,T}^h &amp;= softmax(z _ {i,T}^h/\sqrt{d_k}) \\<br>\breve{u} _ i^h &amp;= \Sigma _ {j=0}^T \  a _ {i,j}^hu _ {i,j}<br>\end{aligned}<br>$$</p>
+<p>其中$\sqrt{d_k}$表示缩放因子，就是相当于是隐藏层维度。T是推特的最大长度，$u _ {iT} \in R^(d×T)$是推特i的矩阵表示（单词级的表示，所以每个推特表示为一个矩阵），$W_T^h \in d_k \times d$是把$u_{i,T}$映射到隐藏层空间。“tr”表示转置。query tweet的表示$O^{h-1}$是一个d \times 1维向量，所以$W_O^h O^{h-1}$就是将query tweet的表示做一个映射，映射到隐藏层的$d_k$维。然后与$W_T^h u _ {i,T}$作点积。然后得到$a _ {i,T}^h$经过softmax得到权重，通过对推特i中的每个单词的表示进行重新加权得到注意力之后的推特i的表示$u_i^h$ 。<br>这样就得到对单词级别与query tweet进行注意力计算之后的推特表示。注意第一层的query tweet的表示$O^1$是用query tweet的表示$u_q$初始化的。query tweet的表示可以见图3，就是将query tweet $t_q$的单词序列经过bi-LSTM后，取最后一个时刻的输出作为$u_q$。</p>
+<h3 id="Tweet-level-encoder"><a href="#Tweet-level-encoder" class="headerlink" title="Tweet-level encoder"></a>Tweet-level encoder</h3><p>经过上面的过程，对每一个推特$t_i$得到了一个新的表示$u ̆_ i^h$。类似的，考虑到不是所有推特对于用户的兴趣都有相同的贡献。因此再继续使用上面得到的query tweet $O^{h-1}$来对每个推特计算注意力，从而得到每个推特的新的表示：</p>
+<p>$$<br>\begin{aligned}<br>z _ {N}^h &amp;= (W _ O^hO^{h-1})^{tr}W _ N^h \breve{u} _ {N}\\<br>a _ {N}^h &amp;= softmax(z _ {N}^h/\sqrt{d_k})\\<br>\breve{u} _ * ^ h &amp;= \Sigma _ {i=0}^N \  a _ {i}^h \breve{u} _ {i}<br>\end{aligned}<br>$$</p>
+<p>$u ̆_ N \in R^(d×N)$是推特的表示，N是用户历史推特数量。计算过程与单词级别类似。* 号表示最后的用户兴趣表示。<br>再次注意，<strong>word-level encoder和tweet-level encoder作为一个整体，堆叠了H层</strong>，第h层就输出一个$O^h$。每一层的$O^h$按如下更新：<br>$$<br>O^h = \breve{u} _ u^h + O^{h-1} + \breve{u} _ a^h<br>$$<br>这样堆叠多层就能循环累计网络中的信息，最终产生一个联合了用户历史兴趣和作者历史兴趣的表示。</p>
+<h2 id="Masked-Self-Attentive-Mechanism"><a href="#Masked-Self-Attentive-Mechanism" class="headerlink" title="Masked Self-Attentive Mechanism"></a>Masked Self-Attentive Mechanism</h2><p>作者提出另一个Motivation：<br><strong>用户的followee发的实时推特会影响该用户，也可能会吸引用户加入他们的讨论。</strong>因此需要引入用户的followee的实时推特作为用户所处的环境。但是用户所处的实时推特环境一般会包含很多不同的话题，因此，需要建模实时推特包含的热点话题。由于实时推特是非序列性的（也就是上一条推特和下一条推特没有前后位置关系），因此不适合使用典型的RNN模型。因此，使用最大长度为1的自注意力机制更加合适用来构建context感知的表示。</p>
+<h3 id="Preliminary"><a href="#Preliminary" class="headerlink" title="Preliminary"></a>Preliminary</h3><p>文中的Masked Self-Attention是基于Transformer构建的，文中介绍了Transformer和attention的一些基本知识。<br>注意力机制：从所有query中给定一个query $q _ i \in R^d$，给定一组key $k _ t \in R^d$，values $v _ t \in R^d$，$t=1,2,…,T$。scaled dot-product attention根据key和query计算得到的点积结果决定权重，然后根据这个权重对value重新进行加权：<br>$$<br>Att(Q,K,V)=softmax(\frac{K^TQ}{\sqrt{d}} V)<br>$$<br>多头注意力（multi-head attention）就是用了H个平行的scaled dot-product attention，每一个叫做一个“head”。公式如下：<br>$$<br>MultiHead(Q,K,V)=Concat(head_1, head_2, …, head_H)W^O<br>$$<br>$$<br>head_i = Att(QW _ i^Q, KW _ i^K, VW _ i^V)<br>$$<br>其中的Att()就是普通的scaled dot-product attention，所以可以看出，<strong>多头注意力的每个头就是将Q，K，V经过一个线性变换（也就是乘以一个矩阵W，对应公式中的$W _ i^Q$ , $W _ i^K$ , $W_i^V$），将QKV都映射到另一个空间，在另一个空间下计算注意力。H个头就在H个空间下计算注意力，最后将H个空间下的注意力拼到一起，得到最终的结果。</strong>其中$W _ i^Q$ , $W _ i^K$ ,$W _ i^V \in R^{d×d _ k }$是独立的映射矩阵，$ W^O \in R^{hd _ k×d}$。</p>
+<p><img src="Figure3_right.png" alt="Figure3_right.png" title="Figure3_right"><br>上图是图3中的右半部分，是Masked Self-attention模块，包含三个部分：</p>
+<ul>
+<li>1)General Stacked Encoder（就是图中的Encoder Stack）</li>
+<li>2)Mask Generator</li>
+<li>3)Masked Encoder Stack。<br>总体框架是，general stacked encoder和query tweet生成一个mask matrix，然后用这个得到的mask对masked encoder stack的每一层的输入进行mask（相乘）来感知热门话题。下面详细说一下几个部分。</li>
+</ul>
+<p>Transformer模块改动不大：<br>$$<br>\begin{aligned}<br>\breve{u} _ {l_N}^i &amp;= MultiHead(u _ {l_N}^{i-1}, u _ {l_N}^{i-1}, u _ {l_N}^{i-1}) \\<br>u _ {l_N}^i &amp;= FFN(\breve{u}^i _ {l_N})<br>\end{aligned}<br>$$<br>其中$u _ {l _ N}^i$表示第i层encoder的输出，$u _ {l _ N}^0$是用实时环境推特表示矩阵$u _ {l _ N}$初始化的，不同之处就在于作者使用了额外的mask来感知用户的followees的实时环境推特的热点话题：<br>$$<br>\begin{cases}<br>u _ {l _ N}^{i-1}=u _ {l _ N}^{i-1},&amp;if Mask=None\\<br>u _ {l _ N}^{i-1}=Mask \ u _ {l _ N}^{i-1},&amp;Else<br>\end{cases}<br>$$<br>其中mask是mask generator根据实时环境推特和query tweet生成的。具体来说，是通过计算$u _ q$和每个环境推特的相关概率得到的：<br>$$<br>Mask = \sigma(\frac{(u _ q W _ 1)^T u _ {l _ N}}{\sqrt{d}})<br>$$</p>
+<p>其中σ表示sigmoid激活函数。$u _ {l _ N}$ 是general encoder stack的最后一层的输出。<br>最后，使用query tweet $u _ q$去查询masked encoder的输出，生成hot-topic aware的representation $O^l$：<br>$$<br>\begin{aligned}<br>z _ N &amp;= (W _ N u _ q)^tr W _ N u _ {l _ N}\\<br>a _ N &amp;= softmax(z _ N / \sqrt{d})\\<br>O^l &amp;= \Sigma _ {i=0}^N a _ i u _ {l _ N}<br>\end{aligned}<br>$$</p>
+<h3 id="Prediction"><a href="#Prediction" class="headerlink" title="Prediction"></a>Prediction</h3><p>最后预测的过程，将上面得到的$O^H$和$O^l$拼接，记作$O^f$，输入一个单层的MLP中，来预测该user是否会转发该tweet：<br>$$<br>f = \sigma(MLP(O ^ f))<br>$$<br>最终预测概率为：<br>$$<br>p(y=i|f;\theta _ s) = \frac{exp(\theta _ s^i f)}{\Sigma_j exp(\theta _ s^j f)}<br>$$</p>
+<p>其中$θ _ s^i$是第i类的权重向量，$j \in {0,1}$。（就是使用softmax）<br>本文中使用的损失函数如下：<br>$$<br>J = \Sigma _ {(t _ q,a,u,l,i) \in D} - \log{p(i|t _ q,a,u,l;\theta)}<br>$$<br>其中D是训练集。$i \in {0,1}$是四元组$(t _ q,a,u,l)$的标签，i=1表示用户u会转发推特$t_q$，否则不会。θ表示整个模型的参数。</p>
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2019/10/29/赋范空间概念/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">数学手册|赋范空间概念
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2019/10/29/赋范空间概念/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">数学手册|赋范空间概念
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#实验数据"><span class="toc-text">实验数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Motivation"><span class="toc-text">Motivation</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#APPROACH"><span class="toc-text">APPROACH</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Tweet-Feature-Representation"><span class="toc-text">Tweet Feature Representation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hierarchical-Attention-Memory-Network"><span class="toc-text">Hierarchical Attention Memory Network</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Word-level-encoder"><span class="toc-text">Word-level encoder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tweet-level-encoder"><span class="toc-text">Tweet-level encoder</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Masked-Self-Attentive-Mechanism"><span class="toc-text">Masked Self-Attentive Mechanism</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Preliminary"><span class="toc-text">Preliminary</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Prediction"><span class="toc-text">Prediction</span></a></li></ol></li></ol></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>
