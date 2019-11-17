@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>Windows环境下配置ROUGE填坑-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">Windows环境下配置ROUGE填坑</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2019-11-17</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/教程/">教程</a>
+                </li>
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/配置环境/">配置环境</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><h1 id="安装ROUGE和perl"><a href="#安装ROUGE和perl" class="headerlink" title="安装ROUGE和perl"></a>安装ROUGE和perl</h1><ol>
+<li>下载ROUGE-1.5.5.tgz，解压缩</li>
+<li>下载并安装strawberry-perl-5.28.0.1-64bit</li>
+<li>cmd运行perl -v检测perl是否安装成功<br><img src="perl%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F.PNG" alt="perl测试" title="perl测试"></li>
+<li>在下载的perl中运行CAPN，输入install XML::DOM（无需下载DB_File）</li>
+<li>设置ROUGE的环境变量：RELEASE-1.5.5; RELEASE-1.5.5\data;</li>
+<li>cmd中切换到ROUGE目录下，运行perl ROUGE-1.5.5.pl测试是否成功</li>
+<li>接着运行perl runROUGE-test.pl，一般是出现下面结果<br><img src="ROUGE-test%E6%B5%8B%E8%AF%95%E5%A4%B1%E8%B4%A5.PNG" alt="ROUGE-test测试失败" title="ROUGE-test测试失败"></li>
+<li>修改runROUGE-test.pl文件，将其中的$ROUGE 变量由../ROUGE-1.5.5.pl修改为ROUGE-1.5.5.pl</li>
+<li>再次运行就可以了。<br><img src="ROUGE%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F.PNG" alt="ROUGE安装成功" title="ROUGE安装成功"></li>
+</ol>
+<h1 id="安装pyrouge"><a href="#安装pyrouge" class="headerlink" title="安装pyrouge"></a>安装pyrouge</h1><p>首先运行<br><code>pip install pyrouge</code></p>
+<p>安装好之后，需要注意，在windows上pyrouge的代码是有问题的。需要进行修改。<br>先不要按照pyrouge的官网上说的，用<br><code>python -m pyrouge.test</code><br>来测试pyrouge是否安装成功。在windows上是有问题的。会报如下错误：<br><img src="%E8%BF%90%E8%A1%8Cpyrouge_test%E5%87%BA%E9%94%99.PNG" alt="运行pyrouge_test出错" title="运行pyrouge_test出错"></p>
+<p>先写一个例子来测试</p>
+<figure class="highlight plain"><figcaption><span>pyrouge import Rouge155</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sys_dir = r&apos;D:\project\system_summary&apos;</span><br><span class="line">gold_dir = r&apos;D:\project\gold_summary&apos;</span><br><span class="line"></span><br><span class="line">sys_name = r&apos;summary.(\d+).txt&apos;</span><br><span class="line">gold_name = r&apos;summary.[A-Z].#ID#.txt&apos;</span><br><span class="line"></span><br><span class="line">r = Rouge155()</span><br><span class="line">r.system_dir = str(sys_dir)</span><br><span class="line">r.model_dir = str(gold_dir)</span><br><span class="line">r.system_filename_pattern = sys_name</span><br><span class="line">r.model_filename_pattern = gold_name</span><br><span class="line"></span><br><span class="line">output = r.convert_and_evaluate()</span><br><span class="line">print(output)</span><br><span class="line">output_dict = r.output_to_dict(output)</span><br><span class="line">print(output_dict)</span><br></pre></td></tr></table></figure>
+
+<p>运行报错<br><img src="%E8%BF%90%E8%A1%8Cpyrouge%E4%BE%8B%E5%AD%90%E5%87%BA%E9%94%99.PNG" alt="运行pyrouge例子出错" title="运行pyrouge例子出错"></p>
+<p>根据报错可以定位到是Rouge155.py中的第336行<br><code>rouge_output = check_output(command).decode(&quot;UTF-8&quot;)</code><br>报错<br>这一行是调用check_output来执行命令command<br>一开始不是太懂check_output函数是什么。点进去看了看，解释的还挺详细的。概括来说就是Run command with arguments and return its output.就是调用子程序来执行command。相当于是在cmd中执行command。那么check_output是怎么工作的呢？<br>check_output函数是subprocess.py文件中的一个函数，执行的部分是在335行的run。就是通过调用run函数来启动一个子程序来执行命令。<br>那这里启动子程序为什么会报错呢，难道是命令command有错？输出查看了一下代码中的command：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&apos;D:\\nlp\\RELEASE-1.5.5\\ROUGE-1.5.5.pl&apos;, &apos;-e&apos;, &apos;D:\\nlp\\RELEASE-1.5.5\\data&apos;, &apos;-c&apos;, &apos;95&apos;, &apos;-2&apos;, &apos;-1&apos;, &apos;-U&apos;, &apos;-r&apos;, &apos;1000&apos;, &apos;-n&apos;, &apos;4&apos;, &apos;-w&apos;, &apos;1.2&apos;, &apos;-a&apos;, &apos;-m&apos;, &apos;C:\\Users\\XX\\AppData\\Local\\Temp\\tmple1qdhlk\\rouge_conf.xml&apos;]</span><br></pre></td></tr></table></figure>
+
+<p>run函数有一个参数shell，可以设置shell=True或者shell=False。在<a href="https://docs.python.org/2/library/subprocess.html#frequently-used-arguments" target="_blank" rel="noopener">官方手册</a> 上查了一下这个参数的含义：</p>
+<blockquote>
+<p>If shell is True, the specified command will be executed through the shell. This can be useful if you are using Python primarily for the enhanced control flow it offers over most system shells and still want convenient access to other shell features such as shell pipes, filename wildcards, environment variable expansion, and expansion of ~ to a user’s home directory. However, note that Python itself offers implementations of many shell-like features (in particular, glob, fnmatch, os.walk(), os.path.expandvars(), os.path.expanduser(), and shutil).</p>
+</blockquote>
+<p>总体来说，shell=True则指定的命令将通过shell执行，也就是有shell特性。<br>将shell参数设置为true值将导致子进程生成中间shell进程，并告诉它运行命令。换句话说，使用中间shell意味着在运行命令之前要处理命令字符串中的变量、glob模式和其他特殊的shell特性。举个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import subprocess</span><br><span class="line">&gt;&gt;&gt; subprocess.call(&apos;echo $HOME&apos;)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">...</span><br><span class="line">OSError: [Errno 2] No such file or directory</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">&gt;&gt;&gt; subprocess.call(&apos;echo $HOME&apos;, shell=True)</span><br><span class="line">/user/khong</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+
+<p>shell=False时，传入的命令没有shell特性，因此只能将整个命令当作一个数组，第一个元素是命令，其他的是参数（这里相当于只有一个命令）。<br>shell=True时，传入的字符串直接当作shell命令执行。有shell特性，因此其中的变量$HOME也能被替换。</p>
+<p>也就是在执行命令时会根据shell特性改变command命令。（如环境变量的替换、glob模式等等。）<br>因此，设置shell=True的话，就能使用字符串作为命令command。subprocess.call接受字符串类型的变量作为命令，并调用shell去执行这个字符串。</p>
+<blockquote>
+<p>If passing a single string, either shell must be True (see below) or else the string must simply name the program to be executed without specifying any arguments.</p>
+</blockquote>
+<p>当shell=False是，subprocess.call只接受数组变量作为命令，并将数组的第一个元素作为命令，剩下的全部作为该命令的参数。</p>
+<p>为了安全起见，官方是不建议设置shell=True的。（怕出现rm -rf /之类的毁灭性的字符串）</p>
+<blockquote>
+<p>Warning Executing shell commands that incorporate unsanitized input from an untrusted source makes a program vulnerable to shell injection, a serious security flaw which can result in arbitrary command execution. For this reason, the use of shell=True is strongly discouraged in cases where the command string is constructed from external input:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from subprocess import call</span><br><span class="line">&gt;&gt;&gt; filename = input(&quot;What file would you like to display?\n&quot;)</span><br><span class="line">What file would you like to display?</span><br><span class="line">non_existent; rm -rf / #</span><br><span class="line">&gt;&gt;&gt; call(&quot;cat &quot; + filename, shell=True) # Uh-oh. This will end badly...</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>shell=False disables all shell based features, but does not suffer from this vulnerability; see the Note in the Popen constructor documentation for helpful hints in getting shell=False to work.<br>When using shell=True, pipes.quote() can be used to properly escape whitespace and shell metacharacters in strings that are going to be used to construct shell commands.</p>
+</blockquote>
+<p>通过测试，这里有两种方法可以解决windows上出现的这个问题：<br>（1）将run函数的shell参数设置为shell=True。也就是用shell执行命令command。<br>（2）保持shell=True，那么就是只能接受数组变量作为命令，并且第一个元素是命令，剩下的作为参数。那么我们就根据这个要求构造命令即可。<br>我们可以看到原来的命令第一个参数是’D:\nlp\RELEASE-1.5.5\ROUGE-1.5.5.pl’，在windows中，这个.pl文件应该是不能直接运行的，需要perl解释器，所以正确的命令应该是”perl D:\nlp\RELEASE-1.5.5\ROUGE-1.5.5.pl”再加上后面的一大串参数。所以数组的第一个元素应该是”perl”，所以只需要在命令数组的第一个元素设为”perl”，后面的不变即可。（也就是Rouge155.py中的333行的command = [self. _ bin _ path] + options改为command = [‘perl’] + [self. _ bin _ path] + options）</p>
+<p>总之，按照上面的方法可以解决这个pyrouge的错误。<br>推荐第二种修改方法，因为第一种修改方法需要修改subprocess.py文件，将其中的check_output函数中的最后一行的run函数加上shell=True。这样其他再使用到subprocess.py中check_output函数的地方，也会被设置为shell=True，也就是所有命令都是用shell执行了。这是非常不安全的。<br>使用第二种修改方法，不需要修改subprocess.py文件，只需要修改Rouge155.py文件即可，没有风险。</p>
+<p>按照pyrouge官网提示的，使用<br><code>python -m pyrouge.test</code>命令来测试pyrouge是否安装成功。我们运行还是会失败，和上面的问题是一样的，也可以按照上面的方法修改Rouge155_test.py即可。但是其实我们只修改Rouge155.py文件即可，因为我们正常使用的时候，只使用这个文件。Rouge155_test.py只是用来测试用的。</p>
+<p>另外，pyrouge先将要评估的文件转换成ROUGE评估的格式，生成一个配置文件，然后评估结束之后将结果写到一个临时文件中。我们可以自己修改pyrouge的代码，将每次生成的临时文件删掉。这部分就先不写了，以后有时间的话可以写一下。</p>
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2019/11/14/走走停停-出发不需要准备/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">走走停停|出发不需要准备
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2019/11/14/走走停停-出发不需要准备/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">走走停停|出发不需要准备
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#安装ROUGE和perl"><span class="toc-text">安装ROUGE和perl</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装pyrouge"><span class="toc-text">安装pyrouge</span></a></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>
