@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content>
     <link rel="shortcut icon" href="/img/book.png">
-    <title>小新xx</title>
+    <title>配置cuda和pytorch-gpu-小新xx</title>
     
         
             <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
@@ -20,7 +20,7 @@
         .jumbotron{
             background: url();
             background-repeat: no-repeat;
-            background-size: ;
+            background-size: 100% 100%;
         }
         .tag-list{
             font-weight: bold;
@@ -97,11 +97,11 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 
-                <li class="nav-item pl-2 pr-2 active">
+                <li class="nav-item pl-2 pr-2 ">
                     <a class="nav-link" href="/index.html">主页</a>
                 </li>
                 
-                <li class="nav-item pl-2 pr-2 active">
+                <li class="nav-item pl-2 pr-2 ">
                     <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
                 </li>
                 
@@ -114,62 +114,71 @@
 
 
     <div class="jumbotron jumbotron-fluid">
-    <div class="container">
-        <h1 class="mt-4 article-title page-title">TAG: 教程</h1>
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">配置cuda和pytorch-gpu</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2019-11-30</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/pytorch/">pytorch</a>
+                </li>
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/配置/">配置</a>
+                </li>
+                
+            </ul>
+        </div>
+        
     </div>
 </div>
     <div class="container">
-        <div class="row mt-3">
-            <div class="col-md-9">
-                
+        <div class="row">
+            <div class="col-md-9 pt-2">
                 <div class="row">
-                    <div class="col">
-                        <a href="/2019/11/17/Windows环境下配置ROUGE填坑/" class="index-card-link">
-                            <div class="card-body index-card-box">
-                                <h4 class="card-title text-dark article-title">Windows环境下配置ROUGE填坑</h4>
-                                <h6 class="card-subtitle mt-2 text-muted">
-                                    By 小新
-                                    ; Published on 2019-11-17</h6>
-                            </div>
-                        </a>
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><p>要安装GPU版pytorch并用GPU跑实验，首先你得有一块GPU。。。<br>也就是保证你的机器上有GPU。<br>本机是windows 10，所以以windows 10 的安装配置为例。</p>
+<h1 id="1-CUDA下载与安装"><a href="#1-CUDA下载与安装" class="headerlink" title="1. CUDA下载与安装"></a>1. CUDA下载与安装</h1><p>首先需要下载并安装CUDA。CUDA版本需要选择正确，否则后面各种问题，太难受了。<br><a href="https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#major-components" target="_blank" rel="noopener">官网 cuda toolkit release note</a>上有cuda版本与显卡驱动的对应关系图，如下：<br><img src="cuda%E7%89%88%E6%9C%AC%E5%92%8C%E6%98%BE%E5%8D%A1%E9%A9%B1%E5%8A%A8%E5%AF%B9%E5%BA%94.PNG" alt="cuda版本和显卡驱动对应" title="cuda版本和显卡驱动对应"><br>那么如何查看我们机器上的显卡以及显卡驱动的信息呢？<br>桌面右键-打开NVIDIA控制面板-帮助-系统信息，显示信息如下：<br><img src="%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E6%98%BE%E5%8D%A1%E9%A9%B1%E5%8A%A8%E7%89%88%E6%9C%AC.PNG" alt="查看当前显卡驱动版本" title="查看当前显卡驱动版本"><br>如图所示，我们的机器上驱动程序版本是431.60，对应上面的cuda版本和显卡驱动对应图，大于418.96，我们可以选择CUDA10.1。<br>然后就去<a href="https://developer.nvidia.com/cuda-downloads" target="_blank" rel="noopener">cuda官网</a>选择10.1版本的cuda下载：<br><img src="cuda%E7%89%88%E6%9C%AC%E9%80%89%E6%8B%A9.PNG" alt="cuda版本选择" title="cuda版本选择"><br>由于学校账号流量有限，所以用实验室的服务器下的。。wget -c 链接地址。。。<br>能省一点是一点。。。<br>下载好了之后直接安装就可以。会自动配置好环境变量。<br>在cmd中运行<br><code>nvcc -V</code><br>出现下图则安装成功<br><img src="%E6%B5%8B%E8%AF%95cuda%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F.PNG" alt="测试cuda安装成功" title="测试cuda安装成功"><br>还可以运行<br><code>nvidia-smi</code>来查看当前GPU状态：<br><img src="nvidia-smi.PNG" alt="nvidia-smi" title="nvidia-smi"></p>
+<h1 id="2-cuDNN下载与安装"><a href="#2-cuDNN下载与安装" class="headerlink" title="2. cuDNN下载与安装"></a>2. cuDNN下载与安装</h1><p>cuDNN版本的选择也要非常非常慎重，与CUDA对应好。<br><a href="https://docs.nvidia.com/deeplearning/sdk/cudnn-install/#install-windows" target="_blank" rel="noopener">cuDNN官网安装介绍</a>，装cuDNN前需要保证满足如下条件：</p>
+<ul>
+<li>有至少一块算力超过3.0的GPU。查看自己显卡的算力可以去<a href="https://developer.nvidia.com/cuda-gpus" target="_blank" rel="noopener">CUDA GPUs</a>. </li>
+<li>cuda, cuda Driver. 同时需要参考<a href="https://docs.nvidia.com/deeplearning/sdk/cudnn-support-matrix/index.html" target="_blank" rel="noopener"> cuDNN Support Matrix</a>。cuDNN版本与cuda版本和显卡驱动版本对应图：<br><img src="cuda%E5%92%8Ccudnn%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94.PNG" alt="cuda和cudnn版本对应" title="cuda和cudnn版本对应"><br>可以看到 cuDNN v7.6.3 - v7.6.5版本支持的cuda和显卡驱动。满足我们的条件，所以我们可以选择这个版本范围内的cuDNN。<br>所以去cuDNN官网选择对应版本下载即可。<br>我们的选择如下图：<br><img src="cudnn%E7%89%88%E6%9C%AC%E9%80%89%E6%8B%A9.PNG" alt="cudnn版本选择" title="cudnn版本选择"><br>下载完成之后解压缩，将里面的文件放到cuda安装目录下的对应位置即可。(应该总共有三个文件，bin/cudnn64_7.dll, include/cudnn.h, lib/x64/cudnn.lib)</li>
+</ul>
+<p>之后添加环境变量<br>添加环境变量：C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\lib\x64<br>（是否需要添加环境变量有待考证，好像不加也没事）。</p>
+<h1 id="3-pytorch安装"><a href="#3-pytorch安装" class="headerlink" title="3. pytorch安装"></a>3. pytorch安装</h1><p>去<a href="https://pytorch.org/get-started/locally/" target="_blank" rel="noopener">pytorch官网</a>选择pytorch版本，注意平台，安装方式，python版本，以及cuda版本的选择：<br><img src="torch%E7%89%88%E6%9C%AC%E9%80%89%E6%8B%A9.PNG" alt="torch版本选择" title="torch版本选择"><br>这里python版本一定要对应，当时我的python刚尝试更新到3.8，然后选择安装3.6的版本，结果pip安装的时候会报错：Could not find a version satisfies the requirement torch===1.3.1……<br>手动下载了torch-1.3.1-cp36-cp36m-win_amd64.whl文件，然后使用<code>pip install torch-1.3.1-cp36-cp36m-win_amd64.whl</code>命令安装也不行，会报错：torch-1.3.1-cp36-cp36m-win_amd64.whl is not a supported wheel on this platform<br>只能将python版本改回3.6版本，然后直接复制官网上的pip命令，安装成功。<br>流量比较珍贵者，可以其他途径手动下载whl文件，然后用pip来安装。注意要选择正确的torch版本和torchvision版本。<br>安装完成之后，测试是否安装成功：<br><img src="%E6%B5%8B%E8%AF%95pytorch%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F.PNG" alt="测试pytorch安装成功" title="测试pytorch安装成功"><br>大功告成！</p>
+</article>
+                        </main>
+                        
+                        
                     </div>
                 </div>
-                <hr class="row">
-                
-                <div class="row">
-                    <div class="col">
-                        <a href="/2019/08/18/hexo-tutorial/" class="index-card-link">
-                            <div class="card-body index-card-box">
-                                <h4 class="card-title text-dark article-title">hexo + github pages 搭建个人博客</h4>
-                                <h6 class="card-subtitle mt-2 text-muted">
-                                    By 小新
-                                    ; Published on 2019-08-18</h6>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <hr class="row">
-                
-                <div class="paginator">
-                    <div class="row">
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
     <div class="col">
         <nav aria-label="paginator" class="paginator">
             <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
                 <li class="page-item  disabled ">
                     <a class="page-link"
-                        href="/"
+                        href=""
                         aria-label="Previous">
                         <span aria-hidden="true">&laquo;
-                            Newer</span>
+                            No more</span>
                         <span class="sr-only">Previous</span>
                     </a>
                 </li>
-                <li class="page-item  disabled ">
+                <li class="page-item ">
                     <a class="page-link"
-                        href="/"
+                        href="/2019/11/17/Windows环境下配置ROUGE填坑/"
                         aria-label="Next">
                         <span
-                            aria-hidden="true">Older
+                            aria-hidden="true">Windows环境下配置ROUGE填坑
                             &raquo;</span>
                         <span class="sr-only">Next</span>
                     </a>
@@ -178,19 +187,19 @@
             <ul class="pagination d-md-none justify-content-center">
                 <li class="page-item  disabled ">
                     <a class="page-link"
-                        href="/"
+                        href=""
                         aria-label="Previous">
                         <span aria-hidden="true">&laquo;
-                            Newer</span>
+                            No more</span>
                         <span class="sr-only">Previous</span>
                     </a>
                 </li>
-                <li class="page-item  disabled ">
+                <li class="page-item ">
                     <a class="page-link"
-                        href="/"
+                        href="/2019/11/17/Windows环境下配置ROUGE填坑/"
                         aria-label="Next">
                         <span
-                            aria-hidden="true">Older
+                            aria-hidden="true">Windows环境下配置ROUGE填坑
                             &raquo;</span>
                         <span class="sr-only">Next</span>
                     </a>
@@ -202,123 +211,32 @@
 
 
 
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-3 mt-3">
-                
-    <div class="row">
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
     <div class="col">
         <h6>APPLAUSE FOR ME</h6>
         <div id="applause-easy"></div>
     </div>
 </div>
-    <hr class="row">
-
-
-    <div class="row">
-    <div class="col">
-        <h6>FEATURED TAGS</h6>
-        <div class="tags">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/可视化/">可视化</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/语法/">语法</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/matplotlib/">matplotlib</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/配置/">配置</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/教程/">教程</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pytorch/">pytorch</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paper/">paper</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/心情/">心情</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cuda/">cuda</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/游记/">游记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/introduction/">introduction</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息论/">信息论</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/networkx/">networkx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/十年之约/">十年之约</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/social-media/">social_media</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数学/">数学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/配置环境/">配置环境</a><span class="tag-list-count">1</span></li></ul>
-        </div>
-    </div>
-</div>
-    <hr class="row">
-
-
-    <div class="row">
-    <div class="col">
-        <h6>ABOUT ME</h6>
-        <div class="row">
-            <div class="col">
-                <div class="row justify-content-center">
-                    <div class="col-8 text-center">
-                        <img src="/img/background1.jpg" alt="avatar" class="img-thumbnail">
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-CUDA下载与安装"><span class="toc-text">1. CUDA下载与安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-cuDNN下载与安装"><span class="toc-text">2. cuDNN下载与安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-pytorch安装"><span class="toc-text">3. pytorch安装</span></a></li></ol>
+                        </div>
                     </div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col text-center">
-                        <p class="text-muted">而世之奇伟、瑰怪，非常之观，常在于险远，而人之所罕至焉，故非有志者不能至也</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="mt-2 sidebar-socialmedia">
-            <div class="row">
-    <div class="col text-center">
-        <ul class="list-inline">
-            
-            <li class="list-inline-item">
-                
-                <a href="https://github.com/LHYxx">
-                    <span class="fa-stack fa-2x icon-link">
-                        <i class="fas fa-circle fa-stack-2x"></i>
-                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                    </span>
-                </a>
-                
-            </li>
-            
-            <li class="list-inline-item">
-                
-                <a href="https://www.zhihu.com/people/zhihu_name">
-                    <span class="fa-stack fa-2x icon-link">
-                        <i class="fas fa-circle fa-stack-2x"></i>
-                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
-                    </span>
-                </a>
-                
-            </li>
-            
-        </ul>
-    </div>
-</div>
-
-        </div>
-    </div>
-</div>
-    <hr class="row">
-
-
-    <div class="row">
-    <div class="col">
-        <h6>CONTACT</h6>
-        <address>
-            <strong>小新</strong><br>
-            天津市津南区海河教育园区天津大学北洋园校区
-        </address>
-    </div>
-</div>
-    <hr class="row">
-
-
-    <div class="row">
-    <div class="col">
-        <h6>ARCHIVES</h6>
-        <div class="archive">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a></li></ul>
-        </div>
-    </div>
-</div>
-    <hr class="row">
-
-
-    <div class="row">
-    <div class="col">
-        <ul class="list-inline">
-            <h6>FRIENDS</h6>
-            
-            <li class="list-inline-item"><a href="https://www.scu.edu.cn"><span class="text-muted">海纳百川</span></a>
-            </li>
-            
-            <li class="list-inline-item"><a href="https://www.tij.edu.cn"><span class="text-muted">实事求是</span></a>
-            </li>
-            
-        </ul>
-    </div>
-</div>
-    <hr class="row">
-
             </div>
         </div>
     </div>
@@ -420,6 +338,6 @@ $(document).ready(function() {
 
 
 
+    
 </body>
-
 </html>
