@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>pytorch|optimizer与学习率-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">pytorch|optimizer与学习率</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2020-02-11</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/pytorch/">pytorch</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><h1 id="Pytorch-学习率调整"><a href="#Pytorch-学习率调整" class="headerlink" title="Pytorch 学习率调整"></a>Pytorch 学习率调整</h1><p>学习率设置对于学习过程来说相当重要。学习率过低会导致学习速度太慢，学习率过高又容易导致难以收敛。在很多学习过程中，都会采用动态调整学习率的方法。刚开始训练的时候，学习率设置大一点，以加快学习速度；之后逐渐减小学习率，来寻找最优解。<br>那么在Pytorch中，如在训练过程中动态地调整学习率呢？</p>
+<h2 id="优化器Optimizer"><a href="#优化器Optimizer" class="headerlink" title="优化器Optimizer"></a>优化器Optimizer</h2><p>在说学习率调整方法之前，先来了解一下Pytorch中的优化器Optimizer机制。<br>用过Pytorch的都知道，模型训练时的固定搭配</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">loss.backward()</span><br><span class="line">optimizer.step()</span><br><span class="line">optimizer.zero_grad()</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>简单来说，<strong>loss.backward()就是反向计算出各参数的梯度，然后optimizer.step()就是更新网络中的参数，optimizer.zero_grad()将这一轮的梯度清零，防止这一轮的梯度影响下一轮的更新。</strong></p>
+<p>常用优化器都在torch.optim包中，因此需要先导入包：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch.optim.Adam</span><br><span class="line"><span class="keyword">import</span> torch.optim.SGD</span><br></pre></td></tr></table></figure>
+
+<p>这里以常用的Adam优化器和SGD优化器为例，介绍一下Pytorch中的优化器使用方法。<br>假设我们有一个网络如下，下面的例子都以此网络作为例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Net</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(Net, self).__init__()</span><br><span class="line">        self.layer = nn.Linear(<span class="number">10</span>, <span class="number">2</span>)</span><br><span class="line">        self.layer2 = nn.Linear(<span class="number">2</span>, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.layer(input)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Optimizer基本属性"><a href="#Optimizer基本属性" class="headerlink" title="Optimizer基本属性"></a>Optimizer基本属性</h3><p>所有Optimizer公有的一些基本属性：</p>
+<ul>
+<li><strong>lr:</strong> learning rate，学习率</li>
+<li><strong>eps:</strong> 学习率最小值，在动态更新学习率时，学习率最小不会小于该值。</li>
+<li><strong>weight_decay:</strong> 权值衰减。相当于对参数进行L2正则化（使模型复杂度尽可能低，防止过拟合），该值可以理解为正则化项的系数。</li>
+<li><strong>betas:</strong> （待研究）</li>
+<li><strong>amsgrad:</strong> (bool)（待研究）</li>
+</ul>
+<p><strong>每个Optimizer都维护一个param_groups的list。该list中维护需要优化的参数以及对应的属性设置。</strong></p>
+<h3 id="optimizer基本方法"><a href="#optimizer基本方法" class="headerlink" title="optimizer基本方法"></a>optimizer基本方法</h3><ul>
+<li><strong>add_param_group(param_group)：</strong> 为optimizer的param_groups增加一个参数组。这在微调预先训练的网络时非常有用，因为冻结层可以训练并随着训练的进行添加到优化器中。</li>
+<li><strong>load_state_dict(state_dict)：</strong> 加载optimizer state。参数必须是optimizer.state_dict()返回的对象。</li>
+<li><strong>tate_dict()：</strong> 返回一个dict，包含optimizer的状态：state和param_groups。</li>
+<li><strong>step(closure)：</strong> 执行一次参数更新过程。</li>
+<li><strong>zero_grad()：</strong> 清除所有已经更新的参数的梯度。</li>
+</ul>
+<p>我们在构造优化器时，最简单的方法通常如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">model = Net()</span><br><span class="line">optimizer_Adam = torch.optim.Adam(model.parameters(), lr=<span class="number">0.1</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>model.parameters()</code>返回网络model的全部参数。</strong><br>将model的全部参数传入Adam中构造出一个Adam优化器，并设置 learning rate=0.1。因此该 Adam 优化器的 param_groups 维护的就是模型 model 的全部参数，并且学习率为0.1。这样在调用<code>optimizer_Adam.step()</code>时，就会对model的全部参数进行更新。</p>
+<p>Optimizer的param_groups是一个list，其中的每个元素都是一组独立的参数，以dict的方式存储。结构如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-param_groups</span><br><span class="line">	-0(dict)  # 第一组参数</span><br><span class="line">		params:  # 维护要更新的参数</span><br><span class="line">		lr:  # 该组参数的学习率</span><br><span class="line">		betas:</span><br><span class="line">		eps:  # 该组参数的学习率最小值</span><br><span class="line">		weight_decay:  # 该组参数的权重衰减系数</span><br><span class="line">		amsgrad:  </span><br><span class="line">	-1(dict)  # 第二组参数</span><br><span class="line">	-2(dict)  # 第三组参数</span><br><span class="line">	...</span><br><span class="line">	...</span><br></pre></td></tr></table></figure>
+
+<p>这样可以实现很多灵活的操作，比如</p>
+<h4 id="只训练模型的一部分参数"><a href="#只训练模型的一部分参数" class="headerlink" title="只训练模型的一部分参数"></a>只训练模型的一部分参数</h4><p>例如，只想训练上面的model中的layer参数，而保持layer2的参数不动。可以如下设置Optimizer：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">model = Net()</span><br><span class="line">optimizer_Adam = torch.optim.Adam(model.layer.parameters(), lr=<span class="number">0.1</span>)  <span class="comment"># 只传入layer层的参数，就可以只更新layer层的参数而不影响其他参数。</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="不同部分的参数设置不同的学习率（以及其他属性）"><a href="#不同部分的参数设置不同的学习率（以及其他属性）" class="headerlink" title="不同部分的参数设置不同的学习率（以及其他属性）"></a>不同部分的参数设置不同的学习率（以及其他属性）</h4><p>例如，要想使model的layer参数学习率为0.1，layer2的参数学习率为0.2，可以如下设置Optimizer：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">model = Net()</span><br><span class="line">params_dict = [&#123;<span class="string">'params'</span>: model.layer.parameters(), <span class="string">'lr'</span>: <span class="number">0.1</span>&#125;,</span><br><span class="line">                   &#123;<span class="string">'params'</span>: model.layer2.parameters(), <span class="string">'lr'</span>: <span class="number">0.2</span>&#125;]</span><br><span class="line">optimizer_Adam = torch.optim.Adam(params_dict)</span><br></pre></td></tr></table></figure>
+
+<p>这种方法更为灵活，<strong>手动构造一个params_dict列表来初始化Optimizer。注意，字典中的参数部分的 key 必须为 ‘params’。</strong><br>这样就可以灵活的设置Optimizer啦。</p>
+<h2 id="动态更新learning-rate"><a href="#动态更新learning-rate" class="headerlink" title="动态更新learning rate"></a>动态更新learning rate</h2><p>了解了Optimizer的基本结构和使用方法，接下来就可以看一下，如何在训练过程中动态更新learning rate。</p>
+<h3 id="手动修改lr"><a href="#手动修改lr" class="headerlink" title="手动修改lr"></a>手动修改lr</h3><p>上面我们了解到，Optimizer的每一组参数维护一个lr，因此，最直接的方法就是我们在训练过程中手动修改Optimizer中对应的lr的值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">model = Net()  <span class="comment"># 生成网络</span></span><br><span class="line">optimizer_Adam = torch.optim.Adam(model.parameters(), lr=<span class="number">0.1</span>)  <span class="comment"># 生成优化器</span></span><br><span class="line"></span><br><span class="line">lr_list = []</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">100</span>):  <span class="comment"># 假设迭代100次</span></span><br><span class="line">    <span class="keyword">if</span> epoch % <span class="number">5</span> == <span class="number">0</span>:  <span class="comment"># 每迭代5次，更新一次学习率</span></span><br><span class="line">        <span class="keyword">for</span> params <span class="keyword">in</span> optimizer_Adam.param_groups:  <span class="comment"># 遍历Optimizer中的每一组参数</span></span><br><span class="line">            params[<span class="string">'lr'</span>] *= <span class="number">0.9</span>  <span class="comment"># 将该组参数的学习率 * 0.9</span></span><br><span class="line">            <span class="comment"># params['weight_decay'] = 0.5  # 当然也可以修改其他属性</span></span><br><span class="line">    lr_list.append(optimizer_Adam.state_dict()[<span class="string">'param_groups'</span>][<span class="number">0</span>][<span class="string">'lr'</span>])</span><br><span class="line">plt.plot(range(<span class="number">100</span>), lr_list, color=<span class="string">'r'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="%E6%89%8B%E5%8A%A8%E4%BF%AE%E6%94%B9lr.png" alt="手动修改lr"></p>
+<h3 id="torch-optim-lr-scheduler"><a href="#torch-optim-lr-scheduler" class="headerlink" title="torch.optim.lr_scheduler"></a>torch.optim.lr_scheduler</h3><p><code>torch.optim.lr_scheduler</code>包中提供了一些类，用于动态修改lr。</p>
+<ul>
+<li><code>torch.optim.lr_scheduler.LambdaLr</code></li>
+<li><code>torch.optim.lr_scheduler.StepLR</code></li>
+<li><code>torch.optim.lr_scheduler.MultiStepLR</code></li>
+<li><code>torch.optim.lr_scheduler.ExponentialLR</code></li>
+<li><code>torch.optim.lr_sheduler.CosineAnneaingLR</code></li>
+<li><code>torch.optim.lr_scheduler.ReduceLROnPlateau</code></li>
+</ul>
+<p><strong>注意：</strong> pytorch 1.1.0版本之后，在创建了lr_scheduler对象之后，会自动执行第一次lr更新（可以理解为执行一次scheduler.step()）。因此，在使用的时候，需要先调用optimizer.step()，再调用scheduler.step()。如果创建了lr_scheduler对象之后，先调用scheduler.step()，再调用optimizer.step()，则会跳过了第一个学习率的值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 调用顺序</span></span><br><span class="line">loss.backward()</span><br><span class="line">optimizer.step()</span><br><span class="line">scheduler.step()</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong> 创建scheduler时，所传入的Optimizer的param_groups必须有一个initial_lr键作为初始学习率。如果last_epoch=-1，则用于初始化的Optimizer可以没有initial_lr键，以 lr 键初始化为initial_lr。</p>
+<h4 id="torch-optim-lr-scheduler-LambdaLr"><a href="#torch-optim-lr-scheduler-LambdaLr" class="headerlink" title="torch.optim.lr_scheduler.LambdaLr"></a>torch.optim.lr_scheduler.LambdaLr</h4><p><code>torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda, last_epoch=-1)</code></p>
+<ul>
+<li>Optimizer：优化器实例</li>
+<li>lr_lambda：是一个函数（常用lambda表达式）或函数列表，该函数接收一个int参数（epoch），然后计算出一个系数$\alpha$，最后学习率更新为 $lr = initial_lr * \alpha$。其中lr_lambda如果传入多个函数的list的话，则对应每组param_groups的学习率调整策略。</li>
+<li>last_epoch：（int）上一个epoch数。默认为-1，且当last_epoch=-1时，将lr设置为initial_lr。第一次更新lr时，就按照epoch = last_epoch + 1更新。（比如last_epoch = 1，则第一次lr更新时，就将epoch=2传入上面的lr_lambda函数，得出系数$\alpha$）</li>
+</ul>
+<p>需要注意的是，该scheduler每次lr更新，是用initial_lr 乘以系数 $\alpha$，而不是用上一次的lr 乘以系数$\alpha$，即<br>$$<br>lr = initial_lr * \alpha<br>$$</p>
+<h4 id="torch-optim-lr-scheduler-StepLR"><a href="#torch-optim-lr-scheduler-StepLR" class="headerlink" title="torch.optim.lr_scheduler.StepLR"></a>torch.optim.lr_scheduler.StepLR</h4><p><code>torch.optim.lr_scheduler.StepLR(optimizer, step_size, gamma=0.1, last_epoch=-1)</code><br>每迭代step_size次，学习率乘以gamma。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">model = Net()</span><br><span class="line">optimizer_Adam = torch.optim.Adam(model.parameters(), lr=<span class="number">0.1</span>)</span><br><span class="line"><span class="comment"># 创建scheduler，每迭代5次，学习率衰减一半</span></span><br><span class="line">scheduler = torch.optim.lr_scheduler.StepLR(optimizer_Adam, step_size=<span class="number">5</span>, gamma=<span class="number">0.5</span>, last_epoch=<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">lr_list_1 = []</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    scheduler.step()</span><br><span class="line">    lr_list_1.append(optimizer_Adam.state_dict()[<span class="string">'param_groups'</span>][<span class="number">0</span>][<span class="string">'lr'</span>])</span><br><span class="line">plt.plot(range(<span class="number">100</span>), lr_list_1, color=<span class="string">'r'</span>, label=<span class="string">'lr'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="StepLR.png" alt="StepLR"></p>
+<h4 id="torch-optim-lr-scheduler-MultiStepLR"><a href="#torch-optim-lr-scheduler-MultiStepLR" class="headerlink" title="torch.optim.lr_scheduler.MultiStepLR"></a>torch.optim.lr_scheduler.MultiStepLR</h4><p><code>torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones, gamma=0.1, last_epoch=-1)</code><br>多段衰减法。milestones传入一个list，指定多个epoch数，每迭代到指定的epoch次数时，lr乘以gamma。<br>例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">model = Net()</span><br><span class="line">optimizer_Adam = torch.optim.Adam(model.parameters(), lr=<span class="number">0.1</span>)  <span class="comment"># 初始 lr=0.1</span></span><br><span class="line"><span class="comment"># lr 变化</span></span><br><span class="line"><span class="comment"># 0 - 20 epoch: 0.1</span></span><br><span class="line"><span class="comment"># 21 - 40 epoch: 0.05</span></span><br><span class="line"><span class="comment"># 41 - 60 epoch: 0.025</span></span><br><span class="line"><span class="comment"># 60 - 80 epoch: 0.0125</span></span><br><span class="line"><span class="comment"># 80 - end epoch: 0.01125</span></span><br><span class="line">scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer_Adam, milestones=[<span class="number">20</span>, <span class="number">40</span>, <span class="number">60</span>, <span class="number">80</span>], gamma=<span class="number">0.5</span>, last_epoch=<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">lr_list_1 = []</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    scheduler.step()</span><br><span class="line">    lr_list_1.append(optimizer_Adam.state_dict()[<span class="string">'param_groups'</span>][<span class="number">0</span>][<span class="string">'lr'</span>])</span><br><span class="line">plt.plot(range(<span class="number">100</span>), lr_list_1, color=<span class="string">'r'</span>, label=<span class="string">'lr'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="MultiStepLR.png" alt="MultiStepLR"></p>
+<h4 id="torch-optim-lr-scheduler-ExponentialLR"><a href="#torch-optim-lr-scheduler-ExponentialLR" class="headerlink" title="torch.optim.lr_scheduler.ExponentialLR"></a>torch.optim.lr_scheduler.ExponentialLR</h4><p><code>torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma, last_epoch=-1)</code><br>每个epoch按指数衰减 lr。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">model = Net()</span><br><span class="line">optimizer_Adam = torch.optim.Adam(model.parameters(), lr=<span class="number">0.1</span>)</span><br><span class="line"><span class="comment"># 指数衰减学习率，衰减率为 gamma=0.9</span></span><br><span class="line">scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer_Adam, gamma=<span class="number">0.9</span>, last_epoch=<span class="number">-1</span>)</span><br><span class="line">lr_list_1 = []</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    scheduler.step() </span><br><span class="line">    lr_list_1.append(optimizer_Adam.state_dict()[<span class="string">'param_groups'</span>][<span class="number">0</span>][<span class="string">'lr'</span>])</span><br><span class="line">plt.plot(range(<span class="number">100</span>), lr_list_1, color=<span class="string">'r'</span>, label=<span class="string">'lr'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="ExponentialLR.png" alt="ExponentialLR"></p>
+<h4 id="torch-optim-lr-scheduler-CosineAnnealingLR"><a href="#torch-optim-lr-scheduler-CosineAnnealingLR" class="headerlink" title="torch.optim.lr_scheduler.CosineAnnealingLR"></a>torch.optim.lr_scheduler.CosineAnnealingLR</h4><p><code>torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max, eta_min=0, last_epoch=-1)</code><br>按照三角函数规则来更新学习率。<br>$$<br>\eta_t = \eta_{min} + \frac{1}{2}(\eta_{max} - \eta_{min})(1 + cos(\frac{T_{cur}}{T_{max}}\pi))<br>$$</p>
+<ul>
+<li>$\eta_{min}$ 表示最小学习率，即正弦函数最低点</li>
+<li>$\eta_{max}$ 表示最大学习率，设置为initial_lr（在last_epoch=-1时，即为lr）。</li>
+<li>$T_{cur}$ 表示当前epoch数</li>
+<li>$T_{max}$ 表示1/2个cos周期所对应的epoch数值</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">model = Net()</span><br><span class="line">optimizer_Adam = torch.optim.Adam(model.parameters(), lr=<span class="number">0.1</span>)</span><br><span class="line"><span class="comment"># 周期为50epoch，lr最小值为0（默认）</span></span><br><span class="line">scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer_Adam, eta_min=<span class="number">0</span>, T_max=<span class="number">25</span>, last_epoch=<span class="number">-1</span>)</span><br><span class="line">lr_list_1 = []</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    scheduler.step()</span><br><span class="line">    lr_list_1.append(optimizer_Adam.state_dict()[<span class="string">'param_groups'</span>][<span class="number">0</span>][<span class="string">'lr'</span>])</span><br><span class="line">plt.plot(range(<span class="number">100</span>), lr_list_1, color=<span class="string">'r'</span>, label=<span class="string">'lr'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="CosineAnnealingLR.png" alt="CosineAnnealingLR"></p>
+<h4 id="torch-optim-lr-scheduler-ReduceLROnPlateau"><a href="#torch-optim-lr-scheduler-ReduceLROnPlateau" class="headerlink" title="torch.optim.lr_scheduler.ReduceLROnPlateau"></a>torch.optim.lr_scheduler.ReduceLROnPlateau</h4><p><code>torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode=&#39;min&#39;, factor=0.1, patience=10, verbose=False, threshold=0.0001, threshold_mode=&#39;rel&#39;, cooldown=0, min_lr=0, eps=1e-08)</code><br>根据指定的指标量来调整学习率。如果指标量停止变化时，就减小学习率。<br>参数：</p>
+<ul>
+<li>mode：（str），从（min, max）中选择。<ul>
+<li>min：如果指定量不再下降，就减小lr</li>
+<li>max：如果指定量不再上升，就减小lr</li>
+</ul>
+</li>
+<li>factor：（float），衰减因子，每次更新lr = lr * factor</li>
+<li>patience：（int），容忍度，如果经过patience次迭代后，指标没有变化（上升或下降），就更新lr。</li>
+<li>verbose：（bool），每次更新lr，是否向std输出。</li>
+<li>threshold：（float），阈值，对于制定的指标只有超过阈值才算有变化</li>
+<li>threshold_mode：（str），从（rel，abs）总选择。性能衡量方式。<ul>
+<li>rel：<ul>
+<li>max模式下：dynamic_threshold = best * ( 1 + threshold ) </li>
+<li>min模式下：dynamic_threshold = best * ( 1 - threshold )</li>
+</ul>
+</li>
+<li>abs：<ul>
+<li>max模式下：dynamic_threshold = best + threshold</li>
+<li>min模式下：dynamic_threshold = best - threshold</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>cooldown：（int），每次调整lr之后，冷却cooldown个epoch，避免lr下降过快</li>
+<li>min_lr：（float or list），学习率最小值。如果给定一个标量值，就param_groups中所有组都设置该最小值；也可以用一个list为每组指定一个最小值。</li>
+<li>eps：（float），lr变化最小值，如果lr的两次变化差距小于eps，则忽略这次变化。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">optimizer = torch.optim.SGD(model.parameters(), lr=<span class="number">0.1</span>, momentum=<span class="number">0.9</span>)</span><br><span class="line">scheduler = ReduceLROnPlateau(optimizer, <span class="string">'min'</span>)</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    train(...)</span><br><span class="line">    val_loss = validate(...)</span><br><span class="line">    <span class="comment"># Note that step should be called after validate()</span></span><br><span class="line">    scheduler.step(val_loss)</span><br></pre></td></tr></table></figure></article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/02/08/Pytorch常用损失函数拆解/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">Pytorch常用损失函数拆解
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/02/08/Pytorch常用损失函数拆解/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">Pytorch常用损失函数拆解
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Pytorch-学习率调整"><span class="toc-text">Pytorch 学习率调整</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#优化器Optimizer"><span class="toc-text">优化器Optimizer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Optimizer基本属性"><span class="toc-text">Optimizer基本属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#optimizer基本方法"><span class="toc-text">optimizer基本方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#只训练模型的一部分参数"><span class="toc-text">只训练模型的一部分参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#不同部分的参数设置不同的学习率（以及其他属性）"><span class="toc-text">不同部分的参数设置不同的学习率（以及其他属性）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动态更新learning-rate"><span class="toc-text">动态更新learning rate</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#手动修改lr"><span class="toc-text">手动修改lr</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#torch-optim-lr-scheduler"><span class="toc-text">torch.optim.lr_scheduler</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#torch-optim-lr-scheduler-LambdaLr"><span class="toc-text">torch.optim.lr_scheduler.LambdaLr</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#torch-optim-lr-scheduler-StepLR"><span class="toc-text">torch.optim.lr_scheduler.StepLR</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#torch-optim-lr-scheduler-MultiStepLR"><span class="toc-text">torch.optim.lr_scheduler.MultiStepLR</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#torch-optim-lr-scheduler-ExponentialLR"><span class="toc-text">torch.optim.lr_scheduler.ExponentialLR</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#torch-optim-lr-scheduler-CosineAnnealingLR"><span class="toc-text">torch.optim.lr_scheduler.CosineAnnealingLR</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#torch-optim-lr-scheduler-ReduceLROnPlateau"><span class="toc-text">torch.optim.lr_scheduler.ReduceLROnPlateau</span></a></li></ol></li></ol></li></ol></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>
