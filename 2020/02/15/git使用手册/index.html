@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>git使用手册-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">git使用手册</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2020-02-15</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/git/">git</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><h1 id="Git-使用手册"><a href="#Git-使用手册" class="headerlink" title="Git 使用手册"></a>Git 使用手册</h1><p>Git分为三个主要区域</p>
+<ul>
+<li>工作区，就是我们的本地目录</li>
+<li>stage，暂存区。</li>
+<li>master，分支。</li>
+</ul>
+<p><img src="git.jpg" alt="git.jpg"><br><a href="https://www.runoob.com/git/git-workspace-index-repo.html" target="_blank" rel="noopener">图来源 runoob</a></p>
+<h2 id="add"><a href="#add" class="headerlink" title="add"></a>add</h2><p><code>git add test.txt</code><br>把目录下的test.txt文件添加到 stage（暂存区）。</p>
+<h2 id="commit"><a href="#commit" class="headerlink" title="commit"></a>commit</h2><p><code>git commit -m&quot;describetion&quot;</code><br>把暂存区的内容提交到分支。</p>
+<h1 id="rm"><a href="#rm" class="headerlink" title="rm"></a>rm</h1><p>如果只是简单地从工作目录中手工删除文件，相当于是对工作区进行了修改，可通过add同步到暂存区。运行 git status 时就会在 Changes not staged for commit 的提示。<br>可以通过再执行<code>add</code>来更新到暂存区。</p>
+<p><code>git rm &lt;file&gt;</code>删除工作区和暂存区的<file>。<br>相当于先在本地删除&lt;file&gt;，再执行<code>add &lt;file&gt;</code>同步到暂存区。</file></p>
+<p>如果工作区与暂存区不统一，工作区的文件修改过的话，删除的时候需要加参数-f，如下<br><code>git rm -f &lt;file&gt;</code><br>就将工作区和暂存区都删了。</p>
+<p><code>git rm --cached &lt;file&gt;</code><br>删除暂存区的&lt;file&gt;文件，工作区不受影响。</p>
+<h2 id="mv"><a href="#mv" class="headerlink" title="mv"></a>mv</h2><p>用于重命名、移动<br><code>git mv &lt;file_a&gt; &lt;file_b&gt;</code><br>将文件a重命名为文件b</p>
+<h2 id="reset"><a href="#reset" class="headerlink" title="reset"></a>reset</h2><h3 id="reset回退暂存区"><a href="#reset回退暂存区" class="headerlink" title="reset回退暂存区"></a>reset回退暂存区</h3><p><code>git reset HEAD</code><br>把暂存区回退到版本库中HEAD所指的版本</p>
+<p><code>git reset HEAD &lt;file&gt;</code><br>把暂存区的&lt;file&gt;文件回退到版本库中HEAD所指的版本的&lt;file&gt;文件。</p>
+<h3 id="reset回退版本库中HEAD所指的版本"><a href="#reset回退版本库中HEAD所指的版本" class="headerlink" title="reset回退版本库中HEAD所指的版本"></a>reset回退版本库中HEAD所指的版本</h3><p><code>git reset --hard HEAD^</code><br>版本库中回退到HEAD所指的上一个版本</p>
+<p><code>git reset --hard 1094a</code><br>版本库中回退到 id指定版本</p>
+<h2 id="checkout"><a href="#checkout" class="headerlink" title="checkout"></a>checkout</h2><p><code>git checkout .</code><br> . 表示整个当前目录。<br>用暂存区内容替换工作区内容。用来舍弃工作区的修改。<br>也就是将工作区恢复到最后一次add或者commit的状态。</p>
+<p><code>git checkout -- &lt;file&gt;</code><br>指定特定文件，用暂存区&lt;file&gt;替换工作区&lt;file&gt;。用来舍弃工作区&lt;file&gt;文件的修改。<br>也即是将工作区的&lt;file&gt;文件恢复到最后一次add或commit的状态。</p>
+<p><code>git checkout HEAD .</code><br>用HEAD指向的分支中的内容替换暂存区和工作区的内容。也就是将暂存区和工作区恢复到最后一次commit的状态。</p>
+<p><code>git checkout HEAD &lt;file&gt;</code><br>用HEAD指向的分支中的<file>文件替换暂存区和工作区的&lt;file&gt;文件。也就是将暂存区和工作区的&lt;file&gt;文件恢复到最后一次commit的状态。</file></p>
+<h1 id="clone"><a href="#clone" class="headerlink" title="clone"></a>clone</h1><p><code>git clone &lt;url&gt;</code><br><code>git clone &lt;url&gt; &lt;directory&gt;</code><br>使用 git clone 从Git 仓库中拷贝项目。<br>例如从Github上将项目拷贝到本地，例如<br><code>git clone https://github.com/example/example</code><br>可以通过&lt;directory&gt;参数指定本地保存目录</p>
+<h1 id="push"><a href="#push" class="headerlink" title="push"></a>push</h1><p><code>git push &lt;url&gt;</code><br>修改后的文件上传到远程仓库。</p>
+<h2 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h2><p>使用分支将工作切分开来，从而让我们能够在不同开发环境中做事，并来回切换。</p>
+<p><code>git branch &lt;name&gt;</code><br>创建一个分支，名称为&lt;name&gt;</p>
+<p><code>git checkout &lt;branch name&gt;</code><br>切换到名为&lt;branch name&gt;的分支</p>
+<p><code>git checkout -b &lt;branch name&gt;</code><br>创建并切换到&lt;branch name&gt;分支中</p>
+<p><code>git branch -d &lt;branchname&gt;</code><br>删除分支</p>
+<p><code>git merge &lt;branch name&gt;</code><br>分支合并。将&lt;branch name&gt;分支合并到主分支。必须在master中执行该命令。<br>当某一文件在分支与主分支之间内容不同时，合并会产生冲突。必须手动解决冲突之后，再进行合并。将文件修改为我们希望的内容，然后通过<code>add</code> 和 <code>commit</code>提交之后，再进行合并。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p><code>git init</code><br>在一个目录下执行<code>git init</code>，创建仓库。把该目录变为git仓库</p>
+<p><code>git diff HEAD -- test.txt</code><br>查看版本库中最新版本和工作区中的test.txt文件的区别</p>
+<p><code>git log</code><br><code>git log --pretty=oneline</code><br>查看提交记录</p>
+<p><code>git reflog</code><br>查看命令记录</p>
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/02/11/pytorch-optimizer与学习率/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">pytorch|optimizer与学习率
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/02/11/pytorch-optimizer与学习率/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">pytorch|optimizer与学习率
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Git-使用手册"><span class="toc-text">Git 使用手册</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#add"><span class="toc-text">add</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#commit"><span class="toc-text">commit</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#rm"><span class="toc-text">rm</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#mv"><span class="toc-text">mv</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reset"><span class="toc-text">reset</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#reset回退暂存区"><span class="toc-text">reset回退暂存区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#reset回退版本库中HEAD所指的版本"><span class="toc-text">reset回退版本库中HEAD所指的版本</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#checkout"><span class="toc-text">checkout</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#clone"><span class="toc-text">clone</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#push"><span class="toc-text">push</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#分支管理"><span class="toc-text">分支管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-text">其他</span></a></li></ol></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>
