@@ -270,17 +270,112 @@
 <li>spring_layout： 用Fruchterman-Reingold算法排列节点（这个算法我不了解，样子类似多中心放射状）</li>
 <li>spectral_layout：根据图的拉普拉斯特征向量排列节</li>
 </ul>
-<h3 id="画图函数"><a href="#画图函数" class="headerlink" title="画图函数"></a>画图函数</h3><h4 id="nx-draw-函数"><a href="#nx-draw-函数" class="headerlink" title="nx.draw()函数"></a>nx.draw()函数</h4><p>该函数画整个图</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">G = nx.Graph()</span><br><span class="line">G.add_nodes_from([x for x in range(10)])</span><br><span class="line">G.add_edges_from([(a, (a+1)%5) for a in range(10)])</span><br><span class="line"></span><br><span class="line">pos = nx.circular_layout(G)  # 环形布局</span><br><span class="line">nx.draw(G, </span><br><span class="line">	pos=pos, with_labels=True, </span><br><span class="line">	node_size=300, node_color=&apos;blue&apos;, node_shape=&apos;*&apos;, </span><br><span class="line">	alpha=0.5, edge_color=&apos;red&apos;, </span><br><span class="line">	width=3, style=&apos;dotted&apos;, </span><br><span class="line">	font_size=15)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<h3 id="画图函数"><a href="#画图函数" class="headerlink" title="画图函数"></a>画图函数</h3><h4 id="nx-draw-函数"><a href="#nx-draw-函数" class="headerlink" title="nx.draw()函数"></a>nx.draw()函数</h4><p>该函数画整个图<br><strong>Parameters:</strong></p>
+<ul>
+<li><strong>G</strong> (graph) – A networkx graph</li>
+<li><strong>pos</strong> (dictionary, optional) – dict, key是node， value是位置。 默认spring layout positioning。</li>
+<li><strong>ax</strong> (Matplotlib Axes object, optional) – 在指定的 Matplotlib axes 中画图。</li>
+<li><strong>hold</strong> (bool, optional) – Set the Matplotlib hold state. If True subsequent draw commands will be added to the current axes.</li>
+<li><strong>\<em>\</em>kwds</strong> – 详细的其他可选参数见 networkx.draw_networkx()。</li>
+</ul>
+<p>示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">G = nx.Graph()</span><br><span class="line">G.add_nodes_from([x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>)])</span><br><span class="line">G.add_edges_from([(a, (a+<span class="number">1</span>)%<span class="number">5</span>) <span class="keyword">for</span> a <span class="keyword">in</span> range(<span class="number">10</span>)])</span><br><span class="line"></span><br><span class="line">pos = nx.circular_layout(G)  <span class="comment"># 环形布局</span></span><br><span class="line">nx.draw(G, </span><br><span class="line">	pos=pos, with_labels=<span class="literal">True</span>, </span><br><span class="line">	node_size=<span class="number">300</span>, node_color=<span class="string">'blue'</span>, node_shape=<span class="string">'*'</span>, </span><br><span class="line">	alpha=<span class="number">0.5</span>, edge_color=<span class="string">'red'</span>, </span><br><span class="line">	width=<span class="number">3</span>, style=<span class="string">'dotted'</span>, </span><br><span class="line">	font_size=<span class="number">15</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 
 <p>效果图如下：<br><img src="Figure_4.png" alt="Figure_4" title="figure4"></p>
-<h4 id="nx-draw-networkx-nodes-画点"><a href="#nx-draw-networkx-nodes-画点" class="headerlink" title="nx.draw_networkx_nodes() 画点"></a>nx.draw_networkx_nodes() 画点</h4><p>该函数参数与nx.draw()函数相同，不过该函数只画图中的点。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">G = nx.Graph()</span><br><span class="line">G.add_nodes_from([x for x in range(10)])</span><br><span class="line">G.add_edges_from([(a, (a+1)%5) for a in range(10)])</span><br><span class="line">pos = nx.circular_layout(G)</span><br><span class="line"># 点和布局都没变，与前面一样，不过下面使用draw_networkx_nodes函数</span><br><span class="line">nx.draw_networkx_nodes(G, pos=pos, with_labels=True, node_size=300, node_color=&apos;blue&apos;, node_shape=&apos;*&apos;, alpha=0.5, edge_color=&apos;red&apos;, width=3, style=&apos;dotted&apos;, font_size=15)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<h4 id="nx-draw-networkx"><a href="#nx-draw-networkx" class="headerlink" title="nx.draw_networkx()"></a>nx.draw_networkx()</h4><p>该函数是<code>nx.draw()</code>的升级版。允许配置更多的参数：<br><strong>Parameters</strong></p>
+<ul>
+<li><strong>G</strong> (graph) – A networkx graph</li>
+<li><strong>pos</strong> (dictionary, optional) – dict, key是node， value是位置。 默认spring layout positioning。</li>
+<li><strong>arrows</strong> (bool, optional (default=True)) – 对于有向图，如果设置为True，边会带有箭头</li>
+<li><strong>with_labels</strong> (bool, optional (default=True)) – 是否显示节点label</li>
+<li><strong>ax</strong> (Matplotlib Axes object, optional) – Draw the graph in the specified Matplotlib axes.</li>
+<li><strong>nodelist</strong> (list, optional (default G.nodes())) – 如果给定节点，则只画指定的节点</li>
+<li><strong>edgelist</strong> (list, optional (default=G.edges())) – 如果给定边，则只画指定的边</li>
+<li><strong>node_size</strong> (scalar or array, optional (default=300)) – 节点大小。如果为每个节点指定不同的大小，则传入一个数组，数组长度必须等于图中节点个数。</li>
+<li><strong>node_color</strong> (color string, or array of floats, (default=’r’)) – 节点颜色。可以是一种颜色的字符串，也可以是和节点数相同的颜色序列（为每个节点分别指定颜色）。如果给定的是数值，则会使用cmap和vmin，vmax参数映射到颜色。</li>
+<li><strong>node_shape</strong> (string, optional (default=’o’)) – 节点形状。必须是 <code>so^&gt;v&lt;dph8</code> 之一。</li>
+<li><strong>alpha</strong> (float, optional (default=1.0)) – 节点和边的透明度</li>
+<li><strong>cmap</strong> (Matplotlib colormap, optional (default=None)) – Colormap for mapping intensities of nodes</li>
+<li><strong>vmin,vmax</strong> (float, optional (default=None)) – Minimum and maximum for node colormap scaling</li>
+<li><strong>linewidths</strong> ([None | scalar | sequence]) – 符号边缘的宽度，默认1.0</li>
+<li><strong>width</strong> (float, optional (default=1.0)) – 边的宽度</li>
+<li><strong>edge_color</strong> (color string, or array of floats (default=’r’)) – 边的颜色。可以是表示单一颜色的字符串，也可以是和边数相同的序列（为每条边指定不同颜色）。如果给定的是数值，则按照edge_cmpa,edge_vmin,edge_vmax参数映射到颜色。</li>
+<li><strong>edge_cmap</strong> (Matplotlib colormap, optional (default=None)) – Colormap for mapping intensities of edges</li>
+<li><strong>edge_vmin,edge_vmax</strong> (floats, optional (default=None)) – Minimum and maximum for edge colormap scaling</li>
+<li><strong>style</strong> (string, optional (default=’solid’)) – 边的样式 (solid|dashed|dotted,dashdot)</li>
+<li><strong>labels</strong> (dictionary, optional (default=None)) – 节点的label。字典形式，key是节点，value是节点的label。</li>
+<li><strong>font_size</strong> (int, optional (default=12)) – label的字体大小。</li>
+<li><strong>font_color</strong> (string, optional (default=’k’ black)) – 字体颜色</li>
+<li><strong>font_weight</strong> (string, optional (default=’normal’)) – 字体加粗</li>
+<li><strong>font_family</strong> (string, optional (default=’sans-serif’)) – 字体</li>
+<li><strong>label</strong> (string, optional) – Label for graph legend</li>
+</ul>
+<h4 id="nx-draw-networkx-nodes-画点"><a href="#nx-draw-networkx-nodes-画点" class="headerlink" title="nx.draw_networkx_nodes() 画点"></a>nx.draw_networkx_nodes() 画点</h4><p>该函数参数与上面两个函数相同，不过该函数只画图中的点。<br>参数与上面解释相同。<br><strong>Parameters</strong></p>
+<ul>
+<li><strong>G</strong> (graph) – A networkx graph</li>
+<li><strong>pos</strong> (dictionary) – 字典，key是节点，value是位置。位置需要用(x, y)的形式来表示。</li>
+<li><strong>ax</strong> (Matplotlib Axes object, optional) – Draw the graph in the specified Matplotlib axes.</li>
+<li><strong>nodelist</strong> (list, optional) – Draw only specified nodes (default G.nodes())</li>
+<li><strong>node_size</strong> (scalar or array) – Size of nodes (default=300). If an array is specified it must be the same length as nodelist.</li>
+<li><strong>node_color</strong> (color string, or array of floats) – Node color. Can be a single color format string (default=’r’), or a sequence of colors with the same length as nodelist. If numeric values are specified they will be mapped to colors using the cmap and vmin,vmax parameters. See matplotlib.scatter for more details.</li>
+<li><strong>node_shape</strong> (string) – 节点形状</li>
+<li><strong>alpha</strong> (float) – 节点透明度（默认1.0)</li>
+<li><strong>cmap</strong> (Matplotlib colormap) – Colormap for mapping intensities of nodes (default=None)</li>
+<li><strong>vmin,vmax</strong> (floats) – Minimum and maximum for node colormap scaling (default=None)</li>
+<li><strong>linewidths</strong> ([None | scalar | sequence]) – 符号边缘的宽度，默认1.0</li>
+<li><strong>label</strong> ([None| string]) – Label for legend</li>
+</ul>
+<p>Return 节点的PathCollection。（matplotlib.collections.PathCollection类）<br>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">G = nx.Graph()</span><br><span class="line">G.add_nodes_from([x for x in range(10)])</span><br><span class="line">G.add_edges_from([(a, (a+1)%5) for a in range(10)])</span><br><span class="line">pos = nx.circular_layout(G)</span><br><span class="line"># 点和布局都没变，与前面一样，不过下面使用draw_networkx_nodes函数</span><br><span class="line">nx.draw_networkx_nodes(G, pos=pos, node_size=300, node_color=&apos;blue&apos;, node_shape=&apos;*&apos;, alpha=0.5)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 
 <p>效果图如下：<br><img src="Figure_5.png" alt="Figure_5" title="figure5"></p>
-<h4 id="nx-draw-networkx-edges-画线"><a href="#nx-draw-networkx-edges-画线" class="headerlink" title="nx.draw_networkx_edges() 画线"></a>nx.draw_networkx_edges() 画线</h4><p>同理，该函数只画线<br><code>nx.draw_networkx_edges(G, pos=pos, with_labels=True, node_size=300, node_color=&#39;blue&#39;, node_shape=&#39;*&#39;, alpha=0.5, edge_color=&#39;red&#39;, width=3, style=&#39;dotted&#39;, font_size=15)</code><br>效果图如下：<br><img src="Figure_6.png" alt="Figure_6" title="figure6"></p>
-<h4 id="draw-networkx-edge-labels-画线的标签"><a href="#draw-networkx-edge-labels-画线的标签" class="headerlink" title="draw_networkx_edge_labels 画线的标签"></a>draw_networkx_edge_labels 画线的标签</h4><p>该函数只画线的标签<br>因此整合前面三个函数，我们就可以画点、线和标签。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nx.draw_networkx_nodes(G, pos=pos, with_labels=True, node_size=300, node_color=&apos;blue&apos;, node_shape=&apos;*&apos;, alpha=0.5, edge_color=&apos;red&apos;, width=3, style=&apos;dotted&apos;, font_size=15)</span><br><span class="line">nx.draw_networkx_edges(G, pos=pos, with_labels=True, node_size=300, node_color=&apos;blue&apos;, node_shape=&apos;*&apos;, alpha=0.5, edge_color=&apos;red&apos;, width=3, style=&apos;dotted&apos;, font_size=15)</span><br><span class="line">nx.draw_networkx_edge_labels(G, pos=pos, alpha=1, font_size=10)</span><br></pre></td></tr></table></figure>
+<h4 id="nx-draw-networkx-labels-画点的labels"><a href="#nx-draw-networkx-labels-画点的labels" class="headerlink" title="nx.draw_networkx_labels() 画点的labels"></a>nx.draw_networkx_labels() 画点的labels</h4><p>该函数只画节点的label。参数解释同上。<br><strong>Parameters：</strong></p>
+<ul>
+<li><strong>G</strong> (graph) – A networkx graph</li>
+<li><strong>pos</strong> (dictionary) – A dictionary with nodes as keys and positions as values. Positions should be sequences of length 2.</li>
+<li><strong>labels</strong> (dictionary, optional (default=None)) – 节点的label，以dict的形式存储。key是节点，value是节点的label。</li>
+<li><strong>font_size</strong> (int) – 节点label的字体大小 (default=12)</li>
+<li><strong>font_color</strong> (string) – 节点label的字体颜色 (default=’k’ black)</li>
+<li><strong>font_family</strong> (string) – 节点label的字体 (default=’sans-serif’)</li>
+<li><strong>font_weight</strong> (string) – 字体是否加粗 (default=’normal’)</li>
+<li><strong>alpha</strong> (float) – 字体的透明度 (default=1.0)</li>
+<li><strong>ax</strong> (Matplotlib Axes object, optional) – Draw the graph in the specified Matplotlib axes.</li>
+</ul>
+<p>Return 一个dict，key是节点，value是label。</p>
+<h4 id="nx-draw-networkx-edges-画线"><a href="#nx-draw-networkx-edges-画线" class="headerlink" title="nx.draw_networkx_edges() 画线"></a>nx.draw_networkx_edges() 画线</h4><p>同理，该函数只画线。参数解释同上。<br><strong>Parameters</strong></p>
+<ul>
+<li><strong>G</strong> (graph) – A networkx graph</li>
+<li><strong>pos</strong> (dictionary) – A dictionary with nodes as keys and positions as values. Positions should be sequences of length 2.</li>
+<li><strong>edgelist</strong> (collection of edge tuples) – 如果指定边的列表，则只画指定的边。(default=G.edges())</li>
+<li><strong>width</strong> (float, or array of floats) – 边宽度(default=1.0)</li>
+<li><strong>edge_color</strong> (color string, or array of floats) – Edge color. Can be a single color format string (default=’r’), or a sequence of colors with the same length as edgelist. If numeric values are specified they will be mapped to colors using the edge_cmap and edge_vmin,edge_vmax parameters.</li>
+<li><strong>style</strong> (string) – 边的形状(default=’solid’) (solid|dashed|dotted,dashdot)</li>
+<li><strong>alpha</strong> (float) – 边的透明度(default=1.0)</li>
+<li><strong>cmap</strong> (edge) – Colormap for mapping intensities of edges (default=None)</li>
+<li><strong>edge_vmin,edge_vmax</strong> (floats) – Minimum and maximum for edge colormap scaling (default=None)</li>
+<li><strong>ax</strong> (Matplotlib Axes object, optional) – Draw the graph in the specified Matplotlib axes.</li>
+<li><strong>arrows</strong> (bool, optional (default=True)) – For directed graphs, if True draw arrowheads.</li>
+<li><strong>label</strong> ([None| string]) – Label for legend</li>
+</ul>
+<p>示例：<br><code>nx.draw_networkx_edges(G, pos=pos, with_labels=True, node_size=300, node_color=&#39;blue&#39;, node_shape=&#39;*&#39;, alpha=0.5, edge_color=&#39;red&#39;, width=3, style=&#39;dotted&#39;, font_size=15)</code><br>效果图如下：<br><img src="Figure_6.png" alt="Figure_6" title="figure6"></p>
+<h4 id="draw-networkx-edge-labels-画线的标签"><a href="#draw-networkx-edge-labels-画线的标签" class="headerlink" title="draw_networkx_edge_labels 画线的标签"></a>draw_networkx_edge_labels 画线的标签</h4><p>该函数只画线的标签。参数解释如下：<br><strong>Parameters：</strong></p>
+<ul>
+<li><strong>G</strong> (graph) – A networkx graph</li>
+<li><strong>pos</strong> (dictionary) – A dictionary with nodes as keys and positions as values. Positions should be sequences of length 2.</li>
+<li><strong>ax</strong> (Matplotlib Axes object, optional) – Draw the graph in the specified Matplotlib axes.</li>
+<li><strong>alpha</strong> (float) – 标签字体的透明度 (default=1.0)</li>
+<li><strong>edge_labels</strong> (dictionary) – 指定要画的边的标签。dict类，key是边如（x, y)，value是label。只画这个字典中包含的边。默认就画所有边的label</li>
+<li><strong>label_pos</strong> (float) – label在边上的位置 (0=head, 0.5=center, 1=tail)</li>
+<li><strong>font_size</strong> (int) – label字体大小 (default=12)</li>
+<li><strong>font_color</strong> (string) – label字体颜色 (default=’k’ black)</li>
+<li><strong>font_weight</strong> (string) – label字体加粗 (default=’normal’)</li>
+<li><strong>font_family</strong> (string) – label字体 (default=’sans-serif’)</li>
+<li><strong>bbox</strong> (Matplotlib bbox) – Specify text box shape and colors.</li>
+<li><strong>clip_on</strong> (bool) – Turn on clipping at axis boundaries (default=True)</li>
+</ul>
+<p>Return 一个dict，key是边，value是label。</p>
+<p>上面几个函数可以搭配使用。<br>比如整合画点、画边、画边的label三个函数，我们就可以画点、线和线的标签。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nx.draw_networkx_nodes(G, pos=pos, node_size=300, node_color=&apos;blue&apos;, node_shape=&apos;*&apos;, alpha=0.5)</span><br><span class="line">nx.draw_networkx_edges(G, pos=pos, alpha=0.5, edge_color=&apos;red&apos;, width=3, style=&apos;dotted&apos;, font_size=15)</span><br><span class="line">nx.draw_networkx_edge_labels(G, pos=pos, alpha=1, font_size=10)</span><br></pre></td></tr></table></figure>
 
 <p>效果图如下：<br><img src="Figure_7.png" alt="Figure_7" title="figure7"></p>
 <h3 id="画不同种类的点"><a href="#画不同种类的点" class="headerlink" title="画不同种类的点"></a>画不同种类的点</h3><p>有时候一个网络中有多种不同的节点或者不同的边，我们在可视化的时候，想要用不同颜色或者不同形状来表示不同类型的节点；或者我们希望节点的大小也能够根据节点的属性来动态调整。<br>此时，图中所有的点都是一个样子就不够了。我们需要为不同的节点设定不同的样式。</p>
@@ -376,7 +471,7 @@
                     <div class="row toc-container">
                         <div class="col-12">
                             <h6>NAVIGATION</h6>
-                            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#图的创建和清空"><span class="toc-text">图的创建和清空</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#节点操作"><span class="toc-text">节点操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#增加节点"><span class="toc-text">增加节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#访问节点"><span class="toc-text">访问节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除节点"><span class="toc-text">删除节点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边操作"><span class="toc-text">边操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#增加边"><span class="toc-text">增加边</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#访问边"><span class="toc-text">访问边</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除边"><span class="toc-text">删除边</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#属性"><span class="toc-text">属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#图的属性"><span class="toc-text">图的属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#节点属性"><span class="toc-text">节点属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#边属性"><span class="toc-text">边属性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#无向图和有向图之间的转换"><span class="toc-text">无向图和有向图之间的转换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一些常用函数"><span class="toc-text">一些常用函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#画图"><span class="toc-text">画图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一些画图属性参数"><span class="toc-text">一些画图属性参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#节点布局"><span class="toc-text">节点布局</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#画图函数"><span class="toc-text">画图函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nx-draw-函数"><span class="toc-text">nx.draw()函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nx-draw-networkx-nodes-画点"><span class="toc-text">nx.draw_networkx_nodes() 画点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nx-draw-networkx-edges-画线"><span class="toc-text">nx.draw_networkx_edges() 画线</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#draw-networkx-edge-labels-画线的标签"><span class="toc-text">draw_networkx_edge_labels 画线的标签</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#画不同种类的点"><span class="toc-text">画不同种类的点</span></a></li></ol></li></ol>
+                            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#图的创建和清空"><span class="toc-text">图的创建和清空</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#节点操作"><span class="toc-text">节点操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#增加节点"><span class="toc-text">增加节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#访问节点"><span class="toc-text">访问节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除节点"><span class="toc-text">删除节点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边操作"><span class="toc-text">边操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#增加边"><span class="toc-text">增加边</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#访问边"><span class="toc-text">访问边</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除边"><span class="toc-text">删除边</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#属性"><span class="toc-text">属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#图的属性"><span class="toc-text">图的属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#节点属性"><span class="toc-text">节点属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#边属性"><span class="toc-text">边属性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#无向图和有向图之间的转换"><span class="toc-text">无向图和有向图之间的转换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一些常用函数"><span class="toc-text">一些常用函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#画图"><span class="toc-text">画图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一些画图属性参数"><span class="toc-text">一些画图属性参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#节点布局"><span class="toc-text">节点布局</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#画图函数"><span class="toc-text">画图函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nx-draw-函数"><span class="toc-text">nx.draw()函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nx-draw-networkx"><span class="toc-text">nx.draw_networkx()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nx-draw-networkx-nodes-画点"><span class="toc-text">nx.draw_networkx_nodes() 画点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nx-draw-networkx-labels-画点的labels"><span class="toc-text">nx.draw_networkx_labels() 画点的labels</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nx-draw-networkx-edges-画线"><span class="toc-text">nx.draw_networkx_edges() 画线</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#draw-networkx-edge-labels-画线的标签"><span class="toc-text">draw_networkx_edge_labels 画线的标签</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#画不同种类的点"><span class="toc-text">画不同种类的点</span></a></li></ol></li></ol>
                         </div>
                     </div>
                 </div>
