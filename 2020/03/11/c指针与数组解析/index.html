@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>c指针与数组解析-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">c指针与数组解析</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2020-03-11</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/c语言/">c语言</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><h1 id="c指针与数组"><a href="#c指针与数组" class="headerlink" title="c指针与数组"></a>c指针与数组</h1><h2 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h2><p>首先，指针是一个变量，与一般变量的不同之处在于，指针的值保存的是一个地址。<br>其次，指针作为一个变量，他自己也有一个保存的地址。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *ptr;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%x %x"</span>, &amp;ptr, ptr);</span><br></pre></td></tr></table></figure>
+
+<p>输出为<code>23fd68 407a20</code>，分别是指针变量ptr的地址和ptr指向的地址。因为ptr没有初始化，因此407a20这个值是没有意义的，指向内存中随机一块未知的地址。如果访问或者修改该地址中的内容的话程序会崩溃。这就是所谓的“野指针”。</p>
+<p>符号*可以看做是对指针变量的一种操作，即读取出指针变量中保存的地址，然后读取该地址中的数据。相当于读了两次地址。</p>
+<h2 id="指针的类型"><a href="#指针的类型" class="headerlink" title="指针的类型"></a>指针的类型</h2><p>这个概念很容易搞混。<br>首先明确，指针中保存的是一个地址。无论是int型指针还是double型指针还是任意其他类型的指针，其中保存的都是一个地址，也就是说其大小是固定的，这个大小与机器本身有关。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *iptr;</span><br><span class="line"><span class="keyword">double</span> *dptr;</span><br><span class="line"><span class="keyword">char</span> *cptr;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d %d %d"</span>, <span class="keyword">sizeof</span>(iptr), <span class="keyword">sizeof</span>(dptr), <span class="keyword">sizeof</span>(cptr));</span><br></pre></td></tr></table></figure>
+
+<p>输出为<code>8 8 8</code>。即无论什么类型的指针，大小都是8个字节。也就是一个地址的大小。<br>所以指针本身也可以看做是一种数据类型，是一种占8个字节的数据类型，用来保存地址。（我们姑且叫它“指针类型”）。</p>
+<p>而指针所指向的数据的类型，比如int\<em>类型的指针指向的数据类型是int型，double\</em>类型的指针指向的数据类型是double型。这是指针所指向的数据的类型。<br>这两个概念先搞清楚，再接下来后面的分析。</p>
+<h2 id="一维数据与指针"><a href="#一维数据与指针" class="headerlink" title="一维数据与指针"></a>一维数据与指针</h2><p>举个一维数组的例子：<br>我们在使用数组时，经常会如下使用：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">//方法一：</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> a[N] = &#123;<span class="number">0</span>, <span class="number">1</span>&#125;;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d "</span>, a[i]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//方法二：</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> a[N] = &#123;<span class="number">0</span>, <span class="number">1</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> *aptr = a;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d "</span>, aptr[i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述两种方法输出均为<code>0 1</code> 。</p>
+<p>C语言的规定，数组名=指向数组首元素的指针。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> a[N] = &#123;<span class="number">0</span>, <span class="number">1</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> *aptr = a;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%x %x\n"</span>,a, aptr);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d %d\n"</span>, *a, *aptr);</span><br><span class="line"></span><br><span class="line"><span class="comment">//输出</span></span><br><span class="line"><span class="number">23f</span>d60 <span class="number">23f</span>d60</span><br><span class="line"><span class="number">0</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，a与aptr指向同一块地址。用\*号取其中的值都是0。<br>由于数组名=指向数组首元素的地址，那么数组名和指针可以灵活的使用，例如，下面几种数组访问方式等价：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> a[N] = &#123;<span class="number">0</span>, <span class="number">1</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> *aptr = a;</span><br><span class="line"><span class="comment">//例如 要访问数组中下标为1的元素</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d %d %d "</span>,a[<span class="number">1</span>], *(a+<span class="number">1</span>), *(aptr+<span class="number">1</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">//输出为1 1 1</span></span><br></pre></td></tr></table></figure>
+
+<p>这里我们使用 指针+偏移量 的方法来访问数组中的元素，其内在原理是，根据指针所指向的地址以及元素在数组中的位置，计算出元素的地址，然后有了元素的地址，就可以通过\*运算符来取得它的值。<br>例如我们查看一下数组中元素的地址：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> a[N] = &#123;<span class="number">0</span>, <span class="number">1</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> *aptr = a;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d "</span>, &amp;a[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出</span></span><br><span class="line"><span class="number">2358624</span> <span class="number">2358628</span></span><br></pre></td></tr></table></figure>
+
+<p>int型数组中两个元素的地址差4，正好是int型数据的大小。</p>
+<p>而我们在用指针寻址时，使用的是<code>aptr+1</code>而不是<code>aptr+4</code>。这里就涉及到了前面所说的指针所指向的数据类型。因为这里指针所指向的数据类型为int，因此在对该指针进行加减操作（比如+1 或 -1）时，是以指针所指向的数据类型的大小为移动单位的，这样比较符合直观感觉，因为我们要对数据存取，肯定不希望得到的数据是不完整的。<br>所以上面地址的实际计算过程为<br><code>aptr + 1 * sizeof(int)</code><br>因此<code>aptr + 1</code>就指向了下一个元素的地址。</p>
+<p>总结来说，<br><strong>如果a是数组名，a+1则表示首地址+sizeof(元素类型)。<br>如果a是指针，a+1表示a指向的地址+sizeof(指针所指元素类型)。</strong></p>
+<h2 id="指针数组与数组指针"><a href="#指针数组与数组指针" class="headerlink" title="指针数组与数组指针"></a>指针数组与数组指针</h2><p>在了解下面的内容之前，有必要先明确一下这两个概念。<br>首先，指针数组 归根结底是一个数组。与普通数组的区别在于，该数组内存储的不是int型整数也不是double型浮点数，而是指针。<br>例如我有10个指针，构成一个长度为10的数组，<code>int *iptr[10]</code>定义了一个长度为10的指针数组。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *iptr[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d "</span>, &amp;iptr[i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出：<br><code>2358544 2358552 2358560 2358568 2358576 2358584 2358592 2358600 2358608 2358616</code><br>我们输出每个元素的地址，可以看到，每个指针之间地址偏移差8个字节。很明显不是int型的4个字节。说明该数组中的每个元素不是int型，而是指针类型。</p>
+<p>数组指针，归根结底是一个指针。只不过该指针指向的是一个数组，而不是数组中的元素。<code>int (*iptr)[2];</code>定义了一个数组指针iptr，该指针指向长度为2的数组。此时iptr的类型为int (\*)[2]。<br>（注意，这里已经定义了该指针指向长度为2的数组，因此该指针只能指向长度为2的数组，不能指向长度为3或者4或者其他任意长度的数组！）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> a[N] = &#123;<span class="number">0</span>, <span class="number">1</span>&#125;;  <span class="comment">//定义一个长度为2的数组</span></span><br><span class="line"><span class="keyword">int</span> (*iptr)[<span class="number">2</span>]=&amp;a;   <span class="comment">//定义一个数组指针，并让他指向数组a。（a的长度为2，因此iptr可以指向a）</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%x %x\n"</span>, iptr, a);  <span class="comment">//打印 数组指针iptr 和 a指向的地址</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%x %x\n"</span>, iptr+<span class="number">1</span>, a+<span class="number">1</span>);  <span class="comment">//指针位置分别+1</span></span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<blockquote>
+<p>23fd60 23fd60<br>23fd68 23fd64</p>
+</blockquote>
+<p>可以看到一开始iptr和a指向的地址相同，都是数组的首元素的地址。但是这里+1操作之后，地址却不一样了，数组名a+1之后，地址增加了4字节，与int型相符，指向了数组a中的元素1。<br>而数组指针iptr+1之后，地址增加了8字节。如我们前面所说，指针加减操作的单位，是指针所指向元素的大小。这里是一个指向长度为2的int型数组的指针，所以+1实际上是地址加sizeof(int [2])，也就是加上长度为2的int型数组的大小。而int型占4个字节，长度为2则总共8个字节。因此，iptr+1实际上地址加了8字节。<br>作为验证，我们尝试一下如下代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">3</span>;  <span class="comment">//将数组长度改为3</span></span><br><span class="line"><span class="keyword">int</span> a[N] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;  <span class="comment">//长度为3的int型数组</span></span><br><span class="line"><span class="keyword">int</span> (*iptr)[<span class="number">3</span>]=&amp;a;  <span class="comment">//定义一个数组指针，并指向数组a</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%x %x\n"</span>, iptr, a);  <span class="comment">//输出数组指针iptr和a指向的地址</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%x %x\n"</span>, iptr+<span class="number">1</span>, a+<span class="number">1</span>);  <span class="comment">//指针位置分别+1</span></span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<blockquote>
+<p>23fd50 23fd50<br>23fd5c 23fd54</p>
+</blockquote>
+<p>可以看到，这里a+1地址仍然增加了4字节，而iptr+1地址增加了12字节（即sizeof(int) \* 3）。</p>
+<p>此外，如下代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[<span class="number">2</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%x %x\n"</span>, a, &amp;a);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%x %x\n"</span>, a+<span class="number">1</span>, &amp;a+<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<p>输出为</p>
+<blockquote>
+<p>23fd70 23fd70<br>23fd74 23fd78</p>
+</blockquote>
+<p>a是数组名，等于指向数组首元素地址的指针，那么&amp;a不应该是保存指针变量a的地址吗？这里输出为什么和a的地址相同？<br><strong>其实 数组名=指向数组首元素的指针这个等式其实并不是完全相等。<br>更准确的应该是：数组名=数组首元素地址常量。</strong><br>也就是说，其实数组名就是一个地址常量，就是该数组首元素的地址。正因为是个常量，因此数组名是没有办法++或–的，当然也没办法取地址。我们在用数组名当做指针访问数组时，其实就是对地址做运算，<br>比如<code>a+1</code>就是地址常量a + 1 \* sizeof(类型)，得到了要访问的元素的地址之后，就可以通过\*号来访问。<br>既然常量不能取地址，那上面的代码为什么可以对a取地址，而且结果和数组a的首地址相同？<br>注意到<code>a+1</code>和<code>&amp;a+1</code>的输出不同，<code>a+1</code>增加了4（一个int），而<code>&amp;a+1</code>增加了8（整个数组的大小）。也就是说，虽然<code>a+1</code>和<code>&amp;a+1</code>指向的都是数组a的首地址，但是意义已经不一样了。更确切来说，<code>a+1</code>指针所指向的类型是int，<code>&amp;a+1</code>则是一个数组指针，指向长度为2的int型数组的指针。<br>所以说<code>&amp;a</code>中的a指的已经不是数组名a了，而是整个数组，就如同我们使用<code>sizeof(a)</code>输出的是整个数组的大小一样。<code>&amp;a</code>实际是取整个数组的地址，自然就是数组的首地址了。</p>
+<h2 id="指针与二维数组"><a href="#指针与二维数组" class="headerlink" title="指针与二维数组"></a>指针与二维数组</h2><blockquote>
+<p>“既然一维数组和指针在一定程度上可以混合使用,那么要是访问二维数组就可以用二维指针来访问咯。”</p>
+</blockquote>
+<p>我在很长一段时间里都对上面这句话深信不疑。然后每次写二维数组，编译，满页的error。。。。</p>
+<p>前面说过，C语言中，数组名=指向数组首元素的指针。这在一维数组中是没有问题的。那么在二维数组中，还是否成立呢？我们做实验来验证一下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">double</span> a[N][N] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;;</span><br><span class="line"><span class="comment">// 输出二维数组中各个元素的地址</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;j++)&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%x "</span>, &amp;a[i][j]);	<span class="comment">//输出 23fd50 23fd58 23fd60 23fd68 </span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"\n%x %x %x\n"</span>, a, a+<span class="number">1</span>, a[<span class="number">0</span>]+<span class="number">1</span>);  <span class="comment">//输出 23fd50 23fd60 23fd58</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, <span class="keyword">sizeof</span>(a), <span class="keyword">sizeof</span>(a[<span class="number">0</span>]), <span class="keyword">sizeof</span>(a[<span class="number">0</span>][<span class="number">0</span>]));  <span class="comment">//输出 32 16 8</span></span><br></pre></td></tr></table></figure>
+
+<p>首先，二维数组各个元素的地址如下：<br><code>23fd50 23fd58 23fd60 23fd68</code></p>
+<ul>
+<li>可以看出元素仍然是顺序排列的，和一维数组的存储顺序相同。</li>
+<li>数组名a指向的地址仍是数组首元素的地址23fd50。但是a+1地址增加了16字节，也就是说，a可以看做是一个数组指针，指向长度为2的double型数组（double (\*)[2] 类型）。</li>
+<li>a[0]就是double型数组的首元素地址，a[0]+1就指向下一个double数值a[0][1]的地址。并且虽然没有a[0][2]，但是a[0]+2却可以指向a[1][0]。</li>
+<li>sizeof(a), sizeof(a[0]), sizeof(a[0][0])分别为32 16 8。</li>
+</ul>
+<p><img src="%E6%8C%87%E9%92%88.png" alt="指针.png"></p>
+<p>这样一来，思考一下，如果我们用二维数组的数组名a来访问数组，该怎么访问呢？</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> col=<span class="number">2</span>, row=<span class="number">2</span>;  </span><br><span class="line"><span class="keyword">double</span> a[row][col] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;;  <span class="comment">//定义2行2列的二维数组</span></span><br><span class="line"><span class="comment">//要访问 a[i][j]</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%f\n"</span>, *((<span class="keyword">double</span>*)a + row*i + j));  <span class="comment">//先将a转为double型的指针，而非double (\*)[2]型的数组指针。这样+1才能保证地址增加8而不是16。然后按行列计算出目标元素的地址即可。</span></span><br></pre></td></tr></table></figure>
+
+<p>由上面的讨论可知，<br>一维数组a的数组名可以看做一个指针。<br>二维数组a的数组名实际上可以看做一个数组指针，因此用指针来访问二维数组如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> col=<span class="number">2</span>, row=<span class="number">2</span>;</span><br><span class="line"><span class="keyword">double</span> a[row][col] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;;  <span class="comment">//定义2行2列的二维数组</span></span><br><span class="line"><span class="keyword">double</span> (*p)[col] = a;  <span class="comment">//定义一个数组指针，指向a；注意这里数组指针必须要指定第二维的长度。因为一个数组指针只能指向定长的数组。这也是为什么二维数组初始化时可以忽略第一维度，而不能忽略第二维度。</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"\n%f %f\n"</span>,p[<span class="number">0</span>][<span class="number">1</span>], p[<span class="number">1</span>][<span class="number">1</span>]);  <span class="comment">//然后就可以</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"\n%x %x\n"</span>,p, p+<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意上面数组指针必须要指定第二维的长度。因为一个数组指针只能指向定长的数组。这也是为什么二维数组初始化时可以忽略第一维度，而不能忽略第二维度。</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> col=<span class="number">2</span>, row=<span class="number">2</span>;</span><br><span class="line"><span class="keyword">double</span> a[][col] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;;  <span class="comment">//正确；二维数组定义时可以忽略第一维度</span></span><br><span class="line"><span class="comment">//double a[row][] = &#123;1, 2, 3, 4&#125;;  //错误；不能忽略第二维度；</span></span><br><span class="line"><span class="comment">//double a[][] = &#123;1, 2, 3, 4&#125;;  //错误；不能忽略第二维度；</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="体会"><a href="#体会" class="headerlink" title="体会"></a>体会</h2><p>现在大概了解了为啥C中的指针功能如此强大。<br>总结来说指针功能强大的原因就一句话，只要能找到元素在内存中的位置，就可以用指针找到他，进而读取或修改。<br>传说中的<strong>指哪打哪</strong>。</p>
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/03/04/名人关系图鉴-小世界理论/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">名人关系图鉴-小世界理论
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/03/04/名人关系图鉴-小世界理论/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">名人关系图鉴-小世界理论
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#c指针与数组"><span class="toc-text">c指针与数组</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#指针"><span class="toc-text">指针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#指针的类型"><span class="toc-text">指针的类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一维数据与指针"><span class="toc-text">一维数据与指针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#指针数组与数组指针"><span class="toc-text">指针数组与数组指针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#指针与二维数组"><span class="toc-text">指针与二维数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#体会"><span class="toc-text">体会</span></a></li></ol></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>
