@@ -162,7 +162,7 @@
 <h3 id="optimizer基本方法"><a href="#optimizer基本方法" class="headerlink" title="optimizer基本方法"></a>optimizer基本方法</h3><ul>
 <li><strong>add_param_group(param_group)：</strong> 为optimizer的param_groups增加一个参数组。这在微调预先训练的网络时非常有用，因为冻结层可以训练并随着训练的进行添加到优化器中。</li>
 <li><strong>load_state_dict(state_dict)：</strong> 加载optimizer state。参数必须是optimizer.state_dict()返回的对象。</li>
-<li><strong>tate_dict()：</strong> 返回一个dict，包含optimizer的状态：state和param_groups。</li>
+<li><strong>state_dict()：</strong> 返回一个dict，包含optimizer的状态：state和param_groups。</li>
 <li><strong>step(closure)：</strong> 执行一次参数更新过程。</li>
 <li><strong>zero_grad()：</strong> 清除所有已经更新的参数的梯度。</li>
 </ul>
@@ -171,7 +171,7 @@
 
 <p><strong><code>model.parameters()</code>返回网络model的全部参数。</strong><br>将model的全部参数传入Adam中构造出一个Adam优化器，并设置 learning rate=0.1。因此该 Adam 优化器的 param_groups 维护的就是模型 model 的全部参数，并且学习率为0.1。这样在调用<code>optimizer_Adam.step()</code>时，就会对model的全部参数进行更新。</p>
 <p>Optimizer的param_groups是一个list，其中的每个元素都是一组独立的参数，以dict的方式存储。结构如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-param_groups</span><br><span class="line">	-0(dict)  # 第一组参数</span><br><span class="line">		params:  # 维护要更新的参数</span><br><span class="line">		lr:  # 该组参数的学习率</span><br><span class="line">		betas:</span><br><span class="line">		eps:  # 该组参数的学习率最小值</span><br><span class="line">		weight_decay:  # 该组参数的权重衰减系数</span><br><span class="line">		amsgrad:  </span><br><span class="line">	-1(dict)  # 第二组参数</span><br><span class="line">	-2(dict)  # 第三组参数</span><br><span class="line">	...</span><br><span class="line">	...</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-param_groups</span><br><span class="line">    -0(dict)  # 第一组参数</span><br><span class="line">        params:  # 维护要更新的参数</span><br><span class="line">        lr:  # 该组参数的学习率</span><br><span class="line">        betas:</span><br><span class="line">        eps:  # 该组参数的学习率最小值</span><br><span class="line">        weight_decay:  # 该组参数的权重衰减系数</span><br><span class="line">        amsgrad:  </span><br><span class="line">    -1(dict)  # 第二组参数</span><br><span class="line">    -2(dict)  # 第三组参数</span><br><span class="line">    ...</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
 
 <p>这样可以实现很多灵活的操作，比如</p>
 <h4 id="只训练模型的一部分参数"><a href="#只训练模型的一部分参数" class="headerlink" title="只训练模型的一部分参数"></a>只训练模型的一部分参数</h4><p>例如，只想训练上面的model中的layer参数，而保持layer2的参数不动。可以如下设置Optimizer：</p>
