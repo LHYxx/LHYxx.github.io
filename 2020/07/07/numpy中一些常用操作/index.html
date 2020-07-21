@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>numpy中一些常用操作-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">numpy中一些常用操作</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2020-07-07</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/numpy/">numpy</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><h1 id="numpy常用函数总结"><a href="#numpy常用函数总结" class="headerlink" title="numpy常用函数总结"></a>numpy常用函数总结</h1><p>好记性不如烂笔头系列之——numpy常用函数</p>
+<h2 id="读取数据"><a href="#读取数据" class="headerlink" title="读取数据"></a>读取数据</h2><ul>
+<li><code>numpy.genfromtxt</code><br>numpy.genfromtxt(fname, dtype=’float’, comments=’#’, delimiter=None, skip_header=0, skip_footer=0)<ul>
+<li>fname: 文件路径</li>
+<li>dtype: 最后得到的array中元素的类型</li>
+<li>comments: 注释符号，读数据的时候会跳过注释部分</li>
+<li>delimiter: str, int, or sequence, optional，分隔符，如果是None则任何空白符都会被作为分隔符。可以指定str类型的分隔符；也可以指定int数字表示每个元素的宽度；也可以指定一个数字序列，指定每个元素的宽度</li>
+<li>skip_header: int, optional。跳过前多少行</li>
+<li>skip_footer: int, optional。跳过后多少行</li>
+</ul>
+</li>
+</ul>
+<h2 id="写出数据"><a href="#写出数据" class="headerlink" title="写出数据"></a>写出数据</h2><ul>
+<li><code>numpy.savetxt</code><br>numpy.savetxt(fname, X, fmt=’%.18e’, delimiter=’ ‘, newline=’\n’, header=’’, footer=’’, comments=’# ‘, encoding=None)<ul>
+<li>fname: 文件路径</li>
+<li>X: 1D or 2D数组。要保存的数据。</li>
+<li>fmt: 数据保存格式</li>
+<li>delimiter: 分隔符</li>
+<li>newline: 换行符</li>
+<li>header: 写在文件开头部分</li>
+<li>footer: 写在文件末尾部分</li>
+<li>comments: 注释符号</li>
+<li>encoding: 输出文件的编码方式。通常为 ‘bytes’ or ‘latin1’ </li>
+</ul>
+</li>
+</ul>
+<h2 id="flatten-函数"><a href="#flatten-函数" class="headerlink" title="flatten()函数"></a>flatten()函数</h2><p>flatten是<strong>numpy.ndarray.flatten</strong>的一个函数，即返回一个一维数组。<br>flatten只能适用于numpy对象，即ndarray或者mat，普通的list列表不适用！<br><code>a.flatten()</code>：a是个数组，a.flatten()就是把a降到一维，默认是按行的方向降 。<br><code>a.flatten()</code>.A：a是个矩阵，降维后还是个矩阵，只是变成了（1xN)的矩阵。<br>numpy中mat类型调用.A（等效于矩阵.getA()）返回ndarray类型。具体看下面的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> numpy <span class="keyword">import</span> *</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a=array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>],[<span class="number">5</span>,<span class="number">6</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">    [<span class="number">3</span>, <span class="number">4</span>],</span><br><span class="line">    [<span class="number">5</span>, <span class="number">6</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.flatten() <span class="comment">#默认按行的方向降维</span></span><br><span class="line">array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.flatten(<span class="string">'F'</span>) <span class="comment">#按列降维</span></span><br><span class="line">array([<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>]) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.flatten(<span class="string">'A'</span>) <span class="comment">#按行降维</span></span><br><span class="line">array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = [[1, 2, 3], [4, 5, 6]]</span><br><span class="line">b = np.mat(a).flatten()</span><br><span class="line">print(b)  # [[1 2 3 4 5 6]]</span><br><span class="line">print(type(b))  # &lt;class &apos;numpy.matrixlib.defmatrix.matrix&apos;&gt;</span><br><span class="line">print(type(b.A))  # &lt;class &apos;numpy.ndarray&apos;&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="矩阵乘法"><a href="#矩阵乘法" class="headerlink" title="矩阵乘法"></a>矩阵乘法</h2><ul>
+<li><p>对于1维ndarray类型</p>
+<ul>
+<li><code>np.dot(a, b)</code>计算内积</li>
+<li><code>np.multiply(a, b)</code>计算element-wise乘积</li>
+<li>* 计算element-wise乘积</li>
+</ul>
+</li>
+<li><p>对于2维ndarray类型</p>
+<ul>
+<li><code>np.dot(a, b)</code>计算矩阵乘法</li>
+<li><code>np.multiply(a, b)</code>计算element-wise乘积</li>
+<li>* 计算element-wise乘积</li>
+</ul>
+</li>
+<li><p>对于numpy的mat类型</p>
+<ul>
+<li><code>np.dot(A, B)</code>计算矩阵乘法</li>
+<li><code>np.multiply(A, B)</code>计算element-wise乘积</li>
+<li>* 计算矩阵乘法</li>
+</ul>
+</li>
+</ul>
+<h2 id="np-where"><a href="#np-where" class="headerlink" title="np.where"></a>np.where</h2><p>np.where 有两种用法</p>
+<h3 id="用法1：np-where-condition-x-y"><a href="#用法1：np-where-condition-x-y" class="headerlink" title="用法1：np.where(condition, x, y)"></a>用法1：np.where(condition, x, y)</h3><p>满足条件(condition)，输出x，不满足输出y。<br>如果condition是一个一维数组，则相当于<code>[xv if c else yv for (c,xv,yv) in zip(condition,x,y)]</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>aa = np.arange(<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where(aa,<span class="number">1</span>,<span class="number">-1</span>)</span><br><span class="line">array([<span class="number">-1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>])  <span class="comment"># 0为False，所以第一个输出-1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where(aa &gt; <span class="number">5</span>,<span class="number">1</span>,<span class="number">-1</span>)</span><br><span class="line">array([<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where([[<span class="literal">True</span>,<span class="literal">False</span>], [<span class="literal">True</span>,<span class="literal">True</span>]],    <span class="comment"># 官网上的例子</span></span><br><span class="line">			 [[<span class="number">1</span>,<span class="number">2</span>], [<span class="number">3</span>,<span class="number">4</span>]],</span><br><span class="line">             [[<span class="number">9</span>,<span class="number">8</span>], [<span class="number">7</span>,<span class="number">6</span>]])</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">8</span>],</span><br><span class="line">	   [<span class="number">3</span>, <span class="number">4</span>]])</span><br></pre></td></tr></table></figure>
+
+<h3 id="用法2：np-where-condition"><a href="#用法2：np-where-condition" class="headerlink" title="用法2：np.where(condition)"></a>用法2：np.where(condition)</h3><p>只有条件 (condition)，没有x和y，则输出满足条件 (即非0) 元素的坐标<br>这里的坐标以tuple的形式给出，通常原数组有多少维，输出的tuple中就包含几个数组，分别对应符合条件元素的各维坐标。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = np.array([<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">10</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where(a &gt; <span class="number">5</span>)				<span class="comment"># 返回索引</span></span><br><span class="line">(array([<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]),)   </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[np.where(a &gt; <span class="number">5</span>)]  			<span class="comment"># 等价于 a[a&gt;5]</span></span><br><span class="line">array([ <span class="number">6</span>,  <span class="number">8</span>, <span class="number">10</span>])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = np.array([[<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where(a)</span><br><span class="line">(array([<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>], dtype=int64), array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">0</span>], dtype=int64))</span><br><span class="line"><span class="comment"># 因为a是2为数组，所以输出两个数组，每个数组代表a中非零元素在一个维度下的坐标。例如这里坐标分别为(0,1)(0,2)(1,2)(2,0)</span></span><br></pre></td></tr></table></figure>
+
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/07/09/pytorch中一些常用操作/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            pytorch中一些常用操作</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/06/20/LeetCode记录-1/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">LeetCode记录-1
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/07/09/pytorch中一些常用操作/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            pytorch中一些常用操作</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/06/20/LeetCode记录-1/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">LeetCode记录-1
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#numpy常用函数总结"><span class="toc-text">numpy常用函数总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#读取数据"><span class="toc-text">读取数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#写出数据"><span class="toc-text">写出数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flatten-函数"><span class="toc-text">flatten()函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#矩阵乘法"><span class="toc-text">矩阵乘法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#np-where"><span class="toc-text">np.where</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#用法1：np-where-condition-x-y"><span class="toc-text">用法1：np.where(condition, x, y)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用法2：np-where-condition"><span class="toc-text">用法2：np.where(condition)</span></a></li></ol></li></ol></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>

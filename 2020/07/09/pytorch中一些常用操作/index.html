@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>pytorch中一些常用操作-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">pytorch中一些常用操作</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2020-07-09</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/pytorch/">pytorch</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><h1 id="pytorch常用操作"><a href="#pytorch常用操作" class="headerlink" title="pytorch常用操作"></a>pytorch常用操作</h1><p>好记性不如烂笔头系列之——pytorch常用操作</p>
+<h2 id="稀疏矩阵的存储"><a href="#稀疏矩阵的存储" class="headerlink" title="稀疏矩阵的存储"></a>稀疏矩阵的存储</h2><h3 id="coo-matrix"><a href="#coo-matrix" class="headerlink" title="coo_matrix"></a>coo_matrix</h3><p><strong>COOrdinate format matrix</strong><br>需要使用<strong>3个等长的数组</strong>。values数组存放矩阵中的非0元素，row indices存放非0元素的行坐标，column indices存放非0元素的列坐标。</p>
+<ul>
+<li>优点：<ul>
+<li>容易构造</li>
+<li>可以快速地转换成其他形式的稀疏矩阵</li>
+<li>支持相同的(row,col)坐标上存放多个值</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>构建完成后不允许再插入或删除元素</li>
+<li>不能直接进行科学计算和切片操作</li>
+</ul>
+</li>
+<li>适用场景：<ul>
+<li>加载数据文件时使用coo_matrix快速构建稀疏矩阵，然后调用to_csr()、to_csc()、to_dense()把它转换成CSR或稠密矩阵<br><img src="coo_matrix.jpg" alt="coo_matrix"></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>row  = np.array([<span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">0</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>col  = np.array([<span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>data = np.array([<span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>coo_matrix((data, (row, col)), shape=(<span class="number">4</span>, <span class="number">4</span>)).toarray()</span><br><span class="line">array([[<span class="number">4</span>, <span class="number">0</span>, <span class="number">9</span>, <span class="number">0</span>],</span><br><span class="line">       [<span class="number">0</span>, <span class="number">7</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">       [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">       [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">5</span>]])</span><br></pre></td></tr></table></figure>
+
+<h3 id="csc-matrix"><a href="#csc-matrix" class="headerlink" title="csc_matrix"></a>csc_matrix</h3><p><strong>Compressed Sparse Column matrix</strong><br>class scipy.sparse.csc_matrix(arg1, shape=None, dtype=None, copy=False)<br>需要三个向量来存储。<br>indptr长度为矩阵列数+1。用来指示矩阵每一列的非零元素的下标范围。<br>indices长度等于矩阵中非零元素个数。保存矩阵中每一列非零元素的所在行下标。<br>data长度等于矩阵中非零元素个数，用来保存所有非零元素。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> scipy.sparse <span class="keyword">as</span> sp</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>indptr = np.array([<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">6</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>indices = np.array([<span class="number">0</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>data = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sp.csc_matrix((data, indices, indptr), shape=(<span class="number">3</span>, <span class="number">3</span>)).toarray()</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">0</span>, <span class="number">4</span>],</span><br><span class="line">       [<span class="number">0</span>, <span class="number">0</span>, <span class="number">5</span>],</span><br><span class="line">       [<span class="number">2</span>, <span class="number">3</span>, <span class="number">6</span>]])</span><br><span class="line"><span class="comment"># indptr可以表示为[0,2),[2,3),[3,6): 分别表示三列元素的下标范围，然后根据这个范围在indices中定位，</span></span><br><span class="line"><span class="comment"># 例如第一列范围为[0,2),对应indices中的下标为0,1的两个元素也就是0和2，说明第一列的两个非零元素分别位于第0行和第2行，对应data中的前两个元素1,2。</span></span><br><span class="line"><span class="comment"># 同理，第二列范围为[2,3),对应indices中的下标为2的元素也就是2，说明第二列中非零元素位于第2行，对应data中的第三个元素3。</span></span><br><span class="line"><span class="comment"># 以此类推</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="csr-matrix"><a href="#csr-matrix" class="headerlink" title="csr_matrix"></a>csr_matrix</h3><p><strong>Compressed Sparse Row matrix</strong><br>与csc_matrix类似，只不过行列颠倒过来。</p>
+<h3 id="pytorch中稀疏矩阵"><a href="#pytorch中稀疏矩阵" class="headerlink" title="pytorch中稀疏矩阵"></a>pytorch中稀疏矩阵</h3><p>pytorch中也支持COO（rdinate）格式的稀疏张量，可以有效地存储和处理大多数元素为零的张量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>index = torch.LongTensor([[<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                          [<span class="number">2</span>, <span class="number">0</span>, <span class="number">2</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>value = torch.FloatTensor([<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>torch.sparse.FloatTensor(index, value, torch.Size([<span class="number">2</span>,<span class="number">3</span>])).to_dense()</span><br><span class="line"> <span class="number">0</span>  <span class="number">0</span>  <span class="number">3</span></span><br><span class="line"> <span class="number">4</span>  <span class="number">0</span>  <span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<p><code>to_dense()</code>函数可以转换为稠密表示<br>注意index是一个2D张量，每个维度分别表示非零值在每个维度下的坐标。第二个维度的向量的长度就等于非零元素的个数。<br>下面方法可以创建一个空的稀疏矩阵：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.sparse.FloatTensor(<span class="number">2</span>, <span class="number">3</span>)  <span class="comment"># 构造一个2x3的稀疏矩阵</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="scipy-sparse中的稀疏矩阵"><a href="#scipy-sparse中的稀疏矩阵" class="headerlink" title="scipy.sparse中的稀疏矩阵"></a>scipy.sparse中的稀疏矩阵</h3><h4 id="稀疏矩阵构造方式"><a href="#稀疏矩阵构造方式" class="headerlink" title="稀疏矩阵构造方式"></a>稀疏矩阵构造方式</h4><p>scipy.sparse中有五种构造稀疏矩阵的方式</p>
+<ol>
+<li><p>用一个稠密的矩阵D构造 csr_matrix(D)</p>
+</li>
+<li><p>用另一个稀疏矩阵S构造 csr_matrix(S)</p>
+</li>
+<li><p>csr_matrix((M, N), [dtype])<br>构造一个空的MxN稀疏矩阵。</p>
+</li>
+<li><p>csr_matrix((data, (row_ind, col_ind)), [shape=(M, N)])<br>构造一个MxN矩阵，row_ind为矩阵中非零值的行下标列表，col_ind为矩阵中非零值得列下标列表。即满足 a[row_ind[k], col_ind[k]] = data[k]</p>
+</li>
+<li><p>csr_matrix((data, indices, indptr), [shape=(M, N)])<br>用标准的csc或csr表示构造稀疏矩阵。</p>
+</li>
+</ol>
+<h4 id="用法示例"><a href="#用法示例" class="headerlink" title="用法示例"></a>用法示例</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scipy.sparse <span class="keyword">as</span> sp</span><br><span class="line">m = np.array([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]])</span><br><span class="line"><span class="comment"># 将稠密矩阵m转化为稀疏表示</span></span><br><span class="line">m_csr = sp.csr_matrix(m)</span><br><span class="line">m_csc = sp.csc_matrix(m)</span><br><span class="line">m_coo = sp.coo_matrix(m)</span><br></pre></td></tr></table></figure>
+
+<h4 id="scipy-sparse中其他一些常用稀疏矩阵操作"><a href="#scipy-sparse中其他一些常用稀疏矩阵操作" class="headerlink" title="scipy.sparse中其他一些常用稀疏矩阵操作"></a>scipy.sparse中其他一些常用稀疏矩阵操作</h4><ol>
+<li><p>sp.diags()<br>输入一个数组，构造一个以该数组中元素为对角元素的对角阵。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print(sp.diags([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]))</span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"><span class="comment"># (0, 0)	1.0</span></span><br><span class="line"><span class="comment"># (1, 1)	2.0</span></span><br><span class="line"><span class="comment"># (2, 2)	3.0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>稀疏矩阵运算<br>表示成稀疏形式的矩阵可以直接进行矩阵加、减、乘法、转置运算。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">m = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>]])</span><br><span class="line">m_csr = sp.csr_matrix(m)</span><br><span class="line"><span class="comment"># 矩阵加法</span></span><br><span class="line">print(m_csr + m_csr)</span><br><span class="line"><span class="comment"># 矩阵减法</span></span><br><span class="line">print(m_csr - m_csr)</span><br><span class="line"><span class="comment">#矩阵转置</span></span><br><span class="line">m_csr_T = m_csr.transpose()</span><br><span class="line"><span class="comment"># 矩阵乘法</span></span><br><span class="line">print(m_csr * m_csr_T)</span><br><span class="line">print(m_csr.dot(m_csr_T))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>不同表示之间相互切换</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">m = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>]])</span><br><span class="line">m_csr = sp.csr_matrix(m)</span><br><span class="line">m_csc = m_csr.tocsc()</span><br><span class="line">m_coo = m_csc.tocoo()</span><br><span class="line">m = m_coo.todense()  <span class="comment"># 稀疏形式转换为稠密形式</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="Pytorch中的各种乘法"><a href="#Pytorch中的各种乘法" class="headerlink" title="Pytorch中的各种乘法"></a>Pytorch中的各种乘法</h2><ul>
+<li><code>torch.dot(a, b)</code>计算两个一维张量的点积，等价于a.dot(b)。（a和b只能是一维张量）</li>
+<li><code>torch.mm(A, B)</code>计算矩阵乘法，不能广播</li>
+<li><code>torch.matmul(a, b)</code><ul>
+<li>a和b都是一维的，则计算点积</li>
+<li>a和b都是二维的，则计算矩阵乘法</li>
+<li>a是一维，b是二维，会将a当做1x2维计算矩阵乘法。矩阵相乘后，将删除前置尺寸。</li>
+<li>a是二维，b是一维，计算矩阵乘法。</li>
+<li>a或b维度大于2时将进行矩阵批乘法运算。非矩阵（即批量）维度可以被广播（因此必须是可广播的）。例如，如果input为（jx1xnxm）张量，而other为（k×m×p）张量，out将是（j×k×n×p）张量。</li>
+</ul>
+</li>
+<li>* 计算element-wise乘积</li>
+</ul>
+<h2 id="permute-flatten-view"><a href="#permute-flatten-view" class="headerlink" title="permute,flatten,view"></a>permute,flatten,view</h2><h3 id="permute"><a href="#permute" class="headerlink" title="permute"></a>permute</h3><p>对张量指定的维度进行转置。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = torch.rand((<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))  <span class="comment"># torch.Size([1, 2, 3, 4])</span></span><br><span class="line">print(a.permute(<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>).shape)  <span class="comment"># torch.Size([4, 3, 2, 1])</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="torch-flatten"><a href="#torch-flatten" class="headerlink" title="torch.flatten"></a>torch.flatten</h3><p>torch中的flatten函数，与numpy中的略有不同。<br>展平一个连续范围的维度<br><code>flatten(input, start_dim=0, end_dim=-1)</code><br>将input张量从维度start_dim到end_dim展开，展成一个维度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = torch.rand((<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">print(a.shape)  <span class="comment"># torch.Size([2, 3, 4])</span></span><br><span class="line">print(a.flatten().shape)  <span class="comment"># torch.Size([24])</span></span><br><span class="line">print(a.flatten(<span class="number">1</span>,<span class="number">2</span>).shape)  <span class="comment"># torch.Size([2, 12])，只展平第1-2维度</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="view"><a href="#view" class="headerlink" title="view"></a>view</h3><p>返回一个有相同数据但大小不同的tensor，可以用来重构tensor的形状，可以理解为相当于numpy中的<code>resize()</code>功能。<br>另外一个tensor必须是连续的<code>contiguous()</code>才能被查看。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = torch.randn(<span class="number">4</span>, <span class="number">4</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.size()</span><br><span class="line">torch.Size([<span class="number">4</span>, <span class="number">4</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>y = x.view(<span class="number">16</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>y.size()</span><br><span class="line">torch.Size([<span class="number">16</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>z = x.view(<span class="number">-1</span>, <span class="number">8</span>)  <span class="comment"># the size -1 is inferred from other dimensions</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>z.size()</span><br><span class="line">torch.Size([<span class="number">2</span>, <span class="number">8</span>])</span><br></pre></td></tr></table></figure>
+
+<h2 id="tensor-repeat"><a href="#tensor-repeat" class="headerlink" title="tensor.repeat()"></a>tensor.repeat()</h2><p>沿着指定的维度复制tensor。<br>输入的维度个数不能小于tensor的维度。<br>举例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a = torch.FloatTensor([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]])</span><br><span class="line">print(a)</span><br><span class="line">print(a.size())</span><br><span class="line">b = a.repeat(<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">print(b)</span><br><span class="line">print(b.size())</span><br></pre></td></tr></table></figure>
+
+<p>输出如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">tensor([[<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>],</span><br><span class="line">        [<span class="number">4.</span>, <span class="number">5.</span>, <span class="number">6.</span>]])</span><br><span class="line">torch.Size([<span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line">tensor([[[<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>, <span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>],</span><br><span class="line">         [<span class="number">4.</span>, <span class="number">5.</span>, <span class="number">6.</span>, <span class="number">4.</span>, <span class="number">5.</span>, <span class="number">6.</span>],</span><br><span class="line">         [<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>, <span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>],</span><br><span class="line">         [<span class="number">4.</span>, <span class="number">5.</span>, <span class="number">6.</span>, <span class="number">4.</span>, <span class="number">5.</span>, <span class="number">6.</span>]],</span><br><span class="line"></span><br><span class="line">        [[<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>, <span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>],</span><br><span class="line">         [<span class="number">4.</span>, <span class="number">5.</span>, <span class="number">6.</span>, <span class="number">4.</span>, <span class="number">5.</span>, <span class="number">6.</span>],</span><br><span class="line">         [<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>, <span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>],</span><br><span class="line">         [<span class="number">4.</span>, <span class="number">5.</span>, <span class="number">6.</span>, <span class="number">4.</span>, <span class="number">5.</span>, <span class="number">6.</span>]]])</span><br><span class="line">torch.Size([<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>])</span><br></pre></td></tr></table></figure>
+
+<h2 id="squeeze与unsqueeze"><a href="#squeeze与unsqueeze" class="headerlink" title="squeeze与unsqueeze"></a>squeeze与unsqueeze</h2><p>用来对张量的维度进行压缩或解压。</p>
+<h3 id="squeeze"><a href="#squeeze" class="headerlink" title="squeeze"></a>squeeze</h3><p>对张量的维度进行压缩，去掉维数为1的维度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 例如a是一个维度为(3,1,3)的张量，下面两种方法等价，将a的维度变为(3,3)。</span></span><br><span class="line">torch.squeeze(a)</span><br><span class="line">a.squeeze()</span><br></pre></td></tr></table></figure>
+
+<p>还可以指定压缩的维度，但要压缩的维度维数必须为1才可以进行压缩。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 例如a是一个维度为(1,2,1,3)的张量，下面两种方法等价，将倒数第二维度压缩，a的维度变为(1,2,3)</span></span><br><span class="line">torch.squeeze(a, <span class="number">-2</span>)</span><br><span class="line">a.squeeze(<span class="number">-2</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="unsqueeze"><a href="#unsqueeze" class="headerlink" title="unsqueeze"></a>unsqueeze</h3><p>与squeeze作用相反，增加张量的维度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">m = torch.rand((<span class="number">3</span>,<span class="number">3</span>))</span><br><span class="line">print(m.shape)  <span class="comment"># (3,3)</span></span><br><span class="line"><span class="comment"># m是一个(3,3)维度的张量，下面两种方法等价，在倒数第二维增加一维</span></span><br><span class="line">print(torch.unsqueeze(m,<span class="number">-2</span>).shape)  <span class="comment"># (3,1,3)</span></span><br><span class="line">print(m.unsqueeze(<span class="number">-2</span>).shape)  <span class="comment"># (3,1,3)</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="torch-where"><a href="#torch-where" class="headerlink" title="torch.where"></a>torch.where</h2><p>输入三个参数，第一个是判断条件，为真则返回地二个参数，为假则返回第三个参数。<br>torch.where的参数必须都是tensor类型。且条件与结果tensor中的元素位置一一对应。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = torch.FloatTensor([[<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>]])</span><br><span class="line">print(torch.where(a==<span class="number">1</span>, torch.full_like(a, <span class="number">1</span>), torch.full_like(a, <span class="number">-1</span>)))</span><br></pre></td></tr></table></figure>
+
+<p>输出如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tensor([[ <span class="number">1.</span>, <span class="number">-1.</span>, <span class="number">-1.</span>],</span><br><span class="line">        [ <span class="number">1.</span>, <span class="number">-1.</span>,  <span class="number">1.</span>]])</span><br></pre></td></tr></table></figure>
+
+<h2 id="nonzero"><a href="#nonzero" class="headerlink" title="nonzero()"></a>nonzero()</h2><p>返回tensor中非零元素的<strong>索引</strong>。如下形式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">t = torch.FloatTensor([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>], [<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>]])</span><br><span class="line">print(t.nonzero())</span><br><span class="line"></span><br><span class="line"><span class="comment">#tensor([[0, 0],</span></span><br><span class="line"><span class="comment">#        [0, 1],</span></span><br><span class="line"><span class="comment">#        [1, 0],</span></span><br><span class="line"><span class="comment">#        [1, 1],</span></span><br><span class="line"><span class="comment">#        [1, 2]])</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="pytorch模型的保存与加载"><a href="#pytorch模型的保存与加载" class="headerlink" title="pytorch模型的保存与加载"></a>pytorch模型的保存与加载</h2><p>模型训练好之后，需要保存模型，以便以后用于推理。保存方法有以下两种：</p>
+<h3 id="保存模型参数"><a href="#保存模型参数" class="headerlink" title="保存模型参数"></a>保存模型参数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 保存, PATH为保存路径</span></span><br><span class="line">torch.save(model.state_dict(), PATH)</span><br><span class="line"><span class="comment"># 加载</span></span><br><span class="line"></span><br><span class="line">model.load_state_dict(torch.load(PATH))</span><br><span class="line">model.eval()  <span class="comment"># 后面用于推理</span></span><br></pre></td></tr></table></figure>
+
+<p>这种方法只保存模型的参数，<code>state_dict</code>函数返回模型的参数字典，也就是将模型的参数字典序列化并保存到PATH中。<br>读取模型的时候，首先需要构建好框架相同的模型（在模型加载参数的时候，会根据字典中的key值来赋予相应的参数，因此需要保证key值的一致）<br>然后使用<code>model.load_state_dict()</code>来将保存的模型的参数赋给当前这个模型，从而恢复到之前保存的模型的状态。</p>
+<h3 id="保存整个模型"><a href="#保存整个模型" class="headerlink" title="保存整个模型"></a>保存整个模型</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 保存</span><br><span class="line">torch.save(model, PATH)</span><br><span class="line"></span><br><span class="line"># 加载</span><br><span class="line">model = torch.load(PATH)</span><br><span class="line">model.eval()</span><br></pre></td></tr></table></figure>
+
+<p>这种方法将整个模型序列化并保存到磁盘。因此加载的时候并不需要提前创建好框架相同的模型，而是直接加载回一整个模型对象。</p>
+<h3 id="一些区别"><a href="#一些区别" class="headerlink" title="一些区别"></a>一些区别</h3><p>两种模型保存方式都可以达到保存模型的目的。好像区别不大，但是在一些特殊的情况下还是有区别的。<br>例如<br>我们预训练了一个模型A，然后想用模型A的参数来初始化模型B的参数（B模型包含A模型的全部或者部分模块），这时就需要使用保存参数的方法，先把模型A的参数读取进来，然后赋给模型B的相应参数。而如果使用的是保存整个模型A的方法，则无法用A的参数来初始化B。<br>因此总体上来说，保存参数的方法相对更加灵活。</p>
+<p>另外还有一种情况是，模型训练尚未完成，需要暂时保存下来，日后再读取进来继续训练。这样的话就需要我们把当前的训练情况完整的保存下来。<br><strong>完整的训练情况包括：</strong></p>
+<ol>
+<li>模型目前的参数<code>model.state_dict()</code></li>
+<li>当前epoch数<code>epoch</code></li>
+<li>优化器的当前状态<code>optimizer.state_dict()</code></li>
+<li>当前损失<code>loss</code></li>
+<li>…<br>通常将这些需要保存的信息以字典的方式保存起来：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 保存</span></span><br><span class="line"><span class="comment"># 已经训练了一部分的model 和 optimizer</span></span><br><span class="line">torch.save(&#123;</span><br><span class="line"><span class="string">'epoch'</span>: epoch,</span><br><span class="line"><span class="string">'model_state_dict'</span>: model.state_dict(),</span><br><span class="line"><span class="string">'optimizer_state_dict'</span>: optimizer.state_dict(),</span><br><span class="line"><span class="string">'loss'</span>: loss,</span><br><span class="line">...</span><br><span class="line">&#125;, PATH)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载</span></span><br><span class="line"><span class="comment"># model 和 optimizer对象都需要提前创建好，且与保存的对象结构相同</span></span><br><span class="line">checkpoint = torch.load(PATH)</span><br><span class="line">model.load_state_dict(checkpoint[<span class="string">'model_state_dict'</span>])</span><br><span class="line">optimizer.load_state_dict(checkpoint[<span class="string">'optimizer_state_dict'</span>])</span><br><span class="line">epoch = checkpoint[<span class="string">'epoch'</span>]</span><br><span class="line">loss = checkpoint[<span class="string">'loss'</span>]</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="跨平台保存与加载"><a href="#跨平台保存与加载" class="headerlink" title="跨平台保存与加载"></a>跨平台保存与加载</h3><p>可能我们在GPU上保存模型，读取模型到CPU；或者相反。<br>保存的时候方法都相同，即</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.save(model.state_dict(), PATH)</span><br></pre></td></tr></table></figure>
+
+<p>但是读取的时候，同设备之间的保存与读取没有问题。<br>当读取不同设备保存的模型时，需要通过<code>load_state_dict()</code>的map_location参数指定将数据读取到哪个设备上。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># GPU上保存的模型，读取到CPU上。</span></span><br><span class="line">device = torch.device(<span class="string">'cpu'</span>)</span><br><span class="line">model.load_state_dict(torch.load(PATH, map_location=device))</span><br><span class="line"></span><br><span class="line"><span class="comment"># CPU上保存的模型，读取到GPU上，有多个GPU的话可以指定GPU编号</span></span><br><span class="line">model.load_state_dict(torch.load(PATH, map_location=<span class="string">"cuda:0"</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 同设备之间的保存与读取(CPU-&gt;CPU, or, GPU-&gt;GPU)</span></span><br><span class="line">model.load_state_dict(torch.load(PATH))</span><br></pre></td></tr></table></figure></article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/07/21/pytorch中Embedding的使用/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            pytorch中Embedding的使用</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/07/07/numpy中一些常用操作/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">numpy中一些常用操作
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/07/21/pytorch中Embedding的使用/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            pytorch中Embedding的使用</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/07/07/numpy中一些常用操作/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">numpy中一些常用操作
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pytorch常用操作"><span class="toc-text">pytorch常用操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#稀疏矩阵的存储"><span class="toc-text">稀疏矩阵的存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#coo-matrix"><span class="toc-text">coo_matrix</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#csc-matrix"><span class="toc-text">csc_matrix</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#csr-matrix"><span class="toc-text">csr_matrix</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pytorch中稀疏矩阵"><span class="toc-text">pytorch中稀疏矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#scipy-sparse中的稀疏矩阵"><span class="toc-text">scipy.sparse中的稀疏矩阵</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#稀疏矩阵构造方式"><span class="toc-text">稀疏矩阵构造方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#用法示例"><span class="toc-text">用法示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#scipy-sparse中其他一些常用稀疏矩阵操作"><span class="toc-text">scipy.sparse中其他一些常用稀疏矩阵操作</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pytorch中的各种乘法"><span class="toc-text">Pytorch中的各种乘法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#permute-flatten-view"><span class="toc-text">permute,flatten,view</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#permute"><span class="toc-text">permute</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#torch-flatten"><span class="toc-text">torch.flatten</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#view"><span class="toc-text">view</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tensor-repeat"><span class="toc-text">tensor.repeat()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#squeeze与unsqueeze"><span class="toc-text">squeeze与unsqueeze</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#squeeze"><span class="toc-text">squeeze</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#unsqueeze"><span class="toc-text">unsqueeze</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#torch-where"><span class="toc-text">torch.where</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nonzero"><span class="toc-text">nonzero()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pytorch模型的保存与加载"><span class="toc-text">pytorch模型的保存与加载</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#保存模型参数"><span class="toc-text">保存模型参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#保存整个模型"><span class="toc-text">保存整个模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一些区别"><span class="toc-text">一些区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#跨平台保存与加载"><span class="toc-text">跨平台保存与加载</span></a></li></ol></li></ol></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>
