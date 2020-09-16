@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>Algorithm打怪指南--2-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">Algorithm打怪指南--2</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2020-09-16</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/algorithm/">algorithm</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><h1 id="Algorithm打怪指南–2"><a href="#Algorithm打怪指南–2" class="headerlink" title="Algorithm打怪指南–2"></a>Algorithm打怪指南–2</h1><p>这次题目来源为 中兴2021笔试。</p>
+<h2 id="第一题"><a href="#第一题" class="headerlink" title="第一题"></a>第一题</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>期末考试，n个人参加考试，m个科目。求所有学生中有多少人至少有一门课的成绩超过了该门课程的平均成绩。</p>
+<h3 id="输入描述"><a href="#输入描述" class="headerlink" title="输入描述"></a>输入描述</h3><p>一行n, m表示考试人数和科目数<br>接下来m行，每行n个整数，$a_ji$ 表示第i个人在第j门考试中取得的成绩。<br>$1&lt;=n&lt;=10^4$<br>$1&lt;=m&lt;=10^2$<br>$0&lt;=a_ji&lt;=100$</p>
+<h3 id="输出描述"><a href="#输出描述" class="headerlink" title="输出描述"></a>输出描述</h3><p>输出一行一个整数表示答案。</p>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2 2</span><br><span class="line">3 2</span><br><span class="line">2 3</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2</span><br></pre></td></tr></table></figure>
+
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><p>这道题整体比较简单，直接求即可。<br>python实现如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">n, m = map(int, input().split(<span class="string">' '</span>))</span><br><span class="line">count = <span class="number">0</span></span><br><span class="line">flag = [<span class="number">0</span>]*n</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(m):</span><br><span class="line">    score = list(map(int, input().split(<span class="string">' '</span>)))</span><br><span class="line">    score_mean = sum(score)/len(score)</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">        <span class="keyword">if</span> score[j] &gt; score_mean <span class="keyword">and</span> flag[j]==<span class="number">0</span>:</span><br><span class="line">            count += <span class="number">1</span></span><br><span class="line">            flag[j] = <span class="number">1</span></span><br><span class="line">print(count)</span><br></pre></td></tr></table></figure>
+
+<h2 id="第二题"><a href="#第二题" class="headerlink" title="第二题"></a>第二题</h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个无序序列，每次只能够删掉序列中的某一个元素，最少删除多少次能够使得序列变得单调。<br>注意这里的单调是指序列要严格单调递增或单调递减。</p>
+<h3 id="输入描述-1"><a href="#输入描述-1" class="headerlink" title="输入描述"></a>输入描述</h3><p>第一行输入一个整数T，接下来有T组测试数据。<br>对于每一组测试数据，第一行输入一个正整数n，代表序列长度。<br>接下来输入n个数，代表序列的每一个值。<br>$1&lt;=T&lt;=100$<br>$1&lt;=n&lt;=1000$<br>$1&lt;=a[i]&lt;=10^9$</p>
+<h3 id="输出描述-1"><a href="#输出描述-1" class="headerlink" title="输出描述"></a>输出描述</h3><p>对于每组测试数据，输出一个答案，表示最少需要删除多少个元素能使序列变成单调的。</p>
+<h3 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h3><p>输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">2</span><br><span class="line">5</span><br><span class="line">1 4 2 3 5</span><br><span class="line">5</span><br><span class="line">4 5 3 2 1</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+
+<h3 id="解法-1"><a href="#解法-1" class="headerlink" title="解法"></a>解法</h3><p>该题思路是，分别求数列的最长递增子序列和最长递减子序列，然后看哪个序列更长则更接近原序列，然后用原数列的长度减去最长子序列的长度，就是需要删掉的元素个数。<br>因此该题的关键就是<strong>求解最长递增子序列和最长递减子序列</strong><br>这里实现一个求最长递增子序列的函数就好，只要把序列正着求，然后再反着求，就可以分别求得最长递增和递减子序列了。<br>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">t = int(input().strip())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求最长递增子序列函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lengthOfLIS</span><span class="params">(num)</span>:</span></span><br><span class="line">    n = len(num)</span><br><span class="line">    dp = [<span class="number">1</span>]*n</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i)[::<span class="number">-1</span>]:</span><br><span class="line">            <span class="keyword">if</span> num[i]&gt;num[j]:</span><br><span class="line">                dp[i] = max(dp[j]+<span class="number">1</span>, dp[i])</span><br><span class="line">    <span class="keyword">return</span> max(dp)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(t):</span><br><span class="line">    n = int(input().strip())</span><br><span class="line">    nums = list(map(int, input().strip().split(<span class="string">' '</span>)))</span><br><span class="line">    res = lengthOfLIS(nums)</span><br><span class="line">    res = max(res, lengthOfLIS(nums[::<span class="number">-1</span>]))</span><br><span class="line">    print(len(nums) - res)</span><br></pre></td></tr></table></figure>
+
+<p>上面的方法时间复杂度为$O(n^2)$</p>
+<h3 id="解法2"><a href="#解法2" class="headerlink" title="解法2"></a>解法2</h3><p>求最长递增子序列这个问题可以继续优化。<br>我们将数组dp的含义变一下，dp[i]表示长度为i+1的最长递增子序列的末位元素的最小值（因为长度为i+1的最长递增子序列可能有多个）。<br>假设当前最长递增子序列长度为size，然后我们遍历数组时，对于某个元素e，有两种情况：</p>
+<ol>
+<li>如果e比当前最长的递增子序列的末位元素（也就是dp[size-1]）的元素还大，那么说明元素e能够与前面的以dp[size-1]为结尾的长度为size的序列构成一个新的递增序列，因此设置dp[size]=e。</li>
+<li>如果e小于dp[size-1]的元素，说明元素e不能与以dp[size-1]为结尾的长度为size的序列构成一个新的递增序列，那就在dp中寻找不小于e的最小的元素的位置（假设为j)，该元素可以替换为e（说明长度为j-1的递增子序列的末位元素可以更小，为e）。<br>另外，由于tails显然是有序的，因此在查找的时候可以使用二分查找。<br>求最长递增子序列的代码如下：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"># 找到不小于val的最小的元素的索引</span><br><span class="line">def binarySearch(nums, low, high, val):</span><br><span class="line">    while low&lt;high:</span><br><span class="line">        mid = (low+high)//2</span><br><span class="line">        if nums[mid]&lt;val:</span><br><span class="line">            low = mid+1</span><br><span class="line">        elif nums[mid]&gt;val:</span><br><span class="line">            high = mid</span><br><span class="line">        else:</span><br><span class="line">            return mid</span><br><span class="line">    return low if nums[low]&gt;=val else (low+1)</span><br><span class="line"></span><br><span class="line">def lengthOfLIS2(nums):</span><br><span class="line">    if len(nums)==0:</span><br><span class="line">        return 0</span><br><span class="line">    tails = [nums[0]]*len(nums)  # tails[i] 表示长度为i+1的最长递增序列的末位的最小值</span><br><span class="line">    size = 0  # 目前最长递增序列的长度</span><br><span class="line">    for i in range(1, len(nums)):</span><br><span class="line">        j = binarySearch(tails, 0, size, nums[i])</span><br><span class="line">        if j &lt;= size:</span><br><span class="line">            tails[j] = nums[i]</span><br><span class="line">        else:</span><br><span class="line">            size += 1</span><br><span class="line">            tails[size] = nums[i]</span><br><span class="line">        print(tails)</span><br><span class="line">    return size+1</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>该方法复杂度为$O(nlogn)$<br>解原题的话还是按照上面的方法，正着搜一遍，反正搜一遍，最后用原数列的长度减去最长长度，即可得到最小的需要删掉的元素个数。</p>
+<h3 id="类似题目"><a href="#类似题目" class="headerlink" title="类似题目"></a>类似题目</h3><p><a href="https://leetcode-cn.com/problems/longest-increasing-subsequence/" target="_blank" rel="noopener">LeetCode300</a></p>
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/07/21/pytorch中Embedding的使用/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">pytorch中Embedding的使用
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/07/21/pytorch中Embedding的使用/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">pytorch中Embedding的使用
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Algorithm打怪指南–2"><span class="toc-text">Algorithm打怪指南–2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#第一题"><span class="toc-text">第一题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输入描述"><span class="toc-text">输入描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输出描述"><span class="toc-text">输出描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#示例"><span class="toc-text">示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解法"><span class="toc-text">解法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第二题"><span class="toc-text">第二题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-1"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输入描述-1"><span class="toc-text">输入描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输出描述-1"><span class="toc-text">输出描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#示例-1"><span class="toc-text">示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解法-1"><span class="toc-text">解法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解法2"><span class="toc-text">解法2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类似题目"><span class="toc-text">类似题目</span></a></li></ol></li></ol></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>
