@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>文章笔记|Unsupervised Opinion Summarization as Copycat-Review Generation-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">文章笔记|Unsupervised Opinion Summarization as Copycat-Review Generation</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2020-09-26</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/paper/">paper</a>
+                </li>
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/summarization/">summarization</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><h1 id="Unsupervised-Opinion-Summarization-as-Copycat-Review-Generation"><a href="#Unsupervised-Opinion-Summarization-as-Copycat-Review-Generation" class="headerlink" title="Unsupervised Opinion Summarization as Copycat-Review Generation"></a>Unsupervised Opinion Summarization as Copycat-Review Generation</h1><h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>本文任务是做Opinion summarization，即给定多个具有主观倾向的文档，生成一个较为客观简短的摘要。最典型的就是对评论的摘要（如电影评论、商品评论等）。<br>之前的观点摘要大多是抽取式方法。本文是生成式方法。<br>通常依赖于大规模的（文档-摘要）对作为监督。但是在很多领域没有这种监督数据且构造困难。<br>因此本文提出一种无监督的观点摘要方法：从生成模型的角度来考虑摘要任务，使用层次VAE来根据一个商品的许多评论，生成一个评论摘要。</p>
+<h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1 Introduction"></a>1 Introduction</h2><p>之前的方法依赖监督数据。但是对这种数据进行标注很难。而且领域众多，要标的话每个领域都要标，没有普适性，而摘要又是一个领域敏感的任务。因此估计一时半会只能借助于无监督或者弱监督的方法了。本文的方法则不需要任何（文档-摘要）对来训练。<br>背后的思想是：在根据一个产品的许多评论生成一个摘要时，可以控制这个生成的摘要含有新内容的程度（这个“新内容”理解为原始评论中没有包含的内容）。然后在测试时或者实际应用时，强制使得新内容的程度为最小，这样就能生成与原始评论内容一致的评论作为最终摘要。<br>为了实现这个想法，本文使用了一个层次VAE模型。</p>
+<p>本文贡献总结如下：</p>
+<ul>
+<li>提出了一个端到端的无监督的生成式摘要方法</li>
+<li>该模型相比之前的模型在自动评估和人工评估中都具有显著的性能提升</li>
+<li>提供了一个Amazon商品的生成式摘要的数据集。</li>
+</ul>
+<h2 id="2-Model-and-Estimation"><a href="#2-Model-and-Estimation" class="headerlink" title="2 Model and Estimation"></a>2 Model and Estimation</h2><h3 id="2-1-Overview-of-the-Generative-Model"><a href="#2-1-Overview-of-the-Generative-Model" class="headerlink" title="2.1 Overview of the Generative Model"></a>2.1 Overview of the Generative Model</h3><p>数据包含多组评论，每组评论对应一个商品。<br>COPYCAT模型可以看作是普通VAE的变种，使用两组隐变量（latent variable），如图1所示。<br>每组评论（也就是每个商品）对应一个隐变量 $c$，捕捉商品的语义信息；每个评论$r_i$对应一个隐变量$z_i$，捕捉该评论的语义信息。<br>decoder $p_{\theta}(r_i|z_i)$ 根据隐变量$z_i$来生成评论$r_i$。一组评论的对数似然则如下：<br><img src="eqution1.PNG" alt="eqution1"></p>
+<p>这样有一个不足是，在生成评论$r_i$时，给定之前的评论$r_{1:N}$，这些评论的信息都需要通过隐变量$c$和$z_i$来传递，这样就造成了一个瓶颈。<br>举个例子，在生成一个评论时，很可能需要用到商品的名称啊之类的命名实体，这些名词很可能会在其他的评论中出现。因此在生成评论的时候，最好能够同时访问到其他评论的信息。<br>因此本文使decoder能够直接访问到其他评论的信息。整个过程建模为一个自回归模型：<br><img src="eqution2.PNG" alt="eqution2"><br>也就是给定商品隐变量$c$和前面的$i-1$个评论$r_1,…,r_{i-1}$，生成评论$r_i$。这里的条件是用pointer-generator机制实现的，因此能够帮助生成稀有单词（如命名实体）。</p>
+<p>由于一个产品的所有评论应该是同等对待的，而不应该受顺序的影响（例如时间顺序等）。因此如图1中b所示，decoder在生成$r_i$时，可以访问该商品的所有其他评论$r_{-i}={r_1,…,r_{i-1},r_{i+1},…,r_N}$。于是最后的目标就变成了最大化生成每个商品的所有评论$r_{1:N}$的概率：<br><img src="eqution3.PNG" alt="eqution3"></p>
+<p>在退化实验部分会验证，商品隐变量$c$和直接访问其他评论这两种机制都具有很重要的作用。</p>
+<h3 id="2-2-Model-Estimation"><a href="#2-2-Model-Estimation" class="headerlink" title="2.2 Model Estimation"></a>2.2 Model Estimation</h3><p>对于模型的推导部分，具体就是VAE模型的推导过程。<br>对目标函数的优化改为对其下界的优化：<br><img src="eqution4.PNG" alt="eqution4"><br>公式的推导过程这里就省略了，本文在附录中给出了详细的推导过程。这里简单描述一下目标函数的物理含义。</p>
+<ul>
+<li>第一项$\mathbb{E}<em>{z</em>{i}\sim q_{\phi}(z_i|r_i,c)}[\log p_\theta (r_i|z_i, r_{-i})]$表示重构损失，也就是在生成评论时尽量保证生成的内容的一致性。</li>
+<li>第二项最小化$\Sigma_{i=1}^{N}\mathbb{D}<em>{KL}[q</em>{\phi}(z_i|r_i,c)||p_\theta(z_i|c)]$，这里$q_\phi$表示我们拟合的分布生成$z_i$的分布，而$p_\theta$表示根据$c$生成$z_i$的真实分布，这个真实分布我们未知，但是一定存在且唯一。正因为我们不知道这个真实分布，因此我们需要让$q_\phi$尽量去逼近真实分布$p_\theta$，然后我们用$q_\phi$去代替真实分布进行生成。</li>
+<li>第三项最小化$\mathbb{D}<em>{KL}[q_\phi(c|r</em>{1:N})||p_\theta(c)]$，同样，$p_\theta$表示真实的$c$的分布，这个分布存在且唯一但是我们不知道，于是我们用一个$q_\phi$去拟合。这一项损失就是使$q_\phi$尽量逼近真实分布$\p_\theta$。<br>注意，用来生成特定评论的后验分布的$q_\phi(z_i|r_i,c)$只在训练时需要，在真正生成评论时，只使用$q_\phi(c|r_{1:N})$来生成评论。</li>
+</ul>
+<h3 id="2-3-Design-of-Model-Components"><a href="#2-3-Design-of-Model-Components" class="headerlink" title="2.3 Design of Model Components"></a>2.3 Design of Model Components</h3><h4 id="2-3-1-Text-Representations"><a href="#2-3-1-Text-Representations" class="headerlink" title="2.3.1 Text Representations"></a>2.3.1 Text Representations</h4><p>文本的表示使用GRU将评论的每个单词作为输入，得到最后的隐层向量作为评论的表示。生成商品隐变量$c$和特定评论的隐变量$z_i$的过程如图2所示。本文中所有的分布都假设是高斯分布，用独立的线形层来计算均值和方差。</p>
+<h4 id="2-3-2-Prior-p-c-and-posterior-q-phi-c-r-1-N"><a href="#2-3-2-Prior-p-c-and-posterior-q-phi-c-r-1-N" class="headerlink" title="2.3.2 Prior $p(c)$ and posterior $q_\phi(c|r_{1:N})$"></a>2.3.2 Prior $p(c)$ and posterior $q_\phi(c|r_{1:N})$</h4><p>$c$的先验分布假设为标准的正太分布：$p(c)=\mathcal{N}(c;0,I)$。<br>为了计算近似后验分布$q_\phi(c|r_{1:N})$，首先计算每个评论中每个单词的重要性：<br><img src="eqution5.PNG" alt="eqution5"><br>其中$T_i$是评论$r_i$的长度，$f_\phi^\alpha$是feed-forward神经网络，它将词嵌入和GRU encoder得到的隐层表示的拼接作为输入，$m_i^t=[h_i^t\circ w_i^t]$，返回一个标量。<br>然后用计算得到的$\alpha$作为权重，得到中间表示：<br>$$ \hat{h} = \Sigma_{i=1}^{N} \Sigma_{t}^{T_i} \alpha_i^t m_i^t $$<br>最后采用 affine projections 计算高斯分布中的参数（即均值和方差）如下：<br><img src="eqution6.PNG" alt="eqution6"></p>
+<h4 id="2-3-3-Prior-p-theta-z-i-c-and-posterior-q-phi-z-i-r-i-c"><a href="#2-3-3-Prior-p-theta-z-i-c-and-posterior-q-phi-z-i-r-i-c" class="headerlink" title="2.3.3 Prior $p_\theta(z_i|c)$ and posterior $q_\phi(z_i|r_i,c)$"></a>2.3.3 Prior $p_\theta(z_i|c)$ and posterior $q_\phi(z_i|r_i,c)$</h4><p>$z_i$的先验分布也假设为高斯分布：$p_\theta(z_i|c)=\mathcal{N}(z_i;\mu_\theta(c),I\sigma_\theta(c))$，其中的均值和方差则是通过对$c$进行线性映射得到。<br>同样，近似后验概率$q_\phi(z|r_i,c)=\mathcal{N}(z;\mu_\phi(r_i,c),I\sigma_\theta(r_i,c))$的计算，则是通过拼接encoder最后时刻的隐层状态$h_i^{T_i}$和$c$，然后进行affine transformations得到。</p>
+<h4 id="2-3-4-Decoder-p-theta-r-i-z-i-r-i"><a href="#2-3-4-Decoder-p-theta-r-i-z-i-r-i" class="headerlink" title="2.3.4 Decoder $p_\theta(r_i|z_i,r_{-i})$"></a>2.3.4 Decoder $p_\theta(r_i|z_i,r_{-i})$</h4><p>生成评论的分布（也就是Decoder）是用带有attention和copy机制的GRU实现的自回归模型。<br>首先计算context vector $c_i^t=att(s_i^t,h_{-i})$，也就是让decoder的隐层状态与encoder得到的其他所有评论的隐状态$h_{-i}$计算注意力，$s_i^t$作为query，$h_{-i}$作为key和value，得到context vector $c_i^t$。其中$s_i^t$是Decoder的隐层状态：<br><img src="eqution7.PNG" alt="eqution7"><br>这里的输入包括前一时刻的隐层状态$s_i^{t-1}$，以及词向量$w_i^t$，context vector $c_i^{t-1}$和商品隐变量$z_i$的拼接。</p>
+<p>最后使用pointer-generator网络$g_\theta$来计算单词分布：<br>pointer-generator网络具备生成和copy能力，从而能够帮助生成稀有单词。</p>
+<h2 id="3-Summary-Generation"><a href="#3-Summary-Generation" class="headerlink" title="3 Summary Generation"></a>3 Summary Generation</h2><p>给定评论$r_{1:N}$，本文通过生成一个新评论作为这些评论的摘要：<br><img src="eqution8.PNG" alt="eqution8"></p>
+<p>另外，文本生成应该从商品隐变量的均值生成，因此不是用的$p_\theta(z|c)=\mathcal{N}(z;\mu_\theta(c),I\sigma_\theta(c))$，而是直接从$\mu_\theta(c)$中生成的$z$，而均值$\mu_\theta(c)$是由网络$q_\phi(c|r_{1:N})$生成的。</p>
+<h2 id="4-Experimental-Setup"><a href="#4-Experimental-Setup" class="headerlink" title="4 Experimental Setup"></a>4 Experimental Setup</h2><p>实验结果如表所示。<br><img src="result.PNG" alt="result"></p>
+<h1 id="Ending"><a href="#Ending" class="headerlink" title="Ending"></a>Ending</h1><p>VAE终于也开始被用到摘要上了。。。</p>
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/09/16/Algorithm打怪指南-2/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">Algorithm打怪指南--2
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/09/16/Algorithm打怪指南-2/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">Algorithm打怪指南--2
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Unsupervised-Opinion-Summarization-as-Copycat-Review-Generation"><span class="toc-text">Unsupervised Opinion Summarization as Copycat-Review Generation</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Abstract"><span class="toc-text">Abstract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Introduction"><span class="toc-text">1 Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Model-and-Estimation"><span class="toc-text">2 Model and Estimation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-Overview-of-the-Generative-Model"><span class="toc-text">2.1 Overview of the Generative Model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Model-Estimation"><span class="toc-text">2.2 Model Estimation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-Design-of-Model-Components"><span class="toc-text">2.3 Design of Model Components</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-1-Text-Representations"><span class="toc-text">2.3.1 Text Representations</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-2-Prior-p-c-and-posterior-q-phi-c-r-1-N"><span class="toc-text">2.3.2 Prior $p(c)$ and posterior $q_\phi(c|r_{1:N})$</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-3-Prior-p-theta-z-i-c-and-posterior-q-phi-z-i-r-i-c"><span class="toc-text">2.3.3 Prior $p_\theta(z_i|c)$ and posterior $q_\phi(z_i|r_i,c)$</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-4-Decoder-p-theta-r-i-z-i-r-i"><span class="toc-text">2.3.4 Decoder $p_\theta(r_i|z_i,r_{-i})$</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Summary-Generation"><span class="toc-text">3 Summary Generation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Experimental-Setup"><span class="toc-text">4 Experimental Setup</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ending"><span class="toc-text">Ending</span></a></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>
