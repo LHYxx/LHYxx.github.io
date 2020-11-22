@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>文章笔记|GCAN: Graph-aware Co-Attention Networks for Explainable Fake News Detection on Social Media-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">文章笔记|GCAN: Graph-aware Co-Attention Networks for Explainable Fake News Detection on Social Media</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2020-11-22</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/paper/">paper</a>
+                </li>
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/GCN/">GCN</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><h1 id="GCAN-Graph-aware-Co-Attention-Networks-for-Explainable-Fake-News-Detection-on-Social-Media"><a href="#GCAN-Graph-aware-Co-Attention-Networks-for-Explainable-Fake-News-Detection-on-Social-Media" class="headerlink" title="GCAN: Graph-aware Co-Attention Networks for Explainable Fake News Detection on Social Media"></a>GCAN: Graph-aware Co-Attention Networks for Explainable Fake News Detection on Social Media</h1><h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>本文研究社交媒体上的假新闻（fake news）检测任务。给定原始的推特短文本和对应的转推用户序列，预测推特新闻是否是假的，并且同时生成做出该判断的解释（即根据那些特征断定该推特是假的）。<br>本文提出Graph-aware Co-Attention networks(GCAN)来实现这个目标。</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>传统的虚假新闻检测方法都是从新闻文本的文本内容中抽取特征，比如n-gram和bag of words，然后用监督式的学习方法进行二分类。<br>另外一些研究学习更加高级的语义学特征，比如factive/assertive verbs 和 subjectivity。 多模态的上下文信息也被研究过了，比如用户profiles和retweet propagation。</p>
+<p>然而，现有方法的不足点：</p>
+<ul>
+<li>已有方法都是在长文档上做的，需要文本内容较长。而社交媒体上的文本内容通常很短。</li>
+<li>已有方法依赖于用户的评论，但是实际中用户的评论数据很少。</li>
+<li>依赖转发树的结构，但是实际中转发树结构难以获取。</li>
+<li>现有模型无法提供可解释性。</li>
+</ul>
+<p>本文试图解决社交媒体环境下的虚假新闻检测任务。只依靠原始推特的内容和用户转推序列以及用户的特征文件（user profiles）进行检测。也就是说，本文在以下三个条件下进行虚假新闻检测：（1）文本短。（2）没有用户评论信息。（3）没有社交网络的结构信息和传播网络。进一步，本模型还具备可解释性，能够指出传播虚假信息的可疑转推用户，并指出原文中关键的单词。</p>
+<p>贡献总结</p>
+<ol>
+<li>研究在更加实际的场景下的虚假新闻检测任务。</li>
+<li>提出了GCAN模型，更好的学习用户交互（user interactions）的表示，转推传播链（retweet propagation）的表示以及他们和原文的相关关系。</li>
+<li>提出了dual co-attention mechanism 可以为结果提供解释。</li>
+<li>在数据集上进行了大量的实验，并于其他state-of-the-art的模型进行了对比。并且在case studies中提供了解释。</li>
+</ol>
+<p><a href="https://github.com/l852888/GCAN" target="_blank" rel="noopener">本文代码</a></p>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><p>相关工作分为了以下几个方面：</p>
+<ul>
+<li>Content-based</li>
+<li>User-based</li>
+<li>Structure-based</li>
+<li>Hybrid-based</li>
+</ul>
+<h2 id="Problem-Statement"><a href="#Problem-Statement" class="headerlink" title="Problem Statement"></a>Problem Statement</h2><p>这里介绍一下本文的形式化表述。<br>$\Psi={s_1, s_2 ,…, S_{|\Psi|}}$表示一组tweet，$U={u_1, u_2, …, u_{|U|}}$表示用户集合，每个$s_i\in \Psi$表示一个短文本tweet，$s_i={q_1^i, q_2^i, q_{l_i}^i}$表示短文档$s_i$的$l_i$个单词，$l_i$是该文档包含的单词数。每个用户$u_j\in U$都有对应的特征向量 $\mathbf{x}_ j \in \mathbb{R}^{d}$，表示每个用户的特征为$d$维。对于一个推特$s_i$来说，所有转发该推特的用户构成了一个传播路径（propagation path）。给定一个推特$s_i$，其传播路径表示为$R_i={…,(u_j, \mathbf{x}<em>j, t</em> j), …}$，其中$(u_j, \mathbf{x}_ j, t_j)$表示用户$u_j$（其对应的特征为$\mathbf{x}<em>j$），$j=1,2,…,K (K=|R_i|)$，$t</em> j$表示用户转发该推特的序号，例如第一个发布该推特的用户为$t_1$，后续用户$u_j$在时刻$t_j$转推了该推特。我们将转发了推特$s_i$的用户集合记为$U_i$。每个推特带有一个标签$y_i\in {0, 1}$表示该推特是否是真实的。<br>因此，该问题建模为一个二分类问题。</p>
+<p>简而言之，本文的任务可以表述为：<br>给定原始推文$s_i$，推文的传播路径$R_i$，以及传播路径上用户的特征向量$\mathbf{x}_ j$，预测原始推文$s_i$是否是虚假新闻（二分类问题）。另外，模型需要能够指出其判断依据，指出传播路径上的一些用户，以及源文本中一些单词。</p>
+<h2 id="4-The-Proposed-GCAN-Model"><a href="#4-The-Proposed-GCAN-Model" class="headerlink" title="4 The Proposed GCAN Model"></a>4 The Proposed GCAN Model</h2><p>本文提出的GCAN模型由五部分构成：</p>
+<ol>
+<li>user characteristics extraction</li>
+<li>new story encoding</li>
+<li>user propagation representation</li>
+<li>dual co-attention mechanisms</li>
+<li>making prediction</li>
+</ol>
+<p>模型整体框架图<br><img src="model.PNG" alt="model"></p>
+<h3 id="4-1-User-Characteristics-Extraction"><a href="#4-1-User-Characteristics-Extraction" class="headerlink" title="4.1 User Characteristics Extraction"></a>4.1 User Characteristics Extraction</h3><p>这里人为定义了10个用户的特征：</p>
+<ol>
+<li>用户自我描述中的单词数。</li>
+<li>用户的screen name的单词数。</li>
+<li>用户$u_j$的粉丝数。</li>
+<li>用户$u_j$的关注数。</li>
+<li>用户$u_j$发表的文章数。</li>
+<li>距离用户$u_j$发表第一篇文章到现在经过的时间。</li>
+<li>用户$u_j$是否是认证的（verified or not）。</li>
+<li>用户$u_j$是否允许地理定位（allows the geo-spatial positioning）。</li>
+<li>原始推文发表时间与用户$u_j$转发时间的间隔。</li>
+<li>用户$u_j$与原始推特的传播路径长度。<br>根据这10个特征构成了用户特征$\mathbf{x}_ j\in \mathbb{R}^v$，其中$v$是用户特征的维数。</li>
+</ol>
+<h3 id="4-2-Source-Tweet-Encoding"><a href="#4-2-Source-Tweet-Encoding" class="headerlink" title="4.2 Source Tweet Encoding"></a>4.2 Source Tweet Encoding</h3><p>使用一个Encoder将原始文本编码为表示。<br>输入使用one-hot表示。所有文本padding到相同的长度，长度设置为$m$。$\mathbf{E}=[e_1, e_2,…, e_m]\in \mathbb{R}^m$是原文档的one-hot向量表示，每个$e_m$为0或者1。词向量表记为$\mathbf{V}=[\mathbf{v}_ 1, \mathbf{v}_ 2, …, \mathbf{v}_ m]\in \mathbb{R}^{d \times m}$，其中$d$是词向量维度。词向量表示生成如下：<br><img src="eq1.PNG" alt="eq1"><br>$W_w$是学习参数，$b_c$是偏置项。<br>然后使用GRU根据词向量$\mathbf{V}$学习单词序列表示。原文档的表示可以表示为：<br>$$<br>\mathbf{s}_ t = GRU(\mathbf{v}_ t), t\in {1,…,m}<br>$$<br>因此，原文档表示为$\mathbf{S}=[\mathbf{s^1}, \mathbf{s}^2, …, \mathbf{s}^m] \in \mathbb{R}^{d\times m}$。$d$是词向量维度，$m$是单词数。</p>
+<h3 id="4-3-User-Propagation-Representation"><a href="#4-3-User-Propagation-Representation" class="headerlink" title="4.3 User Propagation Representation"></a>4.3 User Propagation Representation</h3><p>本文使用推特传播路径上的用户的特征作为依据来判断源推特是否是虚假的。其背后的思想是：真实的新闻的传播用户与虚假新闻的传播用户具有不同的用户特征。本文使用GRU和CNN来学习传播表示（propagation representations）。<br>输入是转发推特$s_i$的用户的特征序列，记为$PF(s_i)=&lt;\mathbf{x}_ 1, \mathbf{x}_ 2, …, \mathbf{x}_ t, …, \mathbf{x}_ n&gt;$， 其中$n$设置为固定长度。传播链长度超过n的给截断，小于n的给重复补足。</p>
+<h4 id="GRU-based-Representation"><a href="#GRU-based-Representation" class="headerlink" title="GRU-based Representation."></a>GRU-based Representation.</h4><p>给定传播链上用户的特征向量序列$PF(s_i)=&lt;…, \mathbf{x}_ t, …&gt;$，用GRU学习传播表示如下：<br>$$<br>\mathbf{h}_ t = GRU(\mathbf{x}_ t), t\in {1,…,n}<br>$$<br>其中$n$是传播链的长度。<br>最终的传播表示（propagation embedding）为：<br>$$<br>\mathbf{h} = \frac{1}{n} \Sum_{t=1}^{n} \mathbf{h}_ t<br>$$</p>
+<h4 id="CNN-based-Representation"><a href="#CNN-based-Representation" class="headerlink" title="CNN-based Representation."></a>CNN-based Representation.</h4><p>用一个一维的卷积来学习传播特征$PF(s_i)$。<br>每次考虑$\lambda$个连续的用户，因此用一个$\lambda \times v$的卷积核（$v$是用户特征的维度）。<br>因此输出表示向量为$C\in \mathbb{R}^{d \times (t+\lambda -1)}$计算如下：<br><img src="eq2.PNG" alt="eq2"><br>其中$W_f$是学习参数， $b_f$是偏置项。$\mathbf{X}_ {t: t+\lambda -1}$则表示从第$t$到第$t+\lambda -1$个用户的特征（也就是一个卷积核窗口内的用户）。</p>
+<h3 id="4-4-Graph-aware-Propagation-Representation"><a href="#4-4-Graph-aware-Propagation-Representation" class="headerlink" title="4.4 Graph-aware Propagation Representation"></a>4.4 Graph-aware Propagation Representation</h3><p>背后思想：用户之间带有某些特征的交互也许能够为虚假信息的检测提供线索。<br>将所有用户看作节点，构建全连接图，边的权重设置为用户之间特征的余弦相似度。然后在图上用了一个2层的GCN。<br><img src="eq3.PNG" alt="eq3"><br>节点特征的维度设置为$g$，$\mathbf{A}$是图的邻接矩阵，$\tilde{\mathbf{A}} = \mathbf{D}^{-\frac{1}{2}} \mathbf{A} \mathbf{D}^{-\frac{1}{2}}$是对称归一化的权重矩阵（$\mathbf{D}_ {ii} = \sum_{j} \mathbf{A}_ {ij}$），$\mathbf{W}_ l\in \mathbb{R}^{d \times g}$ 是第$l$层的学习参数。$\mathbf{H}^{(0)}$被设置为$\mathbf{X}$。本文用了2层的GCN，学到的表示记为：$\mathbf{G}\in \mathbb{R}^{g\times n}$。</p>
+<h3 id="4-5-Dual-Co-attention-Mechanism"><a href="#4-5-Dual-Co-attention-Mechanism" class="headerlink" title="4.5 Dual Co-attention Mechanism"></a>4.5 Dual Co-attention Mechanism</h3><p>该模块是提供可解释性的关键模块。可解释性的原理其实也就是学习出注意力权重矩阵，然后看哪一部分权重较大，也就说明那一部分更大程度地促成了目前地判断结果。</p>
+<p>本文学习了两个注意力权重，分别来观察source tweet $(\mathbf{S}=[\mathbf{s}^1, \mathbf{s}^2, …, \mathbf{s}^m])$和user propagation embeddings $(\mathbf{C}=[\mathbf{c}^1, \mathbf{c}^2, …, \mathbf{c}^{n-\lambda +1}])$之间的相互影响，以及source tweet 和 graph-aware interaction embeddings $(\mathbf{G}=[\mathbf{g}^1, \mathbf{g}^2, …, \mathbf{g}^n])$之间的相互影响。<br>有了source tweet 与 user propagation 和 graph-aware interaction之间的影响因子，就可以通过观察注意力权重来提供解释性。</p>
+<p>本文的两种注意力看的有点混乱。<br>两种注意力分别是 </p>
+<ul>
+<li>source tweet 与 graph-aware interaction users （source-interaction co-attention）（也就是$\mathbf{S}$与$\mathbf{G}$）</li>
+<li>source tweet 与 propagated users (source-propagation co-attention)（也就是$\mathbf{S}$与$\mathbf{C}$）</li>
+</ul>
+<p>下面以source-interaction co-attention为例讲解注意力的计算过程：<br>首先计算一个亲和度矩阵$\mathbf{F}\in \mathbb{R}^{m \times n}$：<br>$$<br>\mathbf{F} = tanh(\mathbf{S}^T \mathbf{W}_ {sg} \mathbf{G})<br>$$<br>其中$\mathbf{W}_ {sg}$ 是 $d \times g$的矩阵，是学习参数。将亲和度矩阵$\mathbf{F}$看作一个特征，学习预测source 与 interaction 之间的注意力权重map：<br><img src="eq4.PNG" alt="eq4"><br>其中$\mathbf{W}_ {s}\in \mathbb{R}^{k \times d}, \mathbf{W}_ {g}\in \mathbb{k \times g}$是学习参数。<br>这里的公式看起来比较抽象，可以这样理解：<br>将 Source 空间（$\mathbf{S}$）和 Interaction 空间分别用$\mathbf{W}_ s$ 和 $\mathbf{W}_ g$映射到同一个空间中，然后亲和度矩阵$\mathbf{F}$可以看作是从source空间到interaction空间的映射（因为是一个$m \times n$的矩阵，m是单词数，n是用户数），而其转置$\mathbf{F}^T$就是从interaction空间到source空间的变换。<br>所以第一个等式$\mathbf{H}^s$就是将source空间和interaction空间都变换到一个统一的source空间然后相加。<br>同理第二个等式$\mathbf{H}^g$就是将source空间和interaction空间都变换到一个统一的interaction空间然后相加。<br>然后就可以计算source words和interaction users之间的注意力权重：<br><img src="eq5.PNG" alt="eq5"><br>这里$\mathbf{a}^s \in \mathbb{R}^{1 \times m}$是每个单词的注意力权重，$\mathbf{a}^{g}\in \mathbb{R}^{1 \times n}$对应每个用户的注意力权重。$\mathbf{w}_ {hs}, \mathbf{w}_ {hg}\in \mathbb{R}^{1\times k}$是学习参数。</p>
+<p>最终，学到的注意力权重与原表示相乘，就得到了注意力之后的表示：<br><img src="eq6.PNG" alt="eq6"></p>
+<p>Source-Propagation Co-attention的计算过程类似，计算得到$\mathbf{\hat{s}}_ {2}\in \mathbb{R}^{1 \times d}$和$\mathbf{\hat{c}}\in \mathbb{R}^{1 \times d}$，分别对应source story 和 user propagation。</p>
+<p>这里计算user propagation 与 source 之间的注意力，没有使用RNN-based方法学到的propagation表示，只用了CNN-based方法学到的propagation表示。</p>
+<h3 id="4-6-Make-Prediction"><a href="#4-6-Make-Prediction" class="headerlink" title="4.6 Make Prediction"></a>4.6 Make Prediction</h3><p>最后就是分类了，把前面所有的表示拼接起来，输入到一个MLP中进行分类：<br><img src="eq7.PNG" alt="eq7"><br>目标是最小化与标准答案之间的交叉熵损失：<br><img src="eq8.PNG" alt="eq8"></p>
+<h3 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h3><p>直接贴一下实验结果图：<br><img src="Table3.PNG" alt="Table3"></p>
+<p>这里重点看一下他的解释性</p>
+<h4 id="从Source-Words角度解释"><a href="#从Source-Words角度解释" class="headerlink" title="从Source Words角度解释"></a>从Source Words角度解释</h4><p>如图5所示，分别展示了真实新闻和虚假新闻的词云。字体越大表明注意力权重越高。<br><img src="Figure5.PNG" alt="Figure5"><br>从图中可以看出，模型根据”<strong>breaking</strong>“,”<strong>strict</strong>“等单词判定虚假新闻，而根据”<strong>confirmed</strong>“和”<strong>irrelevant</strong>“等单词判定为真实新闻。<br>作者解释这符合人们的直觉，因为在现实中虚假新闻通常喜欢使用这种dramatic和obscure的单词（也就是我们常说的标题党），而真实新闻更注重于已确认的事实。</p>
+<h4 id="从Retweet-Propagation角度解释"><a href="#从Retweet-Propagation角度解释" class="headerlink" title="从Retweet Propagation角度解释"></a>从Retweet Propagation角度解释</h4><p>如图6所示，对注意力权重进行了可视化：<br><img src="Figure6.PNG" alt="Figure6"><br>F1-F3是三个假的新闻，T1-T3是三个真的新闻。颜色越深表示注意力权重越大。横轴表示转推时序。<br>通过图中结果，作者得出如下分析：<br>结果表明，为了判断一个推特是否是假的，应该首先检验比较早传播这个消息的用户的特征。虚假新闻的用户特征方面的证据在整个传播链中可能是均匀分布的。</p>
+<h4 id="从Retweeter-Characteristics角度解释"><a href="#从Retweeter-Characteristics角度解释" class="headerlink" title="从Retweeter Characteristics角度解释"></a>从Retweeter Characteristics角度解释</h4><p><img src="Figure7.PNG" alt="Figure7"><br>如图7所示，可以看出传播链中可疑用户的特点：not verified, shorter account creation time, shorter user description length and shorter graph path length to the user who posts the source tweet.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>本文让人感觉较为新颖的点在于</p>
+<ol>
+<li>利用推特的传播链以及传播链上的用户序列特征作为features来进行虚假推特的检测。这种做法背后的假设是，虚假消息的传播用户特点以及传播特征与真实消息不同。这种假设听起来也挺有道理的。</li>
+<li>模型通过注意力权重矩阵对实验结果进行了解释，在增强模型可解释性方面是一个非常好的工作。这种对模型的解释以及分析方法值得学习与借鉴。</li>
+</ol>
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/09/26/文章笔记-Unsupervised-Opinion-Summarization-as-Copycat-Review-Generation/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">文章笔记|Unsupervised Opinion Summarization as Copycat-Review Generation
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/09/26/文章笔记-Unsupervised-Opinion-Summarization-as-Copycat-Review-Generation/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">文章笔记|Unsupervised Opinion Summarization as Copycat-Review Generation
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#GCAN-Graph-aware-Co-Attention-Networks-for-Explainable-Fake-News-Detection-on-Social-Media"><span class="toc-text">GCAN: Graph-aware Co-Attention Networks for Explainable Fake News Detection on Social Media</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Abstract"><span class="toc-text">Abstract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Related-Work"><span class="toc-text">Related Work</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Problem-Statement"><span class="toc-text">Problem Statement</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-The-Proposed-GCAN-Model"><span class="toc-text">4 The Proposed GCAN Model</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-User-Characteristics-Extraction"><span class="toc-text">4.1 User Characteristics Extraction</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-Source-Tweet-Encoding"><span class="toc-text">4.2 Source Tweet Encoding</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-User-Propagation-Representation"><span class="toc-text">4.3 User Propagation Representation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#GRU-based-Representation"><span class="toc-text">GRU-based Representation.</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CNN-based-Representation"><span class="toc-text">CNN-based Representation.</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-Graph-aware-Propagation-Representation"><span class="toc-text">4.4 Graph-aware Propagation Representation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-Dual-Co-attention-Mechanism"><span class="toc-text">4.5 Dual Co-attention Mechanism</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-Make-Prediction"><span class="toc-text">4.6 Make Prediction</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Experiments"><span class="toc-text">Experiments</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#从Source-Words角度解释"><span class="toc-text">从Source Words角度解释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#从Retweet-Propagation角度解释"><span class="toc-text">从Retweet Propagation角度解释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#从Retweeter-Characteristics角度解释"><span class="toc-text">从Retweeter Characteristics角度解释</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Conclusion"><span class="toc-text">Conclusion</span></a></li></ol></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>
