@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content>
     <link rel="shortcut icon" href="/img/book.png">
-    <title>Docker学习记录-小新xx</title>
+    <title>小新xx</title>
     
         
             <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
@@ -20,7 +20,7 @@
         .jumbotron{
             background: url();
             background-repeat: no-repeat;
-            background-size: 100% 100%;
+            background-size: ;
         }
         .tag-list{
             font-weight: bold;
@@ -117,16 +117,12 @@
 <!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
     <div class="container" >
         
-        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">Docker学习记录</h1>
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: "></h1>
         
-        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2021-02-19</p>
+        <p class="lead text-gray mt-3" style="color: ">By Anonymous; Published on 2021-02-19</p>
         
         <div class="tags">
             <ul class="tag-list">
-                
-                <li class="tag-list-item">
-                    <a class="tag-list-link" href="/tags/docker/">docker</a>
-                </li>
                 
             </ul>
         </div>
@@ -148,7 +144,7 @@
 <li>所有进程使用相同的系统资源。（如CPU，内存等），这样导致进程之间存在抢占资源的问题。</li>
 </ol>
 <p>所以为了解决上述这些问题，我们需要<strong>为某些进程的运行提供独立的运行环境，从而避免它影响其他正常的进程</strong>。<strong>容器</strong>的本质目的就是如此。</p>
-<p>引用一下对容器的解释：容器就是一个视图隔离、资源可限制、独立文件系统的进程集合。所谓“视图隔离”就是能够看到部分进程以及具有独立的主机名等；控制资源使用率则是可以对于内存大小以及 CPU 使用个数等进行限制。容器就是一个进程集合，它将系统的其他资源隔离开来，具有自己独立的资源视图。<br>容器具有一个独立的文件系统，因为使用的是系统的资源，所以在独立的文件系统内不需要具备内核相关的代码或者工具，我们只需要提供容器所需的二进制文件、配置文件以及依赖即可。只要容器运行时所需的文件集合都能够具备，那么这个容器就能够运行起来。</p>
+<p>引用一下对容器的解释：容器就是一个<strong>视图隔离、资源可限制、独立文件系统</strong>的进程集合。所谓“视图隔离”就是能够看到部分进程以及具有独立的主机名等；控制资源使用率则是可以对于内存大小以及 CPU 使用个数等进行限制。容器就是一个进程集合，它将系统的其他资源隔离开来，具有自己独立的资源视图。<br>容器具有一个独立的文件系统，因为使用的是系统的资源，所以在独立的文件系统内不需要具备内核相关的代码或者工具，我们只需要提供容器所需的二进制文件、配置文件以及依赖即可。只要容器运行时所需的文件集合都能够具备，那么这个容器就能够运行起来。</p>
 <h3 id="什么是镜像？"><a href="#什么是镜像？" class="headerlink" title="什么是镜像？"></a>什么是镜像？</h3><p>我们将这些<strong>容器运行时所需要的所有的文件集合称之为容器镜像</strong>。（简单来说可以理解为容器运行所需要的所有的依赖文件构成的集合）</p>
 <p>那么怎么构建镜像呢？<br>通常情况下，我们会采用 Dockerfile 来构建镜像，<strong>Dockerfile 可以看做是一系列的命令，这些命令都会对已有的文件系统进行操作，这样就会带来文件系统内容的变化，直到最终将容器运行所需的所有依赖文件都构建出来，就构造好了对应的镜像。</strong></p>
 <h2 id="容器-与-VM"><a href="#容器-与-VM" class="headerlink" title="容器 与 VM"></a>容器 与 VM</h2><p>听起来容器和虚拟机（VM）作用非常像。但是想一想他们的差别还是比较明显的：<br><img src="%E5%AE%B9%E5%99%A8%E4%B8%8EVM%E7%9A%84%E5%8C%BA%E5%88%AB.PNG" alt="容器与VM的区别"><br>VM是从操作系统级别上进行隔离，因此隔离程度要大于容器，但也因此需要耗费更多的资源。<br>容器则比较轻量级，但是隔离效果自然弱于VM。</p>
@@ -157,10 +153,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt install docker.io</span><br></pre></td></tr></table></figure>
 
 <p>我运行的时候提示缺少<code>containerd</code>，只需要提前运行<code>sudo apt install containerd</code>进行安装就好了。</p>
-<h2 id="一些常用的命令"><a href="#一些常用的命令" class="headerlink" title="一些常用的命令"></a>一些常用的命令</h2><p>查看所有镜像： <code>docker images</code></p>
-<p>查看当前正在运行的容器： <code>docker ps</code></p>
-<p>查看所有容器（包含已退出的）： <code>docker ps -a</code></p>
-<p>删除镜像： <code>docker rmi 镜像id</code><br>删除容器： <code>docker rm 容器id</code><br>（删除镜像时需要先删除使用该镜像的容器）<br>（在删除时还可能遇到如下情况，多个镜像id相同，此时可以根据”REPOSITORY”和”TAR”进行删除）</p>
+<h2 id="一些常用的命令"><a href="#一些常用的命令" class="headerlink" title="一些常用的命令"></a>一些常用的命令</h2><p>查看所有镜像： <code>docker images</code><br>查看当前正在运行的容器： <code>docker ps</code><br>查看所有容器（包含已退出的）： <code>docker ps -a</code><br>删除镜像： <code>docker rmi 镜像id</code><br>删除容器： <code>docker rm 容器id</code><br>（删除镜像时需要先删除使用该镜像的容器）<br>（在删除时还可能遇到如下情况，多个镜像id相同，此时可以根据”REPOSITORY”和”TAR”进行删除）</p>
 <h2 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h2><p>这里以天池比赛的Docker入门赛为例，看一下Docker完整的使用过程。</p>
 <h3 id="任务描述"><a href="#任务描述" class="headerlink" title="任务描述"></a>任务描述</h3><ul>
 <li>输出Hello world</li>
@@ -199,7 +192,7 @@
 </li>
 </ol>
 <p>注意推送之前需要登录登录阿里云Docker Registry：<br><code>sudo docker login --username=用户名 registry.cn-hangzhou.aliyuncs.com</code><br>用于登录的用户名为阿里云账号全名，密码为开通服务时设置的密码。</p>
-<p>推送完之后，就可以去天池系统进行提交了<br><img src="%E9%95%9C%E5%83%8F%E6%8F%90%E4%BA%A4.png" alt="镜像提交"><br>根据【我的成绩】中的分数和日志可以查看运行情况。</p>
+<p><strong>3. 天池系统提交</strong><br>推送完之后，就可以去天池系统进行提交了<br><img src="%E9%95%9C%E5%83%8F%E6%8F%90%E4%BA%A4.png" alt="镜像提交"><br>根据【我的成绩】中的分数和日志可以查看运行情况。</p>
 </article>
                         </main>
                         
