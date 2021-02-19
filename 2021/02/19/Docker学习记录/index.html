@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>Docker学习记录-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">Docker学习记录</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2021-02-19</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/docker/">docker</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><h1 id="Docker使用记录"><a href="#Docker使用记录" class="headerlink" title="Docker使用记录"></a>Docker使用记录</h1><p>今天初次接触Docker的使用，记录一下自己的学习心得和理解，加深一下印象。</p>
+<h2 id="Dockder是啥？"><a href="#Dockder是啥？" class="headerlink" title="Dockder是啥？"></a>Dockder是啥？</h2><p>首先需要理解几个概念：<strong>镜像，容器</strong></p>
+<h3 id="什么是容器？"><a href="#什么是容器？" class="headerlink" title="什么是容器？"></a>什么是容器？</h3><p>简单来说，操作系统在管理进程时，可以把整个操作系统看成一个大的容器，所有的进程在这一个容器中运行。因此这些进程之间有几个特点：</p>
+<ol>
+<li>进程之间能够互相看见，能够通信。这会导致不同进程之间的相互影响。</li>
+<li>所有进程都使用同一个文件系统。这会导致不同进程之间的数据能够被所有进程进行增删改查，可能会造成进程间数据的破坏，从而影响其他进程的正常运行。</li>
+<li>所有进程使用相同的系统资源。（如CPU，内存等），这样导致进程之间存在抢占资源的问题。</li>
+</ol>
+<p>所以为了解决上述这些问题，我们需要<strong>为某些进程的运行提供独立的运行环境，从而避免它影响其他正常的进程</strong>。<strong>容器</strong>的本质目的就是如此。</p>
+<p>引用一下对容器的解释：容器就是一个视图隔离、资源可限制、独立文件系统的进程集合。所谓“视图隔离”就是能够看到部分进程以及具有独立的主机名等；控制资源使用率则是可以对于内存大小以及 CPU 使用个数等进行限制。容器就是一个进程集合，它将系统的其他资源隔离开来，具有自己独立的资源视图。<br>容器具有一个独立的文件系统，因为使用的是系统的资源，所以在独立的文件系统内不需要具备内核相关的代码或者工具，我们只需要提供容器所需的二进制文件、配置文件以及依赖即可。只要容器运行时所需的文件集合都能够具备，那么这个容器就能够运行起来。</p>
+<h3 id="什么是镜像？"><a href="#什么是镜像？" class="headerlink" title="什么是镜像？"></a>什么是镜像？</h3><p>我们将这些<strong>容器运行时所需要的所有的文件集合称之为容器镜像</strong>。（简单来说可以理解为容器运行所需要的所有的依赖文件构成的集合）</p>
+<p>那么怎么构建镜像呢？<br>通常情况下，我们会采用 Dockerfile 来构建镜像，<strong>Dockerfile 可以看做是一系列的命令，这些命令都会对已有的文件系统进行操作，这样就会带来文件系统内容的变化，直到最终将容器运行所需的所有依赖文件都构建出来，就构造好了对应的镜像。</strong></p>
+<h2 id="容器-与-VM"><a href="#容器-与-VM" class="headerlink" title="容器 与 VM"></a>容器 与 VM</h2><p>听起来容器和虚拟机（VM）作用非常像。但是想一想他们的差别还是比较明显的：<br><img src="%E5%AE%B9%E5%99%A8%E4%B8%8EVM%E7%9A%84%E5%8C%BA%E5%88%AB.PNG" alt="容器与VM的区别"><br>VM是从操作系统级别上进行隔离，因此隔离程度要大于容器，但也因此需要耗费更多的资源。<br>容器则比较轻量级，但是隔离效果自然弱于VM。</p>
+<h2 id="Docker安装与配置"><a href="#Docker安装与配置" class="headerlink" title="Docker安装与配置"></a>Docker安装与配置</h2><p>Windows的安装教程见<a href="https://docs.docker.com/docker-for-windows/install/?spm=5176.12586973.0.0.573c2232pBtzGj" target="_blank" rel="noopener">这里</a><br>基本上下载安装就好了。</p>
+<p>Ubuntu系统上可以直接输入如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt install docker.io</span><br></pre></td></tr></table></figure>
+
+<p>我运行的时候提示缺少<code>containerd</code>，只需要提前运行<code>sudo apt install containerd</code>进行安装就好了。</p>
+<h2 id="一些常用的命令"><a href="#一些常用的命令" class="headerlink" title="一些常用的命令"></a>一些常用的命令</h2><p>查看所有镜像： <code>docker images</code></p>
+<p>查看当前正在运行的容器： <code>docker ps</code></p>
+<p>查看所有容器（包含已退出的）： <code>docker ps -a</code></p>
+<p>删除镜像： <code>docker rmi 镜像id</code><br>删除容器： <code>docker rm 容器id</code><br>（删除镜像时需要先删除使用该镜像的容器）<br>（在删除时还可能遇到如下情况，多个镜像id相同，此时可以根据”REPOSITORY”和”TAR”进行删除）</p>
+<h2 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h2><p>这里以天池比赛的Docker入门赛为例，看一下Docker完整的使用过程。</p>
+<h3 id="任务描述"><a href="#任务描述" class="headerlink" title="任务描述"></a>任务描述</h3><ul>
+<li>输出Hello world</li>
+<li>计算 /tcdata/num_list.csv中一列数字的总和。</li>
+<li>在/tcdata/num_list.csv文件中寻找最大的10个数，从大到小生成一个ListList.</li>
+</ul>
+<p>num_list.csv文件中只有一列不为负的整数，其中存在重复值。<br>生成入口脚本run.sh，放置于镜像工作目录。运行后生成结果result.json放置于工作目录（与run.sh同目录），评分系统将根据result.json进行打分。json文件如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;  </span><br><span class="line">    &quot;Q1&quot;:&quot;Hello world&quot;, </span><br><span class="line">    &quot;Q2&quot;:sum值, </span><br><span class="line">    &quot;Q3&quot;:[top10_list] </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>天池的比赛提交规则就是提交一个镜像，要求容器执行之后能够生成比赛要求的包含输出结果的文件，然后根据结果进行成绩判定。<br>在这里，要输出的结果就是<code>result.json</code>文件。</p>
+<h3 id="使用过程"><a href="#使用过程" class="headerlink" title="使用过程"></a>使用过程</h3><p>整个过程主要包括：<strong>镜像的构建，镜像的推送，提交系统进行判定。</strong></p>
+<p><strong>1. 镜像构建</strong><br>天池已准备了常用的Python基础镜像，可直接拉取使用：<code>docker pull registry.cn-shanghai.aliyuncs.com/tcc-public/python:3</code><br>这个过程类似于导入python包一样，在Dockerfile中就可以使用<code>FROM</code>命令来直接使用。</p>
+<p>然后我们在一个新文件夹中需要准备的就是如下几个文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">——</span><br><span class="line"> |-Dockerfile</span><br><span class="line"> |-hello_world.py</span><br><span class="line"> |-run.sh</span><br></pre></td></tr></table></figure>
+
+<p>其中，Dockerfile文件用来构建镜像，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># Base Images</span><br><span class="line">## 从天池基础镜像构建</span><br><span class="line">FROM registry.cn-shanghai.aliyuncs.com/tcc-public/python:3</span><br><span class="line"></span><br><span class="line">## 把当前文件夹里的文件构建到镜像的根目录下</span><br><span class="line">ADD . /</span><br><span class="line"></span><br><span class="line">## 指定默认工作目录为根目录（需要把run.sh和生成的结果文件都放在该文件夹下，提交后才能运行）</span><br><span class="line">WORKDIR /</span><br><span class="line"></span><br><span class="line">## 镜像启动后统一执行 sh run.sh</span><br><span class="line">CMD [&quot;sh&quot;, &quot;run.sh&quot;]</span><br></pre></td></tr></table></figure>
+
+<p><code>hello_world.py</code>文件就是编写的要实现题目中要求的文件。这里示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="comment"># 要求1的结果</span></span><br><span class="line">r1 = <span class="string">"Hello world"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取数据</span></span><br><span class="line">data = []</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'tcdata/num_list.csv'</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> f:</span><br><span class="line">		data.append(int(i))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 要求2的结果</span></span><br><span class="line">r2 = sum(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 要求3的结果</span></span><br><span class="line">r3 = sorted(data, reverse=<span class="literal">True</span>)[:<span class="number">10</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出结果文件</span></span><br><span class="line">result = &#123;<span class="string">"Q1"</span>: r1, <span class="string">"Q2"</span>: r2, <span class="string">"Q3"</span>: r3&#125;</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"result.json"</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">	json.dump(result, f)</span><br></pre></td></tr></table></figure>
+
+<p><code>run.sh</code>文件就是一个sh脚本文件，这里的作用就是执行该目录下的<code>hello_world.py</code>文件从而生成结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python hello_world.py</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. 镜像的推送</strong><br>天池比赛需要将镜像推送到阿里云镜像仓库进行提交，因此需要先注册一个阿里云的镜像服务。<a href="https://www.aliyun.com/product/acr?" target="_blank" rel="noopener">阿里云容器镜像服务</a>免费开通镜像托管。建议设置私有仓库，并一定牢记仓库密码，后续提交需要使用。</p>
+<p>开通后进入镜像仓库，创建命名空间以及镜像仓库，仓库类型设为私有，代码源设为本地仓库。<br>创建成功之后，可以看到详情页，仓库地址一般使用公网地址即可。</p>
+<p>然后我们构建我们本地的镜像并推送到仓库中：</p>
+<ol>
+<li>执行<code>docker build -t 仓库地址:版本号 .</code>命令构建镜像。仓库地址是刚刚创建的仓库地址的公网地址，版本号自己命名，用来区分每次构建的镜像。最后的<code>.</code>是构建镜像的路径，因为是当前目录，所以是<code>.</code>，不能省略。</li>
+</ol>
+<p>这里参考<a href="https://tianchi.aliyun.com/competition/entrance/231759/tab/174?spm=5176.12281978.0.0.37724127ZpsgRZ" target="_blank" rel="noopener">官方教程</a>，假设仓库地址是<code>registry.cn-shenzhen.aliyuncs.com/test_for_tianchi/test_for_tianchi_submit</code>，所以完整命令为：<code>docker build -t registry.cn-shenzhen.aliyuncs.com/test_for_tianchi/test_for_tianchi_submit</code><br><img src="docker_build.png" alt="docker_build"></p>
+<ol start="2">
+<li><p>构建完成后可先验证是否正常运行，正常运行后再进行推送。<br>CPU镜像：<code>docker run your_image sh run.sh</code><br>GPU镜像：<code>nvidia-docker run your_image sh run.sh</code></p>
+</li>
+<li><p>推送到镜像仓库 <code>docker push registry.cn-shenzhen.aliyuncs.com/test_for_tianchi/test_for_tianchi_submit:1.0</code></p>
+</li>
+</ol>
+<p>注意推送之前需要登录登录阿里云Docker Registry：<br><code>sudo docker login --username=用户名 registry.cn-hangzhou.aliyuncs.com</code><br>用于登录的用户名为阿里云账号全名，密码为开通服务时设置的密码。</p>
+<p>推送完之后，就可以去天池系统进行提交了<br><img src="%E9%95%9C%E5%83%8F%E6%8F%90%E4%BA%A4.png" alt="镜像提交"><br>根据【我的成绩】中的分数和日志可以查看运行情况。</p>
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/11/28/Integrating-Semantic-and-Structural-Information-with-Graph-Convolutional-Network-for-Controversy-Detection/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">文章笔记|Integrating Semantic and Structural Information with Graph Convolutional Network for Controversy Detection
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2020/11/28/Integrating-Semantic-and-Structural-Information-with-Graph-Convolutional-Network-for-Controversy-Detection/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">文章笔记|Integrating Semantic and Structural Information with Graph Convolutional Network for Controversy Detection
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Docker使用记录"><span class="toc-text">Docker使用记录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Dockder是啥？"><span class="toc-text">Dockder是啥？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是容器？"><span class="toc-text">什么是容器？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是镜像？"><span class="toc-text">什么是镜像？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#容器-与-VM"><span class="toc-text">容器 与 VM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker安装与配置"><span class="toc-text">Docker安装与配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一些常用的命令"><span class="toc-text">一些常用的命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用示例"><span class="toc-text">使用示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#任务描述"><span class="toc-text">任务描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用过程"><span class="toc-text">使用过程</span></a></li></ol></li></ol></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>
