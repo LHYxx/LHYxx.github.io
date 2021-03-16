@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>Pytorch中的RNN及变种模型与变长序列的处理-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">Pytorch中的RNN及变种模型与变长序列的处理</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2021-03-16</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/pytorch/">pytorch</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><h1 id="Pytorch中RNN模型的及变长序列的处理"><a href="#Pytorch中RNN模型的及变长序列的处理" class="headerlink" title="Pytorch中RNN模型的及变长序列的处理"></a>Pytorch中RNN模型的及变长序列的处理</h1><p>主要内容：</p>
+<ul>
+<li>RNN模型（包括GRU以及LSTM）的使用说明</li>
+<li>处理变长序列的方法以及一些小技巧</li>
+<li>pack_padded_sequence 与 pad_packed_sequence</li>
+<li>使用RNN进行文本处理的基本步骤</li>
+</ul>
+<p>对于RNN模型的原理说明，已经是非常熟悉了，网上也有很多详细的讲解文章。本文就不赘述RNN模型的数学原理了，而是从实际代码实现与使用的角度来阐述。毕竟，“原理我都懂了，但是就是不会用”，应该是很多同学的通病。理论和实际应用还是有一定的gap的。本文则通过总结最近对pytorch中RNN模型的使用，来从如何编码使用RNN模型的角度，来着力于提升实际动手操作的能力。</p>
+<h2 id="RNN模型（包括GRU以及LSTM）的使用说明"><a href="#RNN模型（包括GRU以及LSTM）的使用说明" class="headerlink" title="RNN模型（包括GRU以及LSTM）的使用说明"></a>RNN模型（包括GRU以及LSTM）的使用说明</h2><h3 id="torch-nn-RNN"><a href="#torch-nn-RNN" class="headerlink" title="torch.nn.RNN"></a>torch.nn.RNN</h3><h4 id="RNN原理"><a href="#RNN原理" class="headerlink" title="RNN原理"></a>RNN原理</h4><p>基本RNN计算公式如下：<br>$$<br>\mathrm{h}_ {\mathrm{t}}=\tanh \left(\mathrm{W}_ {\mathrm{ih}} \mathrm{x}_ {\mathrm{t}}+\mathrm{b}_ {\mathrm{ih}}+\mathrm{W}_ {\mathrm{hh}} \mathrm{h}_ {(\mathrm{t}-1)}+\mathrm{b}_ {\mathrm{hh}}\right)<br>$$<br>其中$\mathrm{h}_ {\mathrm{t}}$是时刻$t$的隐状态（hidden state），$\mathrm{x}_ {\mathrm{t}}$是$t$时刻的输入，$\mathrm{h}_ {(\mathrm{t}-1)}$是$t-1$时刻的状态。<br>因此，简单来说一句话：RNN就是根据当前时刻的输入和上一时刻的状态求当前时刻的状态，就可以简化成一个函数：$\mathrm{h}_ i = f(\mathrm{x}_ i, \mathrm{h}_ {i-1})$。</p>
+<h4 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h4><ul>
+<li><p>模型参数</p>
+<ul>
+<li>input_size：输入向量维度</li>
+<li>hidden_size：隐层状态维度</li>
+<li>num_layers：RNN层数</li>
+<li>nonlinearity：使用哪种非线性激活函数。[tanh, relu]，Default：tanh</li>
+<li>bias：bool, 如果为False，则不使用偏置项。Default: True</li>
+<li>batch_first: bool, 如果为True，则输入形状为(batch, seq, feature)。默认为False，因此RNN的默认输入形状为(seq, batch, feature)</li>
+<li>dropout：float, 指定dropout率，Default: 0</li>
+<li>bidirectional：是否为双向。Default：False</li>
+</ul>
+</li>
+<li><p>输入说明</p>
+<ul>
+<li>input：Tensor，形状(seq_len, batch, input_size)。或者是使用<code>torch.nn.utils.rnn.pack_padded_sequence()</code>进行pack过的对象。</li>
+<li>h_0： (num_layers * num_directions, batch, hidden_size)。如果RNN初始状态没有指定，则默认为全零张量。如果bidirectional为True，则num_directions=2，否则为1。</li>
+</ul>
+</li>
+<li><p>输出说明</p>
+<ul>
+<li>output：(seq_len, batch, num_directions * hidden_size)。输出<strong>最后一层每个step的隐层特征</strong>。如果输入是 <code>torch.nn.utils.rnn.PackedSequence</code>对象，则输出也是经过packed的对象，需要使用 <code>torch.nn.utils.rnn.pack_sequence()</code> 给变回Tensor。如果指定<code>batch_first=True</code>，则输出形状为(batch, seq_len, num_directions * hidden_size)。</li>
+<li>h_n： (num_layers * num_directions, batch, hidden_size)。输出<strong>每一层最后一个step的隐层特征</strong>。</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>对于RNN模型的输出output，可以使用<code>output.view(seq_len, batch, num_directions, hidden_size)</code>来分离方向维度，第0维是前向，第1维是反向。<br>对于RNN模型的隐层状态h_n，可以使用<code>h_n.view(num_layers, num_directions, batch, hidden_size)</code>来分离层数维度和方向维度。</li>
+<li>对于双向RNN来说，前向传播中，最后一个step是最后时刻的输出，即<code>output[-1, :, :]</code>。而对于反向传播中，第0个step是最后时刻的状态，即<code>output[0, :, :]</code>。</li>
+</ol>
+<h4 id="RNN用例"><a href="#RNN用例" class="headerlink" title="RNN用例"></a>RNN用例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rnn = nn.RNN(10, 20, 2)</span><br><span class="line">input = torch.randn(5, 3, 10)</span><br><span class="line">h0 = torch.randn(2, 3, 20)</span><br><span class="line">output, hn = rnn(input, h0)</span><br></pre></td></tr></table></figure>
+
+<h3 id="torch-nn-GRU"><a href="#torch-nn-GRU" class="headerlink" title="torch.nn.GRU"></a>torch.nn.GRU</h3><h4 id="GRU原理"><a href="#GRU原理" class="headerlink" title="GRU原理"></a>GRU原理</h4><p>GRU计算公式如下：<br>$$<br>\begin{aligned}<br>r_{t} &amp;=\sigma\left(W_{i r} x_{t}+b_{i r}+W_{h r} h_{(t-1)}+b_{h r}\right) \<br>z_{t} &amp;=\sigma\left(W_{i z} x_{t}+b_{i z}+W_{h z} h_{(t-1)}+b_{h z}\right) \<br>n_{t} &amp;=\tanh \left(W_{i n} x_{t}+b_{i n}+r_{t} * \left(W_{h n} h_{(t-1)}+b_{h n}\right)\right) \<br>h_{t} &amp;=\left(1-z_{t}\right) * n_{t}+z_{t} * h_{(t-1)}<br>\end{aligned}<br>$$<br>GRU中增加了两个门控装置，分别是reset 和 update 门，分别对应$r_{t}, z_{t}$。 $n_{t}$ 则是经过门控之前的下一时刻的状态，然后将下一个时刻的状态$n_{t}$与上一时刻的状态$h_{t-1}$通过reset门和update门进行加劝分配得到最终的下一时刻的状态$h_{t}$。<br>公式中*表示Hadamard积，$\sigma$表示sigmoid函数。<br>根据公式，我们可以将三个门控分别看作三个函数：<br>$$r_{t} = f(x_{t}, h_{t-1})$$<br>$$z_{t} = f(x_{t}, h_{t-1})$$<br>$$n_{t} = f(x_{t}, h_{t-1}, r_{t})$$<br>至于这些函数应该如何实现和设计，就都是使用神经网络自己去根据数据学习拟合的了，在训练的过程中不断调整函数中的参数，从而最终学到合适的函数。这也是神经网络的强大之处，人们只需要指定变量之间的关系，至于他们到底有什么关系，就交给神经网络自己去根据数据拟合了，只要有足够大规模的训练数据即可。</p>
+<h4 id="参数说明-1"><a href="#参数说明-1" class="headerlink" title="参数说明"></a>参数说明</h4><p>GRU模型与RNN在使用上可以说完全一致。基本参数可以参见RNN部分的参数说明。</p>
+<ul>
+<li><p>模型参数</p>
+<ul>
+<li>input_size</li>
+<li>hidden_size </li>
+<li>num_layers </li>
+<li>bias </li>
+<li>batch_first </li>
+<li>dropout </li>
+<li>bidirectional </li>
+</ul>
+</li>
+<li><p>输入参数</p>
+<ul>
+<li>input ： (seq_len, batch, input_size)</li>
+<li>h_0 ： (num_layers * num_directions, batch, hidden_size)</li>
+</ul>
+</li>
+<li><p>输出参数</p>
+<ul>
+<li>output ： (seq_len, batch, num_directions * hidden_size)</li>
+<li>h_n ：(num_layers * num_directions, batch, hidden_size)</li>
+</ul>
+</li>
+</ul>
+<h4 id="GRU用例"><a href="#GRU用例" class="headerlink" title="GRU用例"></a>GRU用例</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rnn = nn.GRU(<span class="number">10</span>, <span class="number">20</span>, <span class="number">2</span>)</span><br><span class="line">input = torch.randn(<span class="number">5</span>, <span class="number">3</span>, <span class="number">10</span>)</span><br><span class="line">h0 = torch.randn(<span class="number">2</span>, <span class="number">3</span>, <span class="number">20</span>)</span><br><span class="line">output, hn = rnn(input, h0)</span><br></pre></td></tr></table></figure>
+
+<h3 id="torch-nn-LSTM"><a href="#torch-nn-LSTM" class="headerlink" title="torch.nn.LSTM"></a>torch.nn.LSTM</h3><h4 id="LSTM原理"><a href="#LSTM原理" class="headerlink" title="LSTM原理"></a>LSTM原理</h4><p>LSTM计算公式如下：<br>$$<br>\begin{aligned}<br>i_{t} &amp;=\sigma\left(W_{i i} x_{t}+b_{i i}+W_{h i} h_{t-1}+b_{h i}\right) \<br>f_{t} &amp;=\sigma\left(W_{i f} x_{t}+b_{i f}+W_{h f} h_{t-1}+b_{h f}\right) \<br>o_{t} &amp;=\sigma\left(W_{i o} x_{t}+b_{i o}+W_{h o} h_{t-1}+b_{h o}\right) \<br>g_{t} &amp;=\tanh \left(W_{i g} x_{t}+b_{i g}+W_{h g} h_{t-1}+b_{h g}\right) \<br>c_{t} &amp;=f_{t} \odot c_{t-1}+i_{t} \odot g_{t} \<br>h_{t} &amp;=o_{t} \odot \tanh \left(c_{t}\right)<br>\end{aligned}<br>$$</p>
+<p>LSTM中增加了三个门控装置，分别是 input, forget, output 门，分别对应$i_{t}, f_{t}, o_{t}$。公式中$\odot$表示Hadamard积，$\sigma$表示sigmoid函数。<br>根据公式，我们可以将三个门控分别看作三个函数：<br>$$i_{t} = f(x_{t}, h_{t-1})$$<br>$$f_{t} = f(x_{t}, h_{t-1})$$<br>$$o_{t} = f(x_{t}, h_{t-1})$$<br>也就是说，三个门控装置都是根据输入$x$和上一时刻的隐状态$h_{t-1}$决定的。$g_{t}$是不经过门控时的下一时刻的状态。得到三个门控信号以及不经门控时的下一时刻的状态$g_{t}$后，更新cell状态，也就是上一时刻的cell状态经过forget门来控制遗忘部分内容，下一时刻的状态经过输入门控制输入部分内容，共同得到下一时刻的cell状态。最后cell状态经过output门控制输出部分内容，从而输出$h_{t}$。</p>
+<h4 id="参数说明-2"><a href="#参数说明-2" class="headerlink" title="参数说明"></a>参数说明</h4><p>LSTM模型的基本参数与RNN和GRU相同。稍微有些不同的地方在于模型的输入与输出。LSTM模型除了每个step的隐状态$h_{t}$之外，还有每个step的cell状态$c_{t}$。cell状态与输出的hidden状态上面公式已经解释了，也就是cell的状态并没有直接输出，而是通过一个输出门来控制输出哪些内容。</p>
+<ul>
+<li><p>模型参数</p>
+<ul>
+<li>input_size</li>
+<li>hidden_size </li>
+<li>num_layers </li>
+<li>bias </li>
+<li>batch_first </li>
+<li>dropout </li>
+<li>bidirectional </li>
+</ul>
+</li>
+<li><p>输入参数</p>
+<ul>
+<li>input ： (seq_len, batch, input_size)</li>
+<li>h_0 ： (num_layers * num_directions, batch, hidden_size)，初始状态。若不提供则默认为全零。</li>
+<li>c_0 ： (num_layers * num_directions, batch, hidden_size)，初始cell状态。若不提供则默认全零。</li>
+</ul>
+</li>
+<li><p>输出参数</p>
+<ul>
+<li>output ： (seq_len, batch, num_directions * hidden_size)，最后一层每个step的输出特征。</li>
+<li>h_n ：(num_layers * num_directions, batch, hidden_size)，每一层的最后一个step的输出特征。</li>
+<li>c_n ：(num_layers * num_directions, batch, hidden_size)，每一层的最后一个step的cell状态。</li>
+</ul>
+</li>
+</ul>
+<h4 id="LSTM用例"><a href="#LSTM用例" class="headerlink" title="LSTM用例"></a>LSTM用例</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rnn = nn.LSTM(<span class="number">10</span>, <span class="number">20</span>, <span class="number">2</span>)</span><br><span class="line">input = torch.randn(<span class="number">5</span>, <span class="number">3</span>, <span class="number">10</span>)</span><br><span class="line">h0 = torch.randn(<span class="number">2</span>, <span class="number">3</span>, <span class="number">20</span>)</span><br><span class="line">c0 = torch.randn(<span class="number">2</span>, <span class="number">3</span>, <span class="number">20</span>)</span><br><span class="line">output, (hn, cn) = rnn(input, (h0, c0))</span><br></pre></td></tr></table></figure>
+
+<h2 id="处理变长序列"><a href="#处理变长序列" class="headerlink" title="处理变长序列"></a>处理变长序列</h2><p>在处理文本数据时，通常一个batch中的句子长度都不一样。<br>例如如下几个句子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[it is a lovely day]</span><br><span class="line">[i love chinese food]</span><br><span class="line">[i love music]</span><br><span class="line"></span><br><span class="line">对应词典</span><br><span class="line">&#123;pad:0, it:1, is:2, a:3, lovely:4, day:5, i:6, love:7, chinese:8, food:9, music:10&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而pytorch中Tensor一定是所有向量的维度都相同的。因此在处理变长序列时，需要进行以下步骤：</p>
+<p>首先，将所有文本padding成固定长度。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[1, 2, 3, 4, 5]</span><br><span class="line">[6, 7, 8, 9, 0]</span><br><span class="line">[6, 7, 10, 0, 0]</span><br></pre></td></tr></table></figure>
+
+<p>然后将单词转化为one_hot的形式，变为(batch, seq_len, vocabsize)形状的Tensor。</p>
+<p>到这里，所有句子都padding成了相同的长度，但是现在还不能直接送到RNN中，因为句子中有大量的0（PAD），这些PAD也送入RNN中的话，也会影响对句子的计算过程。为了排除这些PAD的影响，pytorch提供了两个函数<code>torch.nn.utils.rnn.pack_padded_sequence</code> 和 <code>torch.nn.utils.rnn.pad_packed_sequence</code>。下面介绍一下这两个函数的使用。</p>
+<h3 id="pack-and-pad"><a href="#pack-and-pad" class="headerlink" title="pack and pad"></a>pack and pad</h3><p><code>torch.nn.utils.rnn.pack_padded_sequence(input, lengths, batch_first=False, enforce_sorted=True)</code></p>
+<ul>
+<li>参数<ul>
+<li>input: Tensor， (seq_len, batch, *)，*表示可以是任意维度，如果是one-hot表示，则是vocabsize维度，如果是其他embedding表示，则是对应embedding的维度。这里输入的是padding之后得到的Tensor，因此seq_len都是固定长度的。</li>
+<li>lengths： Tensor， batch中每个句子的真实长度。</li>
+<li>batch_first： 第一维度是否是batch</li>
+<li>enforce_sorted</li>
+</ul>
+</li>
+</ul>
+<p><code>torch.nn.utils.rnn.pad_packed_sequence(sequence, batch_first=False, padding_value=0.0, total_length=None)</code></p>
+<ul>
+<li>参数<ul>
+<li>sequence：batch to pad</li>
+<li>batch_first： if True, the output will be in B x T x * format.</li>
+<li>padding_value：values for padded elements.</li>
+<li>total_length： if not None, the output will be padded to have length total_length</li>
+</ul>
+</li>
+</ul>
+<p>在实际使用中，<code>pack_padded_sequence</code>函数将padding之后的Tensor作为输入，<code>pack_padded_sequence</code>输出一个<code>PackedSequence</code>对象，其中Tensor中padding的部分都去掉了,也就是只保留了序列的真实长度。<br>然后经过RNN模型或者双向RNN模型，得到输出。<br>之后再利用<code>pad_packed_sequence</code>函数将RNN的输出结果变回来。</p>
+<p>一个使用示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">from</span> torch.nn.utils.rnn <span class="keyword">import</span> pack_padded_sequence, pad_packed_sequence</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># padding函数</span></span><br><span class="line">x: [[w1, w2,...], [w1, w2, ...], ...]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">padding</span><span class="params">(x)</span>:</span></span><br><span class="line">    maxlen = max([len(l) <span class="keyword">for</span> l <span class="keyword">in</span> x])</span><br><span class="line">    <span class="keyword">for</span> sen <span class="keyword">in</span> x:</span><br><span class="line">        <span class="keyword">if</span> len(sen) &lt; maxlen:</span><br><span class="line">            sen.extend([<span class="number">0</span>] * (maxlen-len(sen)))</span><br><span class="line">    <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line"><span class="comment"># 句子单词映射到onehot表示</span></span><br><span class="line"><span class="comment"># V: 单词表， padded_tokens：padding之后的输入</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">id2onehot</span><span class="params">(V, padded_tokens)</span>:</span></span><br><span class="line">    onehot = np.eye((len(V)))</span><br><span class="line">    embeddings = []</span><br><span class="line">    <span class="keyword">for</span> sen <span class="keyword">in</span> padded_tokens:</span><br><span class="line">        sen_embdding = []</span><br><span class="line">        <span class="keyword">for</span> i,tokenid <span class="keyword">in</span> enumerate(sen):</span><br><span class="line">            sen_embdding.append(onehot[tokenid].tolist())</span><br><span class="line">        embeddings.append(sen_embdding)</span><br><span class="line">    <span class="comment"># print(embeddings)</span></span><br><span class="line">    <span class="keyword">return</span> torch.FloatTensor(embeddings)</span><br><span class="line"></span><br><span class="line">V = &#123;<span class="string">'PAD'</span>:<span class="number">0</span>, <span class="string">'a'</span>:<span class="number">1</span>, <span class="string">'b'</span>:<span class="number">2</span>, <span class="string">'c'</span>:<span class="number">3</span>, <span class="string">'d'</span>:<span class="number">4</span>&#125;</span><br><span class="line">sentences = [<span class="string">'abcd'</span>, <span class="string">'d'</span>, <span class="string">'acb'</span>]</span><br><span class="line">sen_lens = [len(x) <span class="keyword">for</span> x <span class="keyword">in</span> sentences]</span><br><span class="line"></span><br><span class="line">tokens = []</span><br><span class="line"><span class="keyword">for</span> sen <span class="keyword">in</span> sentences:</span><br><span class="line">    token = []</span><br><span class="line">    <span class="keyword">for</span> c <span class="keyword">in</span> sen:</span><br><span class="line">        token.append(V[c])</span><br><span class="line">    tokens.append(token)</span><br><span class="line"></span><br><span class="line">padded_tokens = padding(tokens)</span><br><span class="line">X = id2onehot(V, padded_tokens)</span><br><span class="line"><span class="comment"># print(X)</span></span><br><span class="line"></span><br><span class="line">torch.random.manual_seed(<span class="number">10</span>)</span><br><span class="line"><span class="comment"># 定义一个双向lstm网络层</span></span><br><span class="line">lstm = nn.LSTM(<span class="number">5</span>, <span class="number">3</span>, num_layers=<span class="number">1</span>, batch_first=<span class="literal">True</span>, bidirectional=<span class="literal">True</span>)  </span><br><span class="line"></span><br><span class="line">X = X.float()</span><br><span class="line"><span class="comment"># 压紧数据，去掉padding部分</span></span><br><span class="line">packed = pack_padded_sequence(X, torch.tensor(sen_lens), batch_first=<span class="literal">True</span>, enforce_sorted=<span class="literal">False</span>)</span><br><span class="line">print(packed)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过lstm进行计算，得到的结果也是压紧的</span></span><br><span class="line">output, hidden = lstm(packed)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压，恢复成带padding的形式</span></span><br><span class="line">encoder_outputs, lenghts = pad_packed_sequence(output, batch_first=<span class="literal">True</span>)  </span><br><span class="line">print(encoder_outputs)</span><br></pre></td></tr></table></figure>
+
+<p>上面的例子中，输入的句子长度是没有经过排序的，输入到<code>pack_padded_sequence</code>函数的输入句子并不是按照长度排序的。网上很多教程都说必须要将输入句子按照长度进行排序，然后输入到<code>pack_padded_sequence</code>中，之后再把顺序变回来。<br>但是我看pytorch官方手册里，<code>pack_padded_sequence</code>函数实际上有一个参数<code>enforce_sorted</code>的，该参数默认是<code>True</code>。如果该参数为<code>True</code>，则输入的句子应该按照长度顺序排序。而如果是<code>False</code>的话，实际上输入句子不排序也可以。那么什么情况下需要将该参数设为<code>True</code>呢？手册上是这么写的：</p>
+<blockquote>
+<p>For unsorted sequences, use enforce_sorted = False. If enforce_sorted is True, the sequences should be sorted by length in a decreasing order, i.e. input[:,0] should be the longest sequence, and input[:,B-1] the shortest one. enforce_sorted = True is only necessary for ONNX export.</p>
+</blockquote>
+<p>即只有使用ONNX export时，必须将该参数设为<code>True</code>。也就是说，平常使用的时候，不是必须设为<code>True</code>的，我们将该参数设为<code>False</code>，就可以直接输入无序的句子了，不用再手动对其排序，之后再变回来了。这样省事多了。</p>
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/02/24/LeetCode1052-爱生气的图书馆老板/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">LeetCode1052 爱生气的图书馆老板
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/02/24/LeetCode1052-爱生气的图书馆老板/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">LeetCode1052 爱生气的图书馆老板
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Pytorch中RNN模型的及变长序列的处理"><span class="toc-text">Pytorch中RNN模型的及变长序列的处理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#RNN模型（包括GRU以及LSTM）的使用说明"><span class="toc-text">RNN模型（包括GRU以及LSTM）的使用说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#torch-nn-RNN"><span class="toc-text">torch.nn.RNN</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#RNN原理"><span class="toc-text">RNN原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#参数说明"><span class="toc-text">参数说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RNN用例"><span class="toc-text">RNN用例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#torch-nn-GRU"><span class="toc-text">torch.nn.GRU</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#GRU原理"><span class="toc-text">GRU原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#参数说明-1"><span class="toc-text">参数说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GRU用例"><span class="toc-text">GRU用例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#torch-nn-LSTM"><span class="toc-text">torch.nn.LSTM</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#LSTM原理"><span class="toc-text">LSTM原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#参数说明-2"><span class="toc-text">参数说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LSTM用例"><span class="toc-text">LSTM用例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#处理变长序列"><span class="toc-text">处理变长序列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pack-and-pad"><span class="toc-text">pack and pad</span></a></li></ol></li></ol></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>
