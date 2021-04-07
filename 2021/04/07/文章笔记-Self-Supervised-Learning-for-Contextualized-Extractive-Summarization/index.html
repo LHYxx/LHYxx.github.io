@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>文章笔记|Self-Supervised Learning for Contextualized Extractive Summarization-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">文章笔记|Self-Supervised Learning for Contextualized Extractive Summarization</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2021-04-07</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/paper/">paper</a>
+                </li>
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/summarization/">summarization</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><p>来源：Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics（ACL2019）</p>
+<p>一句话不看版：<strong>用三个句子级别的预训练任务来预训练encoder，然后通过标注的少量数据微调最后的分类层，对每个句子判断是否被选为摘要。在CNN-DM数据上进行实验验证。</strong></p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><ol>
+<li><p>之前的摘要工作大多直接构建一个end-to-end模型来学习该抽取哪些句子。这些方法默认模型能够自动学习句子的全局信息（文档上下文，document context），因此没有显示地建模句子的全局信息。</p>
+</li>
+<li><p>作者认为这些模型应该很难自动学习文档上下文，而一个好的融合了文档上下文信息的预训练模型对于这个任务会有很大帮助。</p>
+</li>
+<li><p>最近的单词或者句子的表示学习的方法，也大多使用少量的单词或句子进行表示学习，因此也无法包含文档级别的上下文信息。</p>
+</li>
+<li><p>因此，本文提出使用自监督的预训练方法来学习融合文档级别上下文信息的句子表示。</p>
+</li>
+<li><p><a href="https://github.com/hongwang600/Summarization" target="_blank" rel="noopener">代码</a></p>
+</li>
+</ol>
+<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><h3 id="Basic-Model"><a href="#Basic-Model" class="headerlink" title="Basic Model"></a>Basic Model</h3><p><img src="figure2.PNG" alt="figure2"><br>基础模型如图2所示，包含两个部分：一个<strong>句子encoder</strong>和一个<strong>文档级别的自注意力</strong>模块。</p>
+<p>其中，句子encoder由LSTM模型实现，其中每个$X_i$表示一个句子（一个单词序列），LSTM最后时刻的状态作为输出的句子表示$S_i$。然后所有句子之间进行自注意力，来建模句子之间的交互从而捕捉全局信息（本文叫做文档级别上下文）。最后得到document involved的句子表示$D_i$，然后用这个表示取进行分类。</p>
+<p>这个思路虽然非常简单，但是也非常自然和有道理。编码之后得到句子的表示，然后由于摘要不能仅仅依靠单个句子的内容去判断，也需要结合文档中的其他句子的信息来判断当前句子是否应该被选为摘要，因此采用了一个自注意力机制来进行句子之间的交互，并根据交互后的表示去进行分类。</p>
+<h3 id="Self-supervised-Pre-training-Methods"><a href="#Self-supervised-Pre-training-Methods" class="headerlink" title="Self-supervised Pre-training Methods"></a>Self-supervised Pre-training Methods</h3><p>上面的Basic Model是整体的基本模型。作者对于其中的encoder部分和自注意力部分提出使用一些其他的任务进行预训练。分别提出如下三个预训练任务：</p>
+<h4 id="Mask"><a href="#Mask" class="headerlink" title="Mask"></a>Mask</h4><p>首先mask掉一些句子，并将mask的句子加入候选集合$T^m$。训练模型预测每个被mask的位置的正确的句子。具体方法是，将被mask的句子变成一个<code>&lt;unk&gt;</code>符号，然后按照正常的情况使用basic model去计算得到document involved句子表示$D_i$，然后候选集合中的句子都使用basic model中的encoder得到其表示$S^m$。然后对每个候选句子根据相似度进行打分：<br>$$\theta(i,j) = cos(D_i, S_j^m)$$<br>然后训练模型时，使用排序损失，来最大化gold句子和其他句子的间隔：<br>$$l_m = max{0, \gamma - \theta(i,j)+\theta(i,k)}$$<br>其中$\gamma$是超参数，j表示对于mask的位置i，$T^m$中的gold sentence，k表示其他的sentence。</p>
+<h4 id="Replace"><a href="#Replace" class="headerlink" title="Replace"></a>Replace</h4><p>将某个句子随机替换为其他文档中的某个句子。得到句子表示$D_i$之后，用一个线性层来判断该句子是否被替换。<br>最后使用MSE计算损失：<br>$$l_r = MSE(f_r(D_i),y_i^r)$$<br>其中$y_i^r$是标准标签，指示句子i是否被替换了（0 or 1）。</p>
+<h4 id="Switch"><a href="#Switch" class="headerlink" title="Switch"></a>Switch</h4><p>该任务于Replace相似，不同之处在于，每个句子随机与本文档中的其他位置的句子交换位置。然后同样使用一个线性层来判断当前位置的句子是否被switch了。<br>使用MSE计算损失：<br>$$l_s = MSE(f_s(D_i), y_i^s)$$<br>其中$y_i^s$是标准标签，指示句子i是否被替换了（0 or 1）。</p>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>本文在CNN-DM上进行实验验证。预训练完之后，由于只预训练了encoder和自注意力模块，最上层的摘要抽取过程的分类层还需要微调。因此还是需要使用一些带有标注的数据进行微调。</p>
+<p>实验结果如表所示。<br><img src="experiment.PNG" alt="experiment"><br>其中SentEnc表示只预训练encoder部分，不预训练自注意力部分。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文的总体思路还是非常make sense的，而且方法也并不复杂。因为是短文，可以看到实验部分的baseline基本上也只比较了一个（NEUSUM）。稍微不足的一点就是还是需要一些标注数据对模型进行微调，并不能做到完全的无监督。可以借鉴文中的句子交互思想，继续往下探索吧~</p>
+<p>加油~</p>
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/07/文章笔记-Text-Summarization-with-Pretrained-Encoders/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">文章笔记|Text Summarization with Pretrained Encoders
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/07/文章笔记-Text-Summarization-with-Pretrained-Encoders/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">文章笔记|Text Summarization with Pretrained Encoders
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模型"><span class="toc-text">模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Basic-Model"><span class="toc-text">Basic Model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Self-supervised-Pre-training-Methods"><span class="toc-text">Self-supervised Pre-training Methods</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Mask"><span class="toc-text">Mask</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Replace"><span class="toc-text">Replace</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Switch"><span class="toc-text">Switch</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实验"><span class="toc-text">实验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>

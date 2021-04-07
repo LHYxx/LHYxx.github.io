@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>文章笔记|Text Summarization with Pretrained Encoders-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">文章笔记|Text Summarization with Pretrained Encoders</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2021-04-07</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/paper/">paper</a>
+                </li>
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/summarization/">summarization</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><p>来源：Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing（EMNLP2019)</p>
+<p>一句话不看版：<strong>将BERT进行修改用于抽取式和生成式摘要任务。</strong></p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><ol>
+<li><p>基于预训练的BERT最近在很多任务上取得了巨大的提升。本文则展示了如何将BERT应用于抽取式与生成式摘要任务。</p>
+</li>
+<li><p>大多数情况下，预训练语言模型被用来作为encoder对句子或者段落进行编码并理解其语义。然而在摘要任务中，仅仅对个别单词或者句子的理解是不够的，需要更大范围的语义理解。</p>
+</li>
+<li><p>本文的抽取式方法在BERT encoder的基础上叠加了多层跨句子的Transformer层来捕捉文档级别的特征。</p>
+</li>
+<li><p>抽取式方法采用encoder-decoder架构，使用同一个预训练的BERT作为encoder，以及随机初始化的Transformer作为解码器。</p>
+</li>
+<li><p>在多个单文档摘要数据集上进行了实验。并且对摘要的很多特性进行了深入的分析。</p>
+</li>
+<li><p><a href="https://github.com/nlpyang/PreSumm" target="_blank" rel="noopener">本文代码</a></p>
+</li>
+</ol>
+<h3 id="Pretrained-Language-Models"><a href="#Pretrained-Language-Models" class="headerlink" title="Pretrained Language Models"></a>Pretrained Language Models</h3><p>预训练语言模型可以说是扩展了词嵌入的思想，使用语言模型的目标在大规模语料上学习上下文表示。BERT是一个新的语言表示模型，它使用Masked language modeling 和 next sentence prediction 任务在3300M单词的语料上进行训练。</p>
+<p><img src="figure1.PNG" alt="figure1"><br>BERT的主要框架如图1左边部分所示。</p>
+<p>文本首先被插入两个特殊符号：<code>[CLS]</code>和<code>[SEP]</code>。<br><code>[CLS]</code>代表句首，这个符号的输出用来聚合整个句子的信息，因此被用来作为整个句子的表示，并用于后续的任务（如分类任务）。<br><code>[SEP]</code>插在每个句子的结尾，用来标识句子的边界。</p>
+<p>然后文本被表示为符号序列：$X=[w_1,…,w_n]$，每个符号$w_i$包括三种嵌入：<strong>token embeddings</strong>表示符号本身的语义信息；<strong>segmentation embeddings</strong>用来区别两个不同的句子；<strong>position embeddings</strong>用来指示每个单词的位置。这三种嵌入加起来得到最终的符号表示$x_i$，然后输入到Transformer中：<br>$$<br>\tilde{h}^l = LN(h^{(l-1)}+MHAtt(h^{(l-1)}))<br>$$<br>$$<br>h^{(l)} = LN(\tilde{h}^l + FFN(\tilde{h}^l))<br>$$<br>其中$h^0 = x$是输入向量，$LN$是layer normalization，$MHAtt$是多头注意力，上标$l$表示层数。在最上层，模型会为每个符号产生一个输出向量$t_i$，该向量表示蕴含丰富的上下文信息。</p>
+<p>预训练语言模型通常被用来强化对于语言的理解任务，最近也有研究利用预训练模型用于生成任务。当对下游具体任务进行微调时，BERT通常会根据下游任务微调时一起调整BERT中的参数。</p>
+<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><h3 id="Summarization-Encoder"><a href="#Summarization-Encoder" class="headerlink" title="Summarization Encoder"></a>Summarization Encoder</h3><p>BERT之所以没有用在摘要上，主要是由于，BERT的输出是单词级别的表示，而不是句子级别的表示。而在抽取式摘要中，通常都是对句子级的表示进行操作。虽然BERT中用到了segmentation embedding来区分句子，但是这种segmentation embedding只用来区分句子对中的两个句子，而在摘要中需要操作多个句子的输入。本文提出的方法见图1的右边部分。</p>
+<p>解决方法就是给每个输入句子都插入<code>[CLS]</code>和<code>[SEP]</code>符号，然后用每个句子的<code>[CLS]</code>符号的表示作为句子表示。同时多个句子采用interval segment embeddings来区分文档中多个句子，具体方法是根据句子位置的奇偶来赋予不同地segmentation embedding。同时扩大了position embedding的长度（原始BERT长度为512），并将position embedding在训练的过程中一起训练。</p>
+<p>该模型命名为BERTSUM。</p>
+<h3 id="Extractive-Summarization"><a href="#Extractive-Summarization" class="headerlink" title="Extractive Summarization"></a>Extractive Summarization</h3><p>抽取式摘要任务定义为：为每个句子预测一个标签{0,1}，表示是否被选为摘要。<br>在BERTSUM的基础上，得到每个句子的表示（也就是每个句子的<code>[CLS]</code>符号的表示）。然后堆叠句子级的Transformer：<br>$$<br>\tilde{h}^l = LN(h^{(l-1)}+MHAtt(h^{(l-1)}))<br>$$<br>$$<br>h^{(l)} = LN(\tilde{h}^l + FFN(\tilde{h}^l))<br>$$<br>其中$h^0=PosEmb(T)$；$T$表示BERTSUM得到的句子表示，函数$PosEmb()$给T增加sinusoid positional embeddings，来指示每个句子的位置。</p>
+<p>最后使用一个分类层来预测分类：<br>$$<br>\hat{y}_ i = \sigma(W_oh_i^L+b_o)<br>$$<br>其中$h_i^L$表示句子i在Transformer顶层（第L层）的表示。实验中设置L=2最佳。</p>
+<h3 id="Abstractive-Summarizaiton"><a href="#Abstractive-Summarizaiton" class="headerlink" title="Abstractive Summarizaiton"></a>Abstractive Summarizaiton</h3><p>生成式摘要采用encoder-decoder架构。encoder就使用BERTSUM模型，然后decoder使用6层的Transformer。另外由于encoder已经pretrain过了，而decoder没有pretrain过，因此本文提出为encoder和decoder使用不同的optimizer，并设置不同地学习率。</p>
+<p>同时本文还实验了将BERTSUM进行双重微调，即先在Extractive Summarization上微调，再在Abstractive Summarization上微调。模型命名为BERTSUMEXTABS。</p>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>数据集使用了CNN-DM，NYT，XSum。具体的实现细节参见原文描述。实验结果如表2，3，4所示。<br><img src="table2.PNG" alt="table2"><br><img src="table3.PNG" alt="table3"><br><img src="table4.PNG" alt="table4"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文的主要创新点在于提出了将BERT用于摘要（both 抽取式 and 生成式）的方法。此外实验部分也比较solid，实验设置值得学习。另外相关工作的介绍也很全面。</p>
+<p>只不过仍然是监督式的单文档摘要。对于如何进行无监督的摘要启发不是很大。</p>
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/07/文章笔记-Self-Supervised-Learning-for-Contextualized-Extractive-Summarization/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            文章笔记|Self-Supervised Learning for Contextualized Extractive Summarization</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/07/文章笔记-A-Spectral-Method-for-Unsupervised-Multi-Document-Summarization/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">文章笔记|A Spectral Method for Unsupervised Multi-Document Summarization
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/07/文章笔记-Self-Supervised-Learning-for-Contextualized-Extractive-Summarization/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            文章笔记|Self-Supervised Learning for Contextualized Extractive Summarization</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/07/文章笔记-A-Spectral-Method-for-Unsupervised-Multi-Document-Summarization/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">文章笔记|A Spectral Method for Unsupervised Multi-Document Summarization
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pretrained-Language-Models"><span class="toc-text">Pretrained Language Models</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模型"><span class="toc-text">模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Summarization-Encoder"><span class="toc-text">Summarization Encoder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Extractive-Summarization"><span class="toc-text">Extractive Summarization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Abstractive-Summarizaiton"><span class="toc-text">Abstractive Summarizaiton</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实验"><span class="toc-text">实验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>

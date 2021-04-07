@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>文章笔记|A Spectral Method for Unsupervised Multi-Document Summarization-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">文章笔记|A Spectral Method for Unsupervised Multi-Document Summarization</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2021-04-07</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/paper/">paper</a>
+                </li>
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/summarization/">summarization</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><p>来源：Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing, pages 435–445 （EMNLP2020)</p>
+<p>一句话不看版：<strong>本文从谱方法的角度来解决多文档摘要问题。基本假设是：如果去掉某摘要集合对于原亲和矩阵的特征值扰动越大，说明该摘要集合越重要，因此越应该被选为摘要。</strong></p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><ol>
+<li>多文档摘要目标是对围绕同一个话题或者事件的文档簇，生成一个简短的摘要。</li>
+<li>本文提出基于谱的假设：候选摘要的质量与它的谱影响（spectral impact）有关联。而本文中的谱影响定义为丢弃该候选摘要造成的主特征值的扰动程度。即，丢弃该候选摘要对原亲和矩阵的主特征值的影响越大，说明该候选摘要重要性越大。</li>
+<li>本文从三个角度验证了这个假设：<strong>semantic scaling，propagation dynamics，matrix perturbatior。</strong></li>
+<li>根据这个假设，将多文档摘要任务建模为谱影响的优化问题，并基于谱影响的近似代理，提出了较为高效的解决算法。</li>
+<li>实验验证了（1）候选摘要的质量与谱影响正相关；（2）本文的谱方法取得了先进的性能。</li>
+</ol>
+<h3 id="本文方法与之前多文档摘要方法的不同点"><a href="#本文方法与之前多文档摘要方法的不同点" class="headerlink" title="本文方法与之前多文档摘要方法的不同点"></a>本文方法与之前多文档摘要方法的不同点</h3><h4 id="Underlying-hypothesis"><a href="#Underlying-hypothesis" class="headerlink" title="Underlying hypothesis"></a>Underlying hypothesis</h4><p>本文方法与之前多文档摘要方法的基本假设不同。</p>
+<p>例如：</p>
+<ol>
+<li>manifold-ranking-based方法的假设是好的摘要句子在低维的流形空间中排序较高。但是这种流形假设没有被直接验证。</li>
+<li>sparse-coding-based方法认为，原始文档能够表示为摘要句子的线性组合。然而这种认为是线性组合的思路，更可能是一种简化。</li>
+<li>本文从谱的角度提出假设，认为好的摘要具有较高的谱影响。并且对该假设进行了验证。</li>
+</ol>
+<h4 id="Optimization-objective"><a href="#Optimization-objective" class="headerlink" title="Optimization objective"></a>Optimization objective</h4><p>对于多文档摘要有很多优化目标，比如relevancy和non-redundancy。很多方法使用多种优化目标的组合，并用超参数将他们组合起来。本文的优化目标不使用超参数，因此更加紧凑。</p>
+<h4 id="Model-complexity"><a href="#Model-complexity" class="headerlink" title="Model complexity"></a>Model complexity</h4><p>对于模型的复杂度和可解释性通常需要权衡。例如，之前的基于深度神经网络的方法解释性不佳，因此没有明确的优化方向指导。本文的摘要模型基于提出的假设，能够在保持模型复杂度的同时，具有更好的可解释性。 </p>
+<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><p>假设文档簇总共有n个句子，全局集合为$C={s_1,…,s_n}$，候选摘要集合为$S$，是$C$的一个子集。每个句子之间的关系组成一个亲和矩阵（affinity matrix）：$\mathbf{A}={a_{ij}}_ {n\times n}$。此外，矩阵$\mathbf{A}$的主特征值和对应的主特征向量为$\lambda(\mathbf{A})$ 和 $\mathbf{v}$。</p>
+<p>从矩阵中丢弃一个集合，就是清空被丢弃元素对应的行和列。<br>例如从矩阵$\mathbf{A}$中丢弃集合$S$，意味着：<br>$$<br>\mathbf{A} \backslash S=\left{\begin{array}{ll}<br>0, &amp; s_{i} \in S \text { or } s_{j} \in S \\<br>a_{i j}, &amp; \text { otherwise }<br>\end{array}\right.<br>$$</p>
+<h3 id="Spectral-Hypothesis"><a href="#Spectral-Hypothesis" class="headerlink" title="Spectral Hypothesis"></a>Spectral Hypothesis</h3><p>当把文档簇表示为一个矩阵时，矩阵的谱（特征值集合）反映了文档的不同方方面，而主特征值则对应着最关键的方面。这也为进行摘要提供了启发。因此对于抽取式多文档摘要任务，本文提出了如下假设：</p>
+<p>给定：亲和矩阵$\mathbf{A}$；候选摘要集合$S$，初始可能包含随机的句子。<br>定义：候选摘要集合$S$的谱影响定义为：丢弃$S$后对于矩阵$\mathbf{A}$的主特征值造成的扰动。即：$\Delta \lambda(S) \triangleq \lambda(\mathbf{A})-\lambda(\mathbf{A} \backslash S)$<br>假设：候选摘要$S$的质量与他的谱影响$\Delta \lambda(S)$有关系。</p>
+<p>基于上面的假设，多文档摘要任务就变成了对于谱影响的优化问题：<br>$$<br>S^{*}=\underset{S \subseteq C}{\arg \max } \Delta \lambda(S), \quad \text { s.t. }|S| \leqslant k<br>$$<br>其中集合$C$表示全局句子集合，$k$表示摘要长度限制。</p>
+<p>该目标具有两个性质：</p>
+<p>（1）单调性：对于任意$S_1 \subseteq S_2$，有$\Delta \lambda(S_1) \le \Delta \lambda(S_2)$。<br>（2）归一性：$\Delta \lambda(\Phi)=0, \Delta \lambda(C) = \lambda(A)$。其中$\Phi$表示空集。</p>
+<p>性质（1）指出，一个完整的摘要要比他的任何部分更好；性质（2）指出了一个候选摘要的合理的取值范围。</p>
+<p>整个模型的示意图见图2。<br><img src="figure2.PNG" alt="figure2"></p>
+<h3 id="Affinity-Matrix"><a href="#Affinity-Matrix" class="headerlink" title="Affinity Matrix"></a>Affinity Matrix</h3><p>另一个问题就是如何得到Affinity矩阵了。亲和矩阵中的每个元素$a_{ij}$都表示句子$s_i$和句子$s_j$之间的关系。一种常用的方法就是计算句子对之间的相似度（如cosine相似度）来构造亲和矩阵。</p>
+<p>本文采用了三种方法：Tf-isf，ESE，BERT。</p>
+<p>同时，本文认为句子在文档中的位置也有影响，且前面的句子应该影响更大，因此为 亲和矩阵中的每个元素都乘以位置权重$1/(o_i+o+j)$，其中$o_i$时句子$s_i$在文中的位置。</p>
+<h3 id="Justifications-of-Hypothesis"><a href="#Justifications-of-Hypothesis" class="headerlink" title="Justifications of Hypothesis"></a>Justifications of Hypothesis</h3><p>这里从三个角度验证本文的假设。</p>
+<h4 id="Semantic-scaling"><a href="#Semantic-scaling" class="headerlink" title="Semantic scaling"></a>Semantic scaling</h4><p><em>亲和矩阵的主特征值决定了向量在语义空间中的伸缩。</em></p>
+<p>n个句子每个句子表示一个维度，构成一个n维语义空间，该空间的每个轴代表一个句子。这样的话，亲和矩阵$\mathbf{A}_ {n\times n}$就可以看作是这个空间中的线性操作。而矩阵中的每个值$a_{ij}$就是调节从$i-th$轴到$j-th$轴的变换。</p>
+<p>给定任意非零向量$\mathbf{x}$，变换后的向量$\mathbf{Ax}$，两者满足如下关系：<br>$$<br>|\mathbf{Ax}| \le \lambda(\mathbf{A})|\mathbf{x}|<br>$$<br>这是一个上界，只有当$\mathbf{x}$是主特征值时，等式才成立。</p>
+<p>这个性质表明，空间中任何向量的缩放不会超过$\lambda(\mathbf{A})$。因此，主特征值$\lambda(\mathbf{A})$反映了操作$\mathbf{A}$对空间中任意向量的缩放能力。当从$\mathbf{A}$中删除候选集合$S$时，$S$中涉及到的轴上的变换都被删除了，也就是说，对于那些被删除的轴方向上的缩放贡献都没有了，因此会损害操作$\mathbf{A}$的缩放能力。而当最好的摘要被删删除时，则会导致操作$\mathbf{A}$的能力损失最大。因此，主特征值表示了操作$\mathbf{A}$的缩放能力，可以被用来定位多文档摘要中句子的重要性。</p>
+<h4 id="Propagation-dynamics"><a href="#Propagation-dynamics" class="headerlink" title="Propagation dynamics"></a>Propagation dynamics</h4><p><em>隔离摘要会导致信息传播的阻塞。</em></p>
+<p>这种视角将亲和矩阵看作一个图，亲和度值$a_{ij}$则为图中节点i和j的边的权重，权重越高，越有利于信息的传播。<br>这里的问题就是，从少数几个种子句子开始进行信息传播能否形成大流行（pandemic）。例如在流行病学中，只有当病毒的传播值$R_0$大于1才有可能形成大流行。</p>
+<p>许多之前的工作发现$R_0$值与主特征值是成比例的。特征值小则对应的$R_0$值也小，从而阻碍了信息的传播。对于多文档摘要任务来说，当最好的摘要被隔离了之后，剩下的文档则会更加难以传播。</p>
+<p>本文的假设与该发现一致。因为删除最佳的候选摘要$S^{*}$会导致主特征值减少的最大，从而传播能力降低最大。</p>
+<h4 id="Matrix-perturbation"><a href="#Matrix-perturbation" class="headerlink" title="Matrix perturbation"></a>Matrix perturbation</h4><p><em>谱影响包含了多文档摘要中的相关性和非冗余性目标。</em></p>
+<p>为了分析谱影响的特点，作者使用first-order matrix perturbation theory：<br>$$<br>\begin{aligned}<br>\Delta \lambda(S) &amp;=\mathbf{u}^{\prime} \mathbf{E} \mathbf{u}+\mathcal{O}\left(|\mathbf{E}|^{2}\right) \\<br>&amp;=2 \sum_{s_{i} \in S} u_{i}^{2} \lambda(\mathbf{A})-\sum_{s_{i}, s_{j} \in S} u_{i} a_{i j} u_{j}+\mathcal{O}\left(|\mathbf{E}|^{2}\right), \\<br>\text { where } \mathbf{E} &amp;=\mathbf{A}-\mathbf{A} \backslash S, \mathbf{A} \mathbf{u}=\lambda(\mathbf{A}) \mathbf{u},|\mathbf{u}|=1<br>\end{aligned}<br>$$</p>
+<p>这里$\mathbf{u}$是$\mathbf{A}$的归一化的特征向量。</p>
+<p>上式的第一项对后选摘要集合中的所有句子，对$2u_i^2 \lambda(\mathbf{A})$求和，可以理解为表示候选摘要$S$的相关性。</p>
+<p>第二项则是惩罚冗余项。因为$a_{ij}$越大，代表句子$s_i$和$s_j$的冗余性越大。</p>
+<p>第三项$O(|E|^2)$，因为矩阵$\mathbf{E}$中大多数元素为0（因为|S|&lt;&lt; n），所以该项很小，对于整体影响不大。</p>
+<h4 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h4><p>对于这个挑选最佳候选摘要的过程，最普通的方法就是枚举，枚举所有的句子组合的可能。但是这样复杂度太高。理论上这个问题属于NP-hard问题。本文则提出一种高效的求近似解的方法。利用谱影响的代理，如下图所示：<br><img src="spectral.PNG" alt="spectral"></p>
+<p>具体算法如算法2所示：<br><img src="algorithm2.PNG" alt="algorithm2"></p>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>本文在 DUC2004，Yelp，Multi-News数据上进行实验。对比的baselines也选取了非常多。<br>具体实验结果以及所对比的baseline如图所示。<br><img src="table3-1.PNG" alt="table3-1"><br><img src="table3-2.PNG" alt="table3-2"><br><img src="table3-3.PNG" alt="table3-3"></p>
+<p>此外，作者还在DUC2004上选取了500个样例，分为50组，对这50组候选摘要的ROUGE得分与谱影响进行了Pearson相关性检验，结果如图3-1所示。<br><img src="figure3-1.PNG" alt="figure3-1"><br>结果证明摘要的ROUGE得分与谱影响具有相关性。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文算是目前少见的没有使用神经网络的摘要方法。而是从亲和矩阵的谱的角度来进行多文档摘要。提出的基于谱的假设也很有道理，并且从多个角度去解释与验证了假设的有效性。</p>
+<p>另外，本文的总体思路属于，去掉某些句子，看去掉之后对效果的影响的大小，来判断所去掉的元素的重要性。这种思路之前也有见过，也是一种值得学习与思考的思路。</p>
+<p>对于矩阵运算以及排列组合方面的计算复杂问题，本文也提出了一种求近似解的方法。而且总体属于无监督摘要方法。</p>
+<p>虽然没有使用现在火热的神经网络方法，但是对于无监督摘要研究仍具有一定的启发性。</p>
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/07/文章笔记-Text-Summarization-with-Pretrained-Encoders/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            文章笔记|Text Summarization with Pretrained Encoders</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/06/文章笔记-Unsupervised-Extractive-Summarization-by-Pre-training-Hierarchical-Transformers/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">文章笔记|Unsupervised Extractive Summarization by Pre-training Hierarchical Transformers
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/07/文章笔记-Text-Summarization-with-Pretrained-Encoders/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            文章笔记|Text Summarization with Pretrained Encoders</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/06/文章笔记-Unsupervised-Extractive-Summarization-by-Pre-training-Hierarchical-Transformers/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">文章笔记|Unsupervised Extractive Summarization by Pre-training Hierarchical Transformers
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#本文方法与之前多文档摘要方法的不同点"><span class="toc-text">本文方法与之前多文档摘要方法的不同点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Underlying-hypothesis"><span class="toc-text">Underlying hypothesis</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Optimization-objective"><span class="toc-text">Optimization objective</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Model-complexity"><span class="toc-text">Model complexity</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模型"><span class="toc-text">模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Spectral-Hypothesis"><span class="toc-text">Spectral Hypothesis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Affinity-Matrix"><span class="toc-text">Affinity Matrix</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Justifications-of-Hypothesis"><span class="toc-text">Justifications of Hypothesis</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Semantic-scaling"><span class="toc-text">Semantic scaling</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Propagation-dynamics"><span class="toc-text">Propagation dynamics</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Matrix-perturbation"><span class="toc-text">Matrix perturbation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Algorithm"><span class="toc-text">Algorithm</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实验"><span class="toc-text">实验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>

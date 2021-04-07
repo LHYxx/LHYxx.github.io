@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>文章笔记|Unsupervised Extractive Summarization by Pre-training Hierarchical Transformers-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">文章笔记|Unsupervised Extractive Summarization by Pre-training Hierarchical Transformers</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2021-04-06</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/paper/">paper</a>
+                </li>
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/summarization/">summarization</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><p>出处：Findings of the Association for Computational Linguistics: EMNLP 2020, pages 1784–1795</p>
+<p>一句话版：<strong>本文利用Transformer中的注意力权重信息来对文档中的句子进行排序，从而进行摘要的抽取。</strong></p>
+<p>因为基于神经网络的无监督文档摘要抽取方法是一件十分困难的任务。相关研究也不是很多。利用句子之间的注意力权重的这个思想，与之前的利用重构权重的思想可以说是十分相似的。之前自己就基于这种思路思考进行无监督抽取式摘要的方法，但是终于被别人抢先实现了……</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><ol>
+<li>文档摘要分为抽取式和生成式摘要方法。</li>
+<li>之前的方法需要label data，但是label data很少且难以构建。并且对所有领域的文本都构建label data是不现实的。所以本文研究无监督方法。</li>
+<li>之前的无监督抽取式摘要方法的主要内容是识别文档中的重要内容。之前最流行的方法主要是基于图排序的方法。</li>
+<li>进来有很多无监督生成式摘要方法。但是这些方法无法保证摘要的语法正确性，以及与原文的一致性。</li>
+<li>根据HIBERT引出本文的思路。即利用Transformer模型中的注意力权重信息来进行重要内容的识别，并进而进行摘要抽取。</li>
+<li>在CNN-DailyMail和NYT数据集上进行了测试。</li>
+<li><a href="https://github.com/xssstory/STAS" target="_blank" rel="noopener">代码</a></li>
+</ol>
+<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><h3 id="Document-Modeling"><a href="#Document-Modeling" class="headerlink" title="Document Modeling"></a>Document Modeling</h3><p><img src="figure1.PNG" alt="figure1"><br>文档的编码器如图1所示。整个编码器由层次的Transformer构成。首先单词级别的Transformer将文档的单词作为输入，每个句子被<code>&lt;s&gt;</code>与<code>&lt;/s&gt;</code>符号分割开，分别表示句子的开头和结尾。</p>
+<p>单词级别的Transformer输出每个单词的contextualized的表示$(\mathbf{v}_ {0}^{1}, \mathbf{v}_ {1}^{1}, …, \mathbf{v}_ {|S_{1}|}^{1}, …, \mathbf{v}_ {j}^{}, …, \mathbf{v}_ {0}^{|D|}, …, \mathbf{v}_ {S_{|D|}}^{|D|})$，然后每个句子的句首符号<code>&lt;s&gt;</code>的表示作为该句子的句子表示，即$\mathbf{V}=(\mathbf{v}_ {0}^{1}, \mathbf{v}_ {0}^{2}, …, \mathbf{v}_ {0}^{|D|},)$，输入到下一层的句子级别的Transformer。然后句子级别的Transformer通过计算句子级别的自注意力，输出句子的contextualized的表示以及注意力的权重：<br>$$\mathbf{H,A} = Trans^S(\mathbf{V})$$<br>由于Transformer中的注意力包含多层以及多个头，因此为了得到最终的注意力权重$\mathbf{A}$，本文先对各个头的注意力权重取平均，然后对各个层取平均。</p>
+<h3 id="Pre-Training"><a href="#Pre-Training" class="headerlink" title="Pre-Training"></a>Pre-Training</h3><p>对于模型的训练目标，本文则是使用了两种预训练任务对模型进行预训练。<br><strong>Masked Sentences Prediction</strong> 与 <strong>Sentence Shuffling</strong>。</p>
+<p><img src="figure2.PNG" alt="figure2"><br><strong>Masked Sentences Prediction</strong>任务如图2所示。以15%的概率随机屏蔽掉部分句子，也就是将句子中的所有单词替换为[MASK]符号。</p>
+<p><img src="figure3.PNG" alt="figure3"><br><strong>Sentence Shuffling</strong> 则是将原文中的句子打乱顺序，并预测句子的正确顺序。</p>
+<p>最后训练目标是两部分的损失之和。</p>
+<h3 id="Unsupervised-Summarization"><a href="#Unsupervised-Summarization" class="headerlink" title="Unsupervised Summarization"></a>Unsupervised Summarization</h3><p>抽取式摘要的主要目标就是选择出文档中最重要的句子。因此，得到预训练之后的模型之后，本文的方法就可以不需要进行进一步的fine-tune，直接来对句子进行排序。</p>
+<p>第一个排序标准是根据文档中句子的预测概率。一个文档$D=(S_1, S_2, …, S_{|D|})$的概率为:<br>$$<br>p(\mathcal{D})=\prod_{i=1}^{|\mathcal{D}|} p\left(S_{i} \mid S_{1: i-1}\right) \approx \prod_{i=1}^{|\mathcal{D}|} p\left(S_{i} \mid \mathcal{D}<em>{\neg} S</em>{i}\right)<br>$$</p>
+<p>然而预测$p(S_i|S_{1:i-1})$不方便，因为这里使用的模型都是双向的。但是根据之前预训练的masked sentences prediction任务，能够很方便地预测$p(S_i|D_{\neg S_{i}})$。<br>因此，这里将每个句子的生成概率转换成生成该句子时生成每个单词的概率，并同时根据句子的长度进行归一化，以使得不同长度句子之间能够相互比较：<br>$$<br>\hat{r}<em>{i}=\frac{1}{\left|S</em>{i}\right|} \sum_{j=1}^{\left|S_{i}\right|} p\left(w_{j}^{i} \mid w_{0: j-1}^{i}, \mathcal{D}<em>{\neg S</em>{i}}\right)<br>$$<br>同时对整个文档的句子得分进行归一化：<br>$$<br>\widetilde{r}<em>{i}=\frac{\hat{r}</em>{i}}{\sum_{j=1}^{|\mathcal{D}|} \hat{r}_{j}}<br>$$<br>这样得到的就是一片文档中，每个句子i的预测得分。</p>
+<p>第二个排序标准是，建模其他句子对当前句子的重要性。也就是将每个句子看作一个节点，得到的注意力权重看作是节点之间的边的权重，这样得到一个图。<br>这里不是直接使用每个节点的度作为得分，而是在前面的预测的概率结果上进行了一次传播：<br>$$<br>r_{i}^{\prime}=\sum_{j=1, j \neq i}^{|\mathcal{D}|} \mathbf{A}<em>{j, i} \times \tilde{r}</em>{j}<br>$$</p>
+<p>最终的每个句子的得分为两个排序标准的加权和：<br>$$r_i=\gamma_{1}\tilde{r_{i}}+\gamma_{2}r_{i}’$$</p>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>本文在CNN-DailyMail与NYT上进行实验。模型由一个Transformer encoder和两个预训练任务的decoder构成。具体模型参数参见原文。在进行摘要抽取的时候，本文设定抽取长度为3个句子。并且实验发现在CNN-DailyMail上用trigram blocking有效，在NYT上无效。</p>
+<p>实验的效果以及baselines如图所示。<br><img src="experiment.PNG" alt="experiment"></p>
+<p>此外，实验中还进行了ablation study来验证文中提出的两个预训练任务以及两个排序标准是否都有用。以及对于得到的注意力权重，使用$\mathbf{A_{j,i}}$和$\mathbf{A_{i,j}}$来计算$r_{i}’$的差别。实验中显示差别还挺大，这个结果还比较令人意外。但是感觉缺乏合理的令人信服的解释。<br>此外，还验证了句子的位置对于结果的影响。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文提出了一种基于Transformer的自注意力权重的无监督单文档摘要方法。基于神经网络的无监督的单文档抽取式摘要方法的确稀少，本文已经可以算是一个初步的探索了。我个人觉得还是非常有意义的。这也是我自己一直希望有所突破的方向。</p>
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/07/文章笔记-A-Spectral-Method-for-Unsupervised-Multi-Document-Summarization/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            文章笔记|A Spectral Method for Unsupervised Multi-Document Summarization</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/06/文章笔记-Sentence-Centrality-Revisited-for-Unsupervised-Summarization/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">文章笔记|Sentence Centrality Revisited for Unsupervised Summarization
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/07/文章笔记-A-Spectral-Method-for-Unsupervised-Multi-Document-Summarization/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            文章笔记|A Spectral Method for Unsupervised Multi-Document Summarization</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/06/文章笔记-Sentence-Centrality-Revisited-for-Unsupervised-Summarization/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">文章笔记|Sentence Centrality Revisited for Unsupervised Summarization
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模型"><span class="toc-text">模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Document-Modeling"><span class="toc-text">Document Modeling</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pre-Training"><span class="toc-text">Pre-Training</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unsupervised-Summarization"><span class="toc-text">Unsupervised Summarization</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实验"><span class="toc-text">实验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>

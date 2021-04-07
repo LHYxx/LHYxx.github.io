@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>文章笔记|Sentence Centrality Revisited for Unsupervised Summarization-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">文章笔记|Sentence Centrality Revisited for Unsupervised Summarization</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2021-04-06</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/paper/">paper</a>
+                </li>
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/summarization/">summarization</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><p>来源：Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics, pages 6236–6247。（ACL2019）</p>
+<p>一句话不看版：<strong>用BERT计算句子之间的相似度构建句子之间的关系图，然后基于节点的中心度进行抽取，同时考虑了句子的相对位置关系。</strong></p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>基于神经网络的方法大多需要大量的document-summary对数据来训练模型。然而，对于不同领域不同风格的文本构建这样的训练数据式不现实的。因此本文考虑无监督的摘要方法。</p>
+<p>无监督抽取式摘要方法中最著名的流派莫过于基于图排序算法的摘要方法，如TextRank。这种方法将文档中的每个句子看作一个节点，将句子之间的相似度看作节点之间的边，构建一个<strong>无向图</strong>，然后用类似PageRank方法来衡量节点的中心性。</p>
+<p>本文从两个角度改进这种方法。</p>
+<ol>
+<li>表示层面。利用目前比较先进的BERT模型来获得句子的表示，更好地捕捉语义特征。</li>
+<li>将无向图改为有向图。考虑到很多情况下两个句子之间的贡献程度实际上式不相等的。</li>
+</ol>
+<p>此外，本文还提出，目前基于神经网络的无监督单文档摘要方法还没有（这已经是到2019年了），虽然有些基于重构目标的无监督的多文档摘要方法。</p>
+<blockquote>
+<p>We are not aware of any previous neural-based approaches to unsupervised single-document summarization, although some effort has gone into developing unsupervised models for multi-document summarization using reconstruction objectives (Li et al., 2017; Ma et al., 2016; Chu and Liu, 2018).</p>
+</blockquote>
+<p><a href="https://github.com/mswellhao/PacSum" target="_blank" rel="noopener">本文代码</a></p>
+<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><h3 id="Undirected-Text-Graph"><a href="#Undirected-Text-Graph" class="headerlink" title="Undirected Text Graph"></a>Undirected Text Graph</h3><p>对于一个文档$D={s_1,…,s_n}$，其中$s_i$表示第i个句子。$e_{ij}$表示$(s_i, s_j)$之间的相似度。那么对于句子 $s_i$来说，其中心度可以定义为：<br>$$<br>centrality(s_i)=\sum_{j\in {1,…,i-1,i+1,…,n}} e_{ij}<br>$$</p>
+<p>对于构建好的无向图，根据每个句子的中心性得分排序，并选择得分最高的加入到摘要中。<br>另外，也可以用PageRank算法来计算每个节点的中心性得分。PageRank算法理论上更好因为它考虑到了全局的结构，而普通的基于度的中心性只考虑了局部结构。但是在实际实验中，作者发现使用PageRank带来的提升实际也不明显。</p>
+<h3 id="Directed-Text-Graph"><a href="#Directed-Text-Graph" class="headerlink" title="Directed Text Graph"></a>Directed Text Graph</h3><p>考虑到在很多情况下，两个句子之间相互的贡献程度可能是不相等的（即A到B与B到A的权重不一样）。本文中提出将无向图改为有向图。本文额外考虑句子之间的相对位置，假设文档中出现位置靠前的句子的中心性应该更大。于是，对于两个句子$s_i, s_j (i &lt; j)$，将一个无向的边转换成两个有向的边，于是节点$s_i$的中心性变为：<br>$$<br>centrality(s_i) = \lambda_1 \sum_{j &lt; i}e_{ij} + \lambda_2 \sum_{j &gt; i}e_{ij}<br>$$<br>其中$\lambda_1$和$\lambda_2$分别是前向权重与后向权重。而且当$\lambda_1 = \lambda_2 = 1$时，模型退化回了普通的基于度的模型。这两个权重可以在验证集上取调整，也可以人为设定以体现先验知识。本文中设置$\lambda_1 + \lambda_2 = 1$。</p>
+<p>并且通过实验，发现最优的$\lambda_1$值倾向于是负数，这说明与前面句子的相似性实际上损害了句子的中心性。而目前的TextRank方法都没有考虑这种情况，而是只考虑边权重为非负值的情况。</p>
+<p>不过本文对这个问题没有进一步探索，留做了future work。</p>
+<h3 id="Sentence-Similarity-Computation"><a href="#Sentence-Similarity-Computation" class="headerlink" title="Sentence Similarity Computation"></a>Sentence Similarity Computation</h3><p>下一个问题就是怎么计算句子之间的相似度了。这里就是用BERT来得到句子表示。</p>
+<p>不过这里根据Sentence-level Distributional Hypothesis对BERT进行fine-tune。<br>对于文档$D$中的句子$s_i$，将它前一个句子$s_{i-1}$和后一个句子$s_{i+1}$作为正样本，其他句子作为负样本。</p>
+<p>对于句子$s_i$的训练目标如下：<br>$$<br>\begin{array}{r}<br>\log \sigma\left(v_{s_{i-1}}^{\prime}{ }^{\top} v_{s_{i}}\right)+\log \sigma\left(v_{s_{i+1}}^{\prime}{ }^{\top} v_{s_{i}}\right) \\<br>+\mathbb{E}_ {s \sim P(s)}\left[\log \sigma\left(-v_{s}^{\prime \top} v_{s}\right)\right]<br>\end{array}<br>$$<br>其中$v_s$和$v_s’$是两个参数不同的BERT得到的句子s的两个表示。$\sigma$是sigmoid函数，$P(s)$是在句子空间上定义的均匀分布。</p>
+<p>该目标函数使得模型能够区分context sentences和other sentences。这迫使encoder能够捕捉指定的句子的语义信息。实验中对于每个正样本采样五个负样本来估计期望。<br>直观理解，最后一项使得两个encoder尽可能将句子编码到不同的空间中；而前两项则使得不同空间中的句子也能够保持context的关系，即互为context的句子表示更加接近。</p>
+<h3 id="Similarity-Matrix"><a href="#Similarity-Matrix" class="headerlink" title="Similarity Matrix"></a>Similarity Matrix</h3><p>得到了每个句子的表示${v_1, …, v_n}$之后，对于句子${s_1 ,…, s_n}$，计算句子对之间的相似度如下：<br>$$<br>\bar{E}_ {ij} = v_{i}^{T}v_{j}<br>$$<br>这里使用内积计算相似度，实际上也可以使用余弦相似度。这里作者说实验结果显示内积效果更好，empirically。。。</p>
+<p>然后对相似度矩阵进行一下归一化：<br>$$<br>\tilde{E}_ {ij} = \bar{E}_ {ij} - [min(\bar{E}) + \beta (max(\bar{E}) - min(\bar{E}))]<br>$$<br>最后将$\tilde{E}$中小于0的元素截断为0，大于0的元素不变，得到最终的相似度矩阵$E_{ij}$。</p>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>贴一下实验结果以及对比的baselines。<br><img src="experiment.PNG" alt="experiment"></p>
+<p>具体的实验设置和实验分析见原文吧。</p>
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/06/文章笔记-Unsupervised-Extractive-Summarization-by-Pre-training-Hierarchical-Transformers/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            文章笔记|Unsupervised Extractive Summarization by Pre-training Hierarchical Transformers</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/06/文章笔记-Transformer-based-Model-for-Single-Documents-Neural-Summarization/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">文章笔记|Transformer-based Model for Single Documents Neural Summarization
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/06/文章笔记-Unsupervised-Extractive-Summarization-by-Pre-training-Hierarchical-Transformers/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            文章笔记|Unsupervised Extractive Summarization by Pre-training Hierarchical Transformers</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/06/文章笔记-Transformer-based-Model-for-Single-Documents-Neural-Summarization/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">文章笔记|Transformer-based Model for Single Documents Neural Summarization
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模型"><span class="toc-text">模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Undirected-Text-Graph"><span class="toc-text">Undirected Text Graph</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Directed-Text-Graph"><span class="toc-text">Directed Text Graph</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sentence-Similarity-Computation"><span class="toc-text">Sentence Similarity Computation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Similarity-Matrix"><span class="toc-text">Similarity Matrix</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实验"><span class="toc-text">实验</span></a></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>
