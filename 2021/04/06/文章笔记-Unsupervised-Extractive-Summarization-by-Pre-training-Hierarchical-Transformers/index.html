@@ -155,16 +155,26 @@
 <li>在CNN-DailyMail和NYT数据集上进行了测试。</li>
 <li><a href="https://github.com/xssstory/STAS" target="_blank" rel="noopener">代码</a></li>
 </ol>
-<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><h3 id="Document-Modeling"><a href="#Document-Modeling" class="headerlink" title="Document Modeling"></a>Document Modeling</h3><p><img src="figure1.PNG" alt="figure1"><br>文档的编码器如图1所示。整个编码器由层次的Transformer构成。首先单词级别的Transformer将文档的单词作为输入，每个句子被<code>&lt;s&gt;</code>与<code>&lt;/s&gt;</code>符号分割开，分别表示句子的开头和结尾。</p>
-<p>单词级别的Transformer输出每个单词的contextualized的表示$(\mathbf{v}_ {0}^{1}, \mathbf{v}_ {1}^{1}, …, \mathbf{v}_ {|S_{1}|}^{1}, …, \mathbf{v}_ {j}^{}, …, \mathbf{v}_ {0}^{|D|}, …, \mathbf{v}_ {S_{|D|}}^{|D|})$，然后每个句子的句首符号<code>&lt;s&gt;</code>的表示作为该句子的句子表示，即$\mathbf{V}=(\mathbf{v}_ {0}^{1}, \mathbf{v}_ {0}^{2}, …, \mathbf{v}_ {0}^{|D|},)$，输入到下一层的句子级别的Transformer。然后句子级别的Transformer通过计算句子级别的自注意力，输出句子的contextualized的表示以及注意力的权重：<br>$$\mathbf{H,A} = Trans^S(\mathbf{V})$$<br>由于Transformer中的注意力包含多层以及多个头，因此为了得到最终的注意力权重$\mathbf{A}$，本文先对各个头的注意力权重取平均，然后对各个层取平均。</p>
+<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><h3 id="Document-Modeling"><a href="#Document-Modeling" class="headerlink" title="Document Modeling"></a>Document Modeling</h3><p><img src="figure1.PNG" alt="figure1"></p>
+<p>文档的编码器如图1所示。整个编码器由层次的Transformer构成。首先单词级别的Transformer将文档的单词作为输入，每个句子被<code>&lt;s&gt;</code>与<code>&lt;/s&gt;</code>符号分割开，分别表示句子的开头和结尾。</p>
+<p>单词级别的Transformer输出每个单词的contextualized的表示$(\mathbf{v}_ {0}^{1}, \mathbf{v}_ {1}^{1}, …, \mathbf{v}_ {|S_{1}|}^{1}, …, \mathbf{v}_ {j}^{}, …, \mathbf{v}_ {0}^{|D|}, …, \mathbf{v}_ {S_ {|D|}}^{|D|})$，然后每个句子的句首符号<code>&lt;s&gt;</code>的表示作为该句子的句子表示，即$\mathbf{V}=(\mathbf{v}_ {0}^{1}, \mathbf{v}_ {0}^{2}, …, \mathbf{v}_ {0}^{|D|})$，输入到下一层的句子级别的Transformer。然后句子级别的Transformer通过计算句子级别的自注意力，输出句子的contextualized的表示以及注意力的权重：</p>
+<p>$$\mathbf{H,A} = Trans^S(\mathbf{V})$$</p>
+<p>由于Transformer中的注意力包含多层以及多个头，因此为了得到最终的注意力权重$\mathbf{A}$，本文先对各个头的注意力权重取平均，然后对各个层取平均。</p>
 <h3 id="Pre-Training"><a href="#Pre-Training" class="headerlink" title="Pre-Training"></a>Pre-Training</h3><p>对于模型的训练目标，本文则是使用了两种预训练任务对模型进行预训练。<br><strong>Masked Sentences Prediction</strong> 与 <strong>Sentence Shuffling</strong>。</p>
-<p><img src="figure2.PNG" alt="figure2"><br><strong>Masked Sentences Prediction</strong>任务如图2所示。以15%的概率随机屏蔽掉部分句子，也就是将句子中的所有单词替换为[MASK]符号。</p>
-<p><img src="figure3.PNG" alt="figure3"><br><strong>Sentence Shuffling</strong> 则是将原文中的句子打乱顺序，并预测句子的正确顺序。</p>
+<p><img src="figure2.PNG" alt="figure2"></p>
+<p><strong>Masked Sentences Prediction</strong>任务如图2所示。以15%的概率随机屏蔽掉部分句子，也就是将句子中的所有单词替换为[MASK]符号。</p>
+<p><img src="figure3.PNG" alt="figure3"></p>
+<p><strong>Sentence Shuffling</strong> 则是将原文中的句子打乱顺序，并预测句子的正确顺序。</p>
 <p>最后训练目标是两部分的损失之和。</p>
 <h3 id="Unsupervised-Summarization"><a href="#Unsupervised-Summarization" class="headerlink" title="Unsupervised Summarization"></a>Unsupervised Summarization</h3><p>抽取式摘要的主要目标就是选择出文档中最重要的句子。因此，得到预训练之后的模型之后，本文的方法就可以不需要进行进一步的fine-tune，直接来对句子进行排序。</p>
-<p>第一个排序标准是根据文档中句子的预测概率。一个文档$D=(S_1, S_2, …, S_{|D|})$的概率为:<br>$$<br>p(\mathcal{D})=\prod_{i=1}^{|\mathcal{D}|} p\left(S_{i} \mid S_{1: i-1}\right) \approx \prod_{i=1}^{|\mathcal{D}|} p\left(S_{i} \mid \mathcal{D}<em>{\neg} S</em>{i}\right)<br>$$</p>
-<p>然而预测$p(S_i|S_{1:i-1})$不方便，因为这里使用的模型都是双向的。但是根据之前预训练的masked sentences prediction任务，能够很方便地预测$p(S_i|D_{\neg S_{i}})$。<br>因此，这里将每个句子的生成概率转换成生成该句子时生成每个单词的概率，并同时根据句子的长度进行归一化，以使得不同长度句子之间能够相互比较：<br>$$<br>\hat{r}<em>{i}=\frac{1}{\left|S</em>{i}\right|} \sum_{j=1}^{\left|S_{i}\right|} p\left(w_{j}^{i} \mid w_{0: j-1}^{i}, \mathcal{D}<em>{\neg S</em>{i}}\right)<br>$$<br>同时对整个文档的句子得分进行归一化：<br>$$<br>\widetilde{r}<em>{i}=\frac{\hat{r}</em>{i}}{\sum_{j=1}^{|\mathcal{D}|} \hat{r}_{j}}<br>$$<br>这样得到的就是一片文档中，每个句子i的预测得分。</p>
-<p>第二个排序标准是，建模其他句子对当前句子的重要性。也就是将每个句子看作一个节点，得到的注意力权重看作是节点之间的边的权重，这样得到一个图。<br>这里不是直接使用每个节点的度作为得分，而是在前面的预测的概率结果上进行了一次传播：<br>$$<br>r_{i}^{\prime}=\sum_{j=1, j \neq i}^{|\mathcal{D}|} \mathbf{A}<em>{j, i} \times \tilde{r}</em>{j}<br>$$</p>
+<p>第一个排序标准是根据文档中句子的预测概率。一个文档$D=(S_1, S_2, …, S_ {|D|})$的概率为:</p>
+<p>$$<br>p(\mathcal{D})=\prod_ {i=1}^{|\mathcal{D}|} p\left(S_ {i} \mid S_ {1: i-1}\right) \approx \prod_ {i=1}^{|\mathcal{D}|} p\left(S_ {i} \mid \mathcal{D}_ {\neg} S_ {i}\right)<br>$$</p>
+<p>然而预测$p(S_i|S_{1:i-1})$不方便，因为这里使用的模型都是双向的。但是根据之前预训练的masked sentences prediction任务，能够很方便地预测$p(S_i|D_{\neg S_{i}})$。<br>因此，这里将每个句子的生成概率转换成生成该句子时生成每个单词的概率，并同时根据句子的长度进行归一化，以使得不同长度句子之间能够相互比较：</p>
+<p>$$<br>\hat{r}_ {i}=\frac{1}{\left|S_{i}\right|} \sum_{j=1}^{\left|S_{i}\right|} p\left(w_{j}^{i} \mid w_{0: j-1}^{i}, \mathcal{D}_ {\neg S_{i}}\right)<br>$$</p>
+<p>同时对整个文档的句子得分进行归一化：</p>
+<p>$$<br>\widetilde{r}_ {i}=\frac{\hat{r}_ {i}}{\sum_{j=1}^{|\mathcal{D}|} \hat{r}_ {j}}<br>$$</p>
+<p>这样得到的就是一片文档中，每个句子i的预测得分。</p>
+<p>第二个排序标准是，建模其他句子对当前句子的重要性。也就是将每个句子看作一个节点，得到的注意力权重看作是节点之间的边的权重，这样得到一个图。<br>这里不是直接使用每个节点的度作为得分，而是在前面的预测的概率结果上进行了一次传播：<br>$$<br>r_ {i}^{\prime}=\sum_ {j=1, j \neq i}^{|\mathcal{D}|} \mathbf{A}_ {j, i} \times \tilde{r}_ {j}<br>$$</p>
 <p>最终的每个句子的得分为两个排序标准的加权和：<br>$$r_i=\gamma_{1}\tilde{r_{i}}+\gamma_{2}r_{i}’$$</p>
 <h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>本文在CNN-DailyMail与NYT上进行实验。模型由一个Transformer encoder和两个预训练任务的decoder构成。具体模型参数参见原文。在进行摘要抽取的时候，本文设定抽取长度为3个句子。并且实验发现在CNN-DailyMail上用trigram blocking有效，在NYT上无效。</p>
 <p>实验的效果以及baselines如图所示。<br><img src="experiment.PNG" alt="experiment"></p>

@@ -161,8 +161,8 @@
 </ol>
 <h4 id="Optimization-objective"><a href="#Optimization-objective" class="headerlink" title="Optimization objective"></a>Optimization objective</h4><p>对于多文档摘要有很多优化目标，比如relevancy和non-redundancy。很多方法使用多种优化目标的组合，并用超参数将他们组合起来。本文的优化目标不使用超参数，因此更加紧凑。</p>
 <h4 id="Model-complexity"><a href="#Model-complexity" class="headerlink" title="Model complexity"></a>Model complexity</h4><p>对于模型的复杂度和可解释性通常需要权衡。例如，之前的基于深度神经网络的方法解释性不佳，因此没有明确的优化方向指导。本文的摘要模型基于提出的假设，能够在保持模型复杂度的同时，具有更好的可解释性。 </p>
-<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><p>假设文档簇总共有n个句子，全局集合为$C={s_1,…,s_n}$，候选摘要集合为$S$，是$C$的一个子集。每个句子之间的关系组成一个亲和矩阵（affinity matrix）：$\mathbf{A}={a_{ij}}_ {n\times n}$。此外，矩阵$\mathbf{A}$的主特征值和对应的主特征向量为$\lambda(\mathbf{A})$ 和 $\mathbf{v}$。</p>
-<p>从矩阵中丢弃一个集合，就是清空被丢弃元素对应的行和列。<br>例如从矩阵$\mathbf{A}$中丢弃集合$S$，意味着：<br>$$<br>\mathbf{A} \backslash S=\left{\begin{array}{ll}<br>0, &amp; s_{i} \in S \text { or } s_{j} \in S \\<br>a_{i j}, &amp; \text { otherwise }<br>\end{array}\right.<br>$$</p>
+<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><p>假设文档簇总共有n个句子，全局集合为$C=\{s_1,…,s_n\}$，候选摘要集合为$S$，是$C$的一个子集。每个句子之间的关系组成一个亲和矩阵（affinity matrix）：$\mathbf{A}=\{a_{ij}\}_ {n\times n}$。此外，矩阵$\mathbf{A}$的主特征值和对应的主特征向量为$\lambda(\mathbf{A})$ 和 $\mathbf{v}$。</p>
+<p>从矩阵中丢弃一个集合，就是清空被丢弃元素对应的行和列。<br>例如从矩阵$\mathbf{A}$中丢弃集合$S$，意味着：<br>$$<br>\mathbf{A} \backslash S=\left\{\begin{array}{ll}<br>0, &amp; s_{i} \in S \text { or } s_{j} \in S \\<br>a_{i j}, &amp; \text { otherwise }<br>\end{array}\right.<br>$$</p>
 <h3 id="Spectral-Hypothesis"><a href="#Spectral-Hypothesis" class="headerlink" title="Spectral Hypothesis"></a>Spectral Hypothesis</h3><p>当把文档簇表示为一个矩阵时，矩阵的谱（特征值集合）反映了文档的不同方方面，而主特征值则对应着最关键的方面。这也为进行摘要提供了启发。因此对于抽取式多文档摘要任务，本文提出了如下假设：</p>
 <p>给定：亲和矩阵$\mathbf{A}$；候选摘要集合$S$，初始可能包含随机的句子。<br>定义：候选摘要集合$S$的谱影响定义为：丢弃$S$后对于矩阵$\mathbf{A}$的主特征值造成的扰动。即：$\Delta \lambda(S) \triangleq \lambda(\mathbf{A})-\lambda(\mathbf{A} \backslash S)$<br>假设：候选摘要$S$的质量与他的谱影响$\Delta \lambda(S)$有关系。</p>
 <p>基于上面的假设，多文档摘要任务就变成了对于谱影响的优化问题：<br>$$<br>S^{*}=\underset{S \subseteq C}{\arg \max } \Delta \lambda(S), \quad \text { s.t. }|S| \leqslant k<br>$$<br>其中集合$C$表示全局句子集合，$k$表示摘要长度限制。</p>
@@ -176,7 +176,7 @@
 <h3 id="Justifications-of-Hypothesis"><a href="#Justifications-of-Hypothesis" class="headerlink" title="Justifications of Hypothesis"></a>Justifications of Hypothesis</h3><p>这里从三个角度验证本文的假设。</p>
 <h4 id="Semantic-scaling"><a href="#Semantic-scaling" class="headerlink" title="Semantic scaling"></a>Semantic scaling</h4><p><em>亲和矩阵的主特征值决定了向量在语义空间中的伸缩。</em></p>
 <p>n个句子每个句子表示一个维度，构成一个n维语义空间，该空间的每个轴代表一个句子。这样的话，亲和矩阵$\mathbf{A}_ {n\times n}$就可以看作是这个空间中的线性操作。而矩阵中的每个值$a_{ij}$就是调节从$i-th$轴到$j-th$轴的变换。</p>
-<p>给定任意非零向量$\mathbf{x}$，变换后的向量$\mathbf{Ax}$，两者满足如下关系：<br>$$<br>|\mathbf{Ax}| \le \lambda(\mathbf{A})|\mathbf{x}|<br>$$<br>这是一个上界，只有当$\mathbf{x}$是主特征值时，等式才成立。</p>
+<p>给定任意非零向量$\mathbf{x}$，变换后的向量$\mathbf{Ax}$，两者满足如下关系：<br>$$<br>||\mathbf{Ax}|| \le \lambda(\mathbf{A})||\mathbf{x}||<br>$$<br>这是一个上界，只有当$\mathbf{x}$是主特征值时，等式才成立。</p>
 <p>这个性质表明，空间中任何向量的缩放不会超过$\lambda(\mathbf{A})$。因此，主特征值$\lambda(\mathbf{A})$反映了操作$\mathbf{A}$对空间中任意向量的缩放能力。当从$\mathbf{A}$中删除候选集合$S$时，$S$中涉及到的轴上的变换都被删除了，也就是说，对于那些被删除的轴方向上的缩放贡献都没有了，因此会损害操作$\mathbf{A}$的缩放能力。而当最好的摘要被删删除时，则会导致操作$\mathbf{A}$的能力损失最大。因此，主特征值表示了操作$\mathbf{A}$的缩放能力，可以被用来定位多文档摘要中句子的重要性。</p>
 <h4 id="Propagation-dynamics"><a href="#Propagation-dynamics" class="headerlink" title="Propagation dynamics"></a>Propagation dynamics</h4><p><em>隔离摘要会导致信息传播的阻塞。</em></p>
 <p>这种视角将亲和矩阵看作一个图，亲和度值$a_{ij}$则为图中节点i和j的边的权重，权重越高，越有利于信息的传播。<br>这里的问题就是，从少数几个种子句子开始进行信息传播能否形成大流行（pandemic）。例如在流行病学中，只有当病毒的传播值$R_0$大于1才有可能形成大流行。</p>
@@ -190,7 +190,8 @@
 <p>第三项$O(|E|^2)$，因为矩阵$\mathbf{E}$中大多数元素为0（因为|S|&lt;&lt; n），所以该项很小，对于整体影响不大。</p>
 <h4 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h4><p>对于这个挑选最佳候选摘要的过程，最普通的方法就是枚举，枚举所有的句子组合的可能。但是这样复杂度太高。理论上这个问题属于NP-hard问题。本文则提出一种高效的求近似解的方法。利用谱影响的代理，如下图所示：<br><img src="spectral.PNG" alt="spectral"></p>
 <p>具体算法如算法2所示：<br><img src="algorithm2.PNG" alt="algorithm2"></p>
-<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>本文在 DUC2004，Yelp，Multi-News数据上进行实验。对比的baselines也选取了非常多。<br>具体实验结果以及所对比的baseline如图所示。<br><img src="table3-1.PNG" alt="table3-1"><br><img src="table3-2.PNG" alt="table3-2"><br><img src="table3-3.PNG" alt="table3-3"></p>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>本文在 DUC2004，Yelp，Multi-News数据上进行实验。对比的baselines也选取了非常多。<br>具体实验结果以及所对比的baseline如图所示。</p>
+<p><img src="table3-2.PNG" alt="table3-2"><br><img src="table3-3.PNG" alt="table3-3"><br><img src="table3-4.PNG" alt="table3-4"></p>
 <p>此外，作者还在DUC2004上选取了500个样例，分为50组，对这50组候选摘要的ROUGE得分与谱影响进行了Pearson相关性检验，结果如图3-1所示。<br><img src="figure3-1.PNG" alt="figure3-1"><br>结果证明摘要的ROUGE得分与谱影响具有相关性。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文算是目前少见的没有使用神经网络的摘要方法。而是从亲和矩阵的谱的角度来进行多文档摘要。提出的基于谱的假设也很有道理，并且从多个角度去解释与验证了假设的有效性。</p>
 <p>另外，本文的总体思路属于，去掉某些句子，看去掉之后对效果的影响的大小，来判断所去掉的元素的重要性。这种思路之前也有见过，也是一种值得学习与思考的思路。</p>
