@@ -150,7 +150,7 @@
 <li>文档摘要分为抽取式和生成式摘要方法。</li>
 <li>之前的方法需要label data，但是label data很少且难以构建。并且对所有领域的文本都构建label data是不现实的。所以本文研究无监督方法。</li>
 <li>之前的无监督抽取式摘要方法的主要内容是识别文档中的重要内容。之前最流行的方法主要是基于图排序的方法。</li>
-<li>进来有很多无监督生成式摘要方法。但是这些方法无法保证摘要的语法正确性，以及与原文的一致性。</li>
+<li>近来有很多无监督生成式摘要方法。但是这些方法无法保证摘要的语法正确性，以及与原文的一致性。</li>
 <li>根据HIBERT引出本文的思路。即利用Transformer模型中的注意力权重信息来进行重要内容的识别，并进而进行摘要抽取。</li>
 <li>在CNN-DailyMail和NYT数据集上进行了测试。</li>
 <li><a href="https://github.com/xssstory/STAS" target="_blank" rel="noopener">代码</a></li>
@@ -168,7 +168,7 @@
 <p>最后训练目标是两部分的损失之和。</p>
 <h3 id="Unsupervised-Summarization"><a href="#Unsupervised-Summarization" class="headerlink" title="Unsupervised Summarization"></a>Unsupervised Summarization</h3><p>抽取式摘要的主要目标就是选择出文档中最重要的句子。因此，得到预训练之后的模型之后，本文的方法就可以不需要进行进一步的fine-tune，直接来对句子进行排序。</p>
 <p>第一个排序标准是根据文档中句子的预测概率。一个文档$D=(S_1, S_2, …, S_ {|D|})$的概率为:</p>
-<p>$$<br>p(\mathcal{D})=\prod_ {i=1}^{|\mathcal{D}|} p\left(S_ {i} \mid S_ {1: i-1}\right) \approx \prod_ {i=1}^{|\mathcal{D}|} p\left(S_ {i} \mid \mathcal{D}_ {\neg} S_ {i}\right)<br>$$</p>
+<p>$$<br>p(\mathcal{D})=\prod_ {i=1}^{|\mathcal{D}|} p\left(S_ {i} \mid S_ {1: i-1}\right) \approx \prod_ {i=1}^{|\mathcal{D}|} p\left(S_ {i} \mid \mathcal{D}_ { {\neg} S_ {i} } \right)<br>$$</p>
 <p>然而预测$p(S_i|S_{1:i-1})$不方便，因为这里使用的模型都是双向的。但是根据之前预训练的masked sentences prediction任务，能够很方便地预测$p(S_i|D_{\neg S_{i}})$。<br>因此，这里将每个句子的生成概率转换成生成该句子时生成每个单词的概率，并同时根据句子的长度进行归一化，以使得不同长度句子之间能够相互比较：</p>
 <p>$$<br>\hat{r}_ {i}=\frac{1}{\left|S_{i}\right|} \sum_{j=1}^{\left|S_{i}\right|} p\left(w_{j}^{i} \mid w_{0: j-1}^{i}, \mathcal{D}_ {\neg S_{i}}\right)<br>$$</p>
 <p>同时对整个文档的句子得分进行归一化：</p>
