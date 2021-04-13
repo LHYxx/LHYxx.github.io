@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>python基础操作-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<!-- <body style="background: url('/') no-repeat; background-size: 100%;"> 带背景-->
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">python基础操作</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2019-08-13</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/python/">python</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><h1 id="python-基础操作宝典"><a href="#python-基础操作宝典" class="headerlink" title="python 基础操作宝典"></a>python 基础操作宝典</h1><h2 id="列表List"><a href="#列表List" class="headerlink" title="列表List"></a>列表List</h2><p>list.append(x)：添加元素x到末尾<br>list.extend(list2)：将list2拼接到列表末尾，等于list + list2<br>list.insert(index, x)：将元素x插入到位置index<br>list.count(x)：统计x在列表中出现的次数<br>list.index(x)：x在列表中第一次出现的下标<br>list.pop(index=-1)：删除列表中index处的值，并返回该值，默认最后一个。<br>list.remove(x)：删除列表中第一个与x匹配的元素<br>list.reverse()：反转列表<br>list.sort(cmp=None, key=None, reverse=False)：对列表进行排序</p>
+<h2 id="集合Set"><a href="#集合Set" class="headerlink" title="集合Set"></a>集合Set</h2><p>set.add(x):添加元素x，如果已存在，则不进行任何操作<br>set.update(x):其中x可以是列表、元组、字典等，用来批量将元素添加到集合<br>set.remove(x):删除元素x，如果没有则报错<br>set.discard(x):删除元素x，如果没有则不进行任何操作<br>set.pop():会随机弹出一个元素<br>set.clear():清空集合<br>set.copy():返回一个拷贝的集合<br>set1 &amp; set2:交集，等于set1.intersection(set2)<br>set1 | set2:并集，等于set1.union(set2)<br>set1 - set2:差集，等于set1.difference(set2)<br>set1.issubset(set2):判断set2是否是set1的子集<br>set1.isdisjoint(set2):判断set1和set2是否有交集</p>
+<h2 id="字典Dict"><a href="#字典Dict" class="headerlink" title="字典Dict"></a>字典Dict</h2><p>dict.clear()：清空字典<br>dict.copy()：返回拷贝的字典<br>dict.get(key, default=None)：返回指定key的value，如果没有该key，则返回default的值<br>dict.has_key(key)：判断字典中是否有key<br>dict.items()：以可遍历的形式返回字典中的(key, value)对<br>dict.update(dict2)：将dict2的内容更新到dict中<br>dict.pop(key)：删除字典中指定key的值，并返回该值。<br>dict.popitem()：返回并删除字典中的最后一对(key, value)<br>dict.fromkeys(seq[, val])：创建一个新字典，以序列 seq 中元素做字典的键，val 为字典所有键对应的初始值</p>
+<h2 id="python-built-in-函数"><a href="#python-built-in-函数" class="headerlink" title="python built-in 函数"></a>python built-in 函数</h2><p>abs(a): a的绝对值<br>divmod(a, b)：把除数和余数运算结果结合起来，返回一个包含商和余数的元组(a // b, a % b)<br>all(iterable)：函数用于判断给定的可迭代参数 iterable 中的所有元素是否都为 TRUE，如果是返回 True，否则返回 False。元素除了是 0、空、None、False 外都算 True。<br>any(iterable): 函数用于判断给定的可迭代参数 iterable 是否全部为 False，则返回 False，如果有一个为 True，则返回 True。<br>ord():字符到ASCII数值或Unicode数值<br>chr():ASCII数值或Unicode数值到字符<br>pow(x, y):x的y次方。通过内置的方法直接调用，内置方法会把参数作为整型，而 math 模块则会把参数转换为 float。</p>
+<p>filter(function, iterable):函数用于过滤序列，过滤掉不符合条件的元素，返回一个迭代器对象，如果要转换为列表，可以使用 list() 来转换。<br>该接收两个参数，第一个为函数，第二个为序列，序列的每个元素作为参数传递给函数进行判断，然后返回 True 或 False，最后将返回 True 的元素放到新列表中。</p>
+<p>map(function, iterable):会根据提供的函数对指定序列做映射。</p>
+<p>zip([iterable, …]):将可迭代的对象作为参数，将对象中对应的元素打包成一个个元组，然后返回由这些元组组成的对象。<br>zip([1, 2, 3], [4, 5, 6]) -&gt; [(1,4), (2,5), (3,6)]<br>zip(*[(1,4), (2,5), (3,6)]) -&gt; ([1, 2, 3], [4, 5, 6])</p>
+<p>round(x [, n]): 四舍五入，保留n位小数。</p>
+<p>bin()：返回一个整数 int 或者长整数 long int 的二进制表示，以0b开头（返回字符串型, 0b1010）。<br>hex()：函数用于将10进制整数转换成16进制，以字符串形式表示，以0x开头。<br>oct()：函数将一个整数转换成 8 进制字符串。以0o开头。</p>
+<p>sorted(iterable, cmp=None, key=None, reverse=False) 函数对所有可迭代的对象进行排序操作。<br>sort 是应用在 list 上的方法，sorted 可以对所有可迭代的对象进行排序操作。<br>list 的 sort 方法返回的是对已经存在的列表进行操作，无返回值，而内建函数 sorted 方法返回的是一个新的 list，而不是在原来的基础上进行的操作。</p>
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2019/08/16/hello-world/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            Hello World</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">No more
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2019/08/16/hello-world/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            Hello World</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">No more
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#python-基础操作宝典"><span class="toc-text">python 基础操作宝典</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#列表List"><span class="toc-text">列表List</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集合Set"><span class="toc-text">集合Set</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字典Dict"><span class="toc-text">字典Dict</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-built-in-函数"><span class="toc-text">python built-in 函数</span></a></li></ol></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>

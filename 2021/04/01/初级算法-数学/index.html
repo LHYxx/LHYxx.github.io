@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>初级算法|数学-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<!-- <body style="background: url('/') no-repeat; background-size: 100%;"> 带背景-->
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">初级算法|数学</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2021-04-01</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/leetcode/">leetcode</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>计数质数</li>
+<li>3的幂</li>
+<li>罗马数字转整数</li>
+</ul>
+<h2 id="计数质数"><a href="#计数质数" class="headerlink" title="计数质数"></a>计数质数</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>统计所有小于非负整数 n 的质数的数量。<br>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">输入：n = 10</span><br><span class="line">输出：4</span><br><span class="line">解释：小于 10 的质数一共有 4 个, 它们是 2, 3, 5, 7 。</span><br><span class="line"></span><br><span class="line">输入：n = 0</span><br><span class="line">输出：0</span><br><span class="line"></span><br><span class="line">输入：n = 1</span><br><span class="line">输出：0</span><br></pre></td></tr></table></figure>
+
+<p>数据规模：$0 &lt;= n &lt;= 5 \times 10^6$</p>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="暴力法"><a href="#暴力法" class="headerlink" title="暴力法"></a>暴力法</h4><p>挨个试。虽然会超时，但是作为一种最基础的解法还是有必要写下来。代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isPrimes</span><span class="params">(self, i)</span>:</span>  <span class="comment"># 函数，判断数字i是否是质数</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">3</span>, int(sqrt(i))+<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> i%j==<span class="number">0</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">countPrimes</span><span class="params">(self, n: int)</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">if</span> n&lt;<span class="number">3</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        count = <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>, n, <span class="number">2</span>):  <span class="comment"># 步长设为2，因为偶数不可能是质数，直接排除了</span></span><br><span class="line">            <span class="keyword">if</span> self.isPrimes(i):</span><br><span class="line">                count += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> count</span><br></pre></td></tr></table></figure>
+
+<h4 id="埃氏筛法"><a href="#埃氏筛法" class="headerlink" title="埃氏筛法"></a>埃氏筛法</h4><p>该方法主要思想为：<br>首先申请n个位置，将n个数全部标记为质数1。<br>遍历整个数组，如果当前数是质数，那么他的倍数都不是质数，因此都设为非质数0。<br>这个方法有个名字叫埃拉托斯特尼 埃氏筛选法。<br>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">countPrimes</span><span class="params">(self, n: int)</span> -&gt; int:</span></span><br><span class="line">        nums = [<span class="number">1</span>]*n  <span class="comment"># 初始全部标记为1</span></span><br><span class="line">        count = <span class="number">0</span>  <span class="comment"># 质数计数器</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>, n):  <span class="comment"># 0,1不是质数，从2开始计数</span></span><br><span class="line">            <span class="keyword">if</span> nums[i]:</span><br><span class="line">                count += <span class="number">1</span></span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> range(i*i, n, i):  <span class="comment"># i*i前面的值之前已经访问过了，所以从i*i开始即可，步长为i，即访问所有i的倍数。</span></span><br><span class="line">                    nums[j] = <span class="number">0</span>  <span class="comment"># 设为非质数</span></span><br><span class="line">        <span class="keyword">return</span> count</span><br></pre></td></tr></table></figure>
+
+<p>这种方法的正确性是比较显然的：这种方法显然不会将质数标记成合数；另一方面，当从小到大遍历到数 x 时，倘若它是合数，则它一定是某个小于 x 的质数 y 的整数倍，故根据此方法的步骤，我们在遍历到 y 时，就一定会在此时将 x 标记为 isPrime[x]=0。<br>时间复杂度为O(NloglogN)。</p>
+<h4 id="线性筛"><a href="#线性筛" class="headerlink" title="线性筛"></a>线性筛</h4><p>埃氏筛的一个冗余操作在于，对于有些数字，可能会进行重复标记。例如对于45，会同时被3和5标记。因此还有进一步优化的空间。<br>线性筛维护一个额外的质数列表primes，在遍历过程中，如果当前数是质数，就加到primes中。<br>另外在标记过程中，不是将当前数的所有倍数都标记为合数，而是只将当前数与primes中的数的乘积标记为合数。<br>这是因为，任何一个合数都可以表示成若干个小于该数的素数的乘积。因此对于数i，一定可以表示成$i = primes[k] \times j where j &lt; i $，而j如果是素数，没问题，i表示成了两个素数的乘积；如果j是合数，那么j又可以表示成若干个小于j的质数的和。。。这样一直递归下去，最终都会表示成若干个素数的乘积。因此对于大于2的任何合数i，都可以表示成一个小于i的数与一个小于i的素数的乘积。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">countPrimes</span><span class="params">(self, n: int)</span> -&gt; int:</span></span><br><span class="line">        nums = [<span class="number">1</span>]*n</span><br><span class="line">        count = <span class="number">0</span></span><br><span class="line">        primes = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>, n):</span><br><span class="line">            <span class="keyword">if</span> nums[i]:</span><br><span class="line">                count += <span class="number">1</span></span><br><span class="line">                primes.append(i)</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> primes:</span><br><span class="line">                <span class="keyword">if</span> i*j&lt;n:                </span><br><span class="line">                    nums[i*j] = <span class="number">0</span></span><br><span class="line">                <span class="keyword">else</span>:  <span class="comment"># 不加这个break会超时</span></span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">                <span class="keyword">if</span> i%j==<span class="number">0</span>:  <span class="comment"># 因为primes是有序的，这一句保证数i只被最小的素数因子标记。</span></span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">return</span> count</span><br></pre></td></tr></table></figure>
+
+<p>这样的时间复杂度理论上为O(N)。</p>
+<h2 id="3的幂"><a href="#3的幂" class="headerlink" title="3的幂"></a>3的幂</h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个整数，写一个函数来判断它是否是 3 的幂次方。如果是，返回 true ；否则，返回 false 。</p>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">示例 1：</span><br><span class="line">输入：n = 27</span><br><span class="line">输出：true</span><br><span class="line"></span><br><span class="line">示例 2：</span><br><span class="line">输入：n = 0</span><br><span class="line">输出：false</span><br></pre></td></tr></table></figure>
+
+<p>进阶：不使用循环或递归解决。</p>
+<h3 id="题解-1"><a href="#题解-1" class="headerlink" title="题解"></a>题解</h3><h4 id="循环法"><a href="#循环法" class="headerlink" title="循环法"></a>循环法</h4><p>从1开始，如果小于n，就一直乘以3。<br>最后判断是否等于n。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isPowerOfThree</span><span class="params">(self, n: int)</span> -&gt; bool:</span></span><br><span class="line">        start = <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> start&lt;n:</span><br><span class="line">            start *= <span class="number">3</span></span><br><span class="line">        <span class="keyword">return</span> start==n</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用表达式求解"><a href="#使用表达式求解" class="headerlink" title="使用表达式求解"></a>使用表达式求解</h4><p>目标关系为：$3^m = n$，<br>两边同时取对数：$mlog(3) = log(n)$<br>$log(n)/log(3) = m$<br>因此，如果log(n)/log(3)是一个整数，则成立。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isPowerOfThree</span><span class="params">(self, n: int)</span> -&gt; bool:</span></span><br><span class="line">        <span class="keyword">if</span> n&lt;=<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span> (math.log10(n)/math.log10(<span class="number">3</span>))%<span class="number">1</span> == <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="罗马数字转整数"><a href="#罗马数字转整数" class="headerlink" title="罗马数字转整数"></a>罗马数字转整数</h2><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h3><p>罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">字符          数值</span><br><span class="line">I             1</span><br><span class="line">V             5</span><br><span class="line">X             10</span><br><span class="line">L             50</span><br><span class="line">C             100</span><br><span class="line">D             500</span><br><span class="line">M             1000</span><br></pre></td></tr></table></figure>
+
+<p>例如， 罗马数字 2 写做 II ，即为两个并列的 1。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。</p>
+<p>通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：</p>
+<blockquote>
+<p>I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。<br>X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。<br>C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。</p>
+</blockquote>
+<p>给定一个罗马数字，将其转换成整数。输入确保在 1 到 3999 的范围内。</p>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">示例 1:</span><br><span class="line">输入: &quot;III&quot;</span><br><span class="line">输出: 3</span><br><span class="line"></span><br><span class="line">示例 2:</span><br><span class="line">输入: &quot;IV&quot;</span><br><span class="line">输出: 4</span><br><span class="line"></span><br><span class="line">示例 3:</span><br><span class="line">输入: &quot;IX&quot;</span><br><span class="line">输出: 9</span><br><span class="line"></span><br><span class="line">示例 4:</span><br><span class="line">输入: &quot;LVIII&quot;</span><br><span class="line">输出: 58</span><br><span class="line">解释: L = 50, V= 5, III = 3.</span><br><span class="line"></span><br><span class="line">示例 5:</span><br><span class="line">输入: &quot;MCMXCIV&quot;</span><br><span class="line">输出: 1994</span><br><span class="line">解释: M = 1000, CM = 900, XC = 90, IV = 4.</span><br></pre></td></tr></table></figure>
+
+<p>提示</p>
+<ul>
+<li>1 &lt;= s.length &lt;= 15</li>
+<li>s 仅含字符 (‘I’, ‘V’, ‘X’, ‘L’, ‘C’, ‘D’, ‘M’)</li>
+<li>题目数据保证 s 是一个有效的罗马数字，且表示整数在范围 [1, 3999] 内</li>
+<li>题目所给测试用例皆符合罗马数字书写规则，不会出现跨位等情况。</li>
+<li>IL 和 IM 这样的例子并不符合题目要求，49 应该写作 XLIX，999 应该写作 CMXCIX 。</li>
+<li>关于罗马数字的详尽书写规则，可以参考 罗马数字 - Mathematics 。</li>
+</ul>
+<h3 id="题解-2"><a href="#题解-2" class="headerlink" title="题解"></a>题解</h3><h4 id="类似简化版状态机"><a href="#类似简化版状态机" class="headerlink" title="类似简化版状态机"></a>类似简化版状态机</h4><p>可以按照状态机的思路来写。不过这里的状态实际上只保留两步即可，因为最长的就是两位组成的数字。所以只需要看当前位置和下一位置即可判断当前的数应该为多少。<br>同时，在看下一个位置的时候，记得保证数组不要越界。<br>且如果两步构成一个数的情况下，下一步需要跳过，不要重复处理。<br>代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">romanToInt</span><span class="params">(self, s: str)</span> -&gt; int:</span></span><br><span class="line">        num = <span class="number">0</span></span><br><span class="line">        skip = <span class="literal">False</span>  <span class="comment"># 保存状态，指示当前步骤是否跳过</span></span><br><span class="line">        <span class="keyword">for</span> i,c <span class="keyword">in</span> enumerate(s):</span><br><span class="line">            <span class="keyword">if</span> skip:  <span class="comment"># 如果当前位与上一位共同构成一个数，那么就跳过当前位，同时将skip开关关闭。</span></span><br><span class="line">                skip = <span class="literal">False</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="comment"># 首先处理三种有特殊情况的字符，即I，X，C</span></span><br><span class="line">            <span class="keyword">if</span> c==<span class="string">'I'</span>:</span><br><span class="line">                <span class="keyword">if</span> i+<span class="number">1</span>&lt;len(s) <span class="keyword">and</span> s[i+<span class="number">1</span>]==<span class="string">'V'</span>:</span><br><span class="line">                    num+=<span class="number">4</span></span><br><span class="line">                    skip=<span class="literal">True</span></span><br><span class="line">                <span class="keyword">elif</span> i+<span class="number">1</span>&lt;len(s) <span class="keyword">and</span> s[i+<span class="number">1</span>]==<span class="string">'X'</span>:</span><br><span class="line">                    num+=<span class="number">9</span></span><br><span class="line">                    skip=<span class="literal">True</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    num+=<span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> c==<span class="string">'X'</span>:</span><br><span class="line">                <span class="keyword">if</span> i+<span class="number">1</span>&lt;len(s) <span class="keyword">and</span> s[i+<span class="number">1</span>]==<span class="string">'L'</span>:</span><br><span class="line">                    num+=<span class="number">40</span></span><br><span class="line">                    skip=<span class="literal">True</span></span><br><span class="line">                <span class="keyword">elif</span> i+<span class="number">1</span>&lt;len(s) <span class="keyword">and</span> s[i+<span class="number">1</span>]==<span class="string">'C'</span>:</span><br><span class="line">                    num+=<span class="number">90</span></span><br><span class="line">                    skip=<span class="literal">True</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    num+=<span class="number">10</span></span><br><span class="line">            <span class="keyword">elif</span> c==<span class="string">'C'</span>:</span><br><span class="line">                <span class="keyword">if</span> i+<span class="number">1</span>&lt;len(s) <span class="keyword">and</span> s[i+<span class="number">1</span>]==<span class="string">'D'</span>:</span><br><span class="line">                    num+=<span class="number">400</span></span><br><span class="line">                    skip=<span class="literal">True</span></span><br><span class="line">                <span class="keyword">elif</span> i+<span class="number">1</span>&lt;len(s) <span class="keyword">and</span> s[i+<span class="number">1</span>]==<span class="string">'M'</span>:</span><br><span class="line">                    num+=<span class="number">900</span></span><br><span class="line">                    skip=<span class="literal">True</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    num+=<span class="number">100</span></span><br><span class="line">            <span class="comment"># 剩下的没有特殊情况的字符</span></span><br><span class="line">            <span class="keyword">elif</span> c==<span class="string">'V'</span>:</span><br><span class="line">                num+=<span class="number">5</span></span><br><span class="line">            <span class="keyword">elif</span> c==<span class="string">'L'</span>:</span><br><span class="line">                num+=<span class="number">50</span></span><br><span class="line">            <span class="keyword">elif</span> c==<span class="string">'D'</span>:</span><br><span class="line">                num+=<span class="number">500</span></span><br><span class="line">            <span class="keyword">elif</span> c==<span class="string">'M'</span>:</span><br><span class="line">                num+=<span class="number">1000</span></span><br><span class="line">        <span class="keyword">return</span> num</span><br></pre></td></tr></table></figure>
+
+<h4 id="利用字典法"><a href="#利用字典法" class="headerlink" title="利用字典法"></a>利用字典法</h4><p>因为罗马数字保证一般情况下大数在左边，小数在右边。只有特殊情况(IV, IX等。。)才会出现小数在左边的情况。因此在遍历字符串的过程中，只需要在遇到“左小右大”的情况下，才会做减法减去当前数（IV实际上就是-1+4，其他特殊情况类似），否则都是加上当前数。<br>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">romanToInt</span><span class="params">(self, s: str)</span> -&gt; int:</span></span><br><span class="line">        num=<span class="number">0</span></span><br><span class="line">        dic = &#123;<span class="string">'I'</span>:<span class="number">1</span>, <span class="string">'V'</span>:<span class="number">5</span>, <span class="string">'X'</span>:<span class="number">10</span>, <span class="string">'L'</span>:<span class="number">50</span>, <span class="string">'C'</span>:<span class="number">100</span>, <span class="string">'D'</span>:<span class="number">500</span>, <span class="string">'M'</span>:<span class="number">1000</span>&#125;</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(s)):</span><br><span class="line">            <span class="keyword">if</span> i+<span class="number">1</span>&lt;len(s) <span class="keyword">and</span> dic[s[i]]&lt;dic[s[i+<span class="number">1</span>]]:</span><br><span class="line">                num -= dic[s[i]]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                num += dic[s[i]]</span><br><span class="line">        <span class="keyword">return</span> num</span><br></pre></td></tr></table></figure></article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/06/文章笔记-Transformer-based-Model-for-Single-Documents-Neural-Summarization/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            文章笔记|Transformer-based Model for Single Documents Neural Summarization</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/03/20/初级算法-字符串/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">初级算法|字符串
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/06/文章笔记-Transformer-based-Model-for-Single-Documents-Neural-Summarization/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            文章笔记|Transformer-based Model for Single Documents Neural Summarization</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/03/20/初级算法-字符串/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">初级算法|字符串
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#目录"><span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#计数质数"><span class="toc-text">计数质数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#暴力法"><span class="toc-text">暴力法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#埃氏筛法"><span class="toc-text">埃氏筛法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#线性筛"><span class="toc-text">线性筛</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3的幂"><span class="toc-text">3的幂</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-1"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-1"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#循环法"><span class="toc-text">循环法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用表达式求解"><span class="toc-text">使用表达式求解</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#罗马数字转整数"><span class="toc-text">罗马数字转整数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-2"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-2"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#类似简化版状态机"><span class="toc-text">类似简化版状态机</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#利用字典法"><span class="toc-text">利用字典法</span></a></li></ol></li></ol></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>

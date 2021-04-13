@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>初级算法|动态规划-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<!-- <body style="background: url('/') no-repeat; background-size: 100%;"> 带背景-->
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">初级算法|动态规划</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2021-04-13</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/leetcode/">leetcode</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>爬楼梯</li>
+<li>买卖股票的最佳时机</li>
+</ul>
+<h2 id="爬楼梯"><a href="#爬楼梯" class="headerlink" title="爬楼梯"></a>爬楼梯</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>假设你正在爬楼梯。需要 n 阶你才能到达楼顶。<br>每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？<br>注意：给定 n 是一个正整数。</p>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">示例 1：</span><br><span class="line">输入： 2</span><br><span class="line">输出： 2</span><br><span class="line">解释： 有两种方法可以爬到楼顶。</span><br><span class="line">1.  1 阶 + 1 阶</span><br><span class="line">2.  2 阶</span><br><span class="line"></span><br><span class="line">示例 2：</span><br><span class="line">输入： 3</span><br><span class="line">输出： 3</span><br><span class="line">解释： 有三种方法可以爬到楼顶。</span><br><span class="line">1.  1 阶 + 1 阶 + 1 阶</span><br><span class="line">2.  1 阶 + 2 阶</span><br><span class="line">3.  2 阶 + 1 阶</span><br></pre></td></tr></table></figure>
+
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h4><p>对于第k层，可能是一步上来的，也可能是两步上来的。如果是跳1步上来的，则方法数与到k-1层相同，如果是跳2步上来的，则方法数与到k-2层相同。<br>因此有$f(k) = f(k-1) + f(k-2)$。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">climbStairs</span><span class="params">(self, n: int)</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">if</span> n == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        dp = [<span class="number">0</span>] * (n+<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 设置边界</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">        dp[<span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">        dp[<span class="number">2</span>] = <span class="number">2</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>, n+<span class="number">1</span>):</span><br><span class="line">            dp[i] = dp[i<span class="number">-1</span>] + dp[i<span class="number">-2</span>]</span><br><span class="line">        <span class="keyword">return</span> dp[n]</span><br></pre></td></tr></table></figure>
+
+<h2 id="买卖股票的最佳时机"><a href="#买卖股票的最佳时机" class="headerlink" title="买卖股票的最佳时机"></a>买卖股票的最佳时机</h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个数组 prices ，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。<br>你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。设计一个算法来计算你所能获取的最大利润。<br>返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0 。</p>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">示例 1：</span><br><span class="line">输入：[7,1,5,3,6,4]</span><br><span class="line">输出：5</span><br><span class="line">解释：在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。</span><br><span class="line">     注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。</span><br><span class="line"></span><br><span class="line">示例 2：</span><br><span class="line">输入：prices = [7,6,4,3,1]</span><br><span class="line">输出：0</span><br><span class="line">解释：在这种情况下, 没有交易完成, 所以最大利润为 0。</span><br></pre></td></tr></table></figure>
+
+<h3 id="题解-1"><a href="#题解-1" class="headerlink" title="题解"></a>题解</h3><h4 id="动态规划-1"><a href="#动态规划-1" class="headerlink" title="动态规划"></a>动态规划</h4><p>对于每一天，有两种可能，持有股票和不持有股票。<br>如果持有股票，那么又有两种情况，1）前一天就持有；2）今天刚买入。<br>如果不持有股票，对应两种情况：1）之前一直没买入；2）今天刚卖出。<br>对于每一天的收益，只与前一天的收益有关，用两个变量hold 和 nohold分别记录前一时刻 持有 和 不持有 股票的最大收益即可。 注意点是全程只能买卖一次股票。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxProfit</span><span class="params">(self, prices: List[int])</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">if</span> len(prices) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 初始化边界值</span></span><br><span class="line">        hold = -prices[<span class="number">0</span>]  <span class="comment"># 第0天就持有的收益</span></span><br><span class="line">        nohold = <span class="number">0</span>  <span class="comment"># 第0天不持有的收益</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(prices)):</span><br><span class="line">            hold = max(hold, -prices[i])  <span class="comment"># 第i天持有的收益，就是对应两种情况的收益最大值</span></span><br><span class="line">            nohold = max(nohold, hold+prices[i])  <span class="comment"># 第i天不持有的收益，就是对应两种情况的收益最大值</span></span><br><span class="line">        <span class="keyword">return</span> nohold  <span class="comment"># 最后利润最大，一定是卖出去的</span></span><br></pre></td></tr></table></figure>
+
+</article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/13/初级算法-设计/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            初级算法|设计</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/07/文章笔记-Self-Supervised-Learning-for-Contextualized-Extractive-Summarization/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">文章笔记|Self-Supervised Learning for Contextualized Extractive Summarization
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/13/初级算法-设计/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            初级算法|设计</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/07/文章笔记-Self-Supervised-Learning-for-Contextualized-Extractive-Summarization/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">文章笔记|Self-Supervised Learning for Contextualized Extractive Summarization
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#目录"><span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#爬楼梯"><span class="toc-text">爬楼梯</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#动态规划"><span class="toc-text">动态规划</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#买卖股票的最佳时机"><span class="toc-text">买卖股票的最佳时机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-1"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-1"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#动态规划-1"><span class="toc-text">动态规划</span></a></li></ol></li></ol></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>

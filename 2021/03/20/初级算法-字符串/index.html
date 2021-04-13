@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>初级算法|字符串-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<!-- <body style="background: url('/') no-repeat; background-size: 100%;"> 带背景-->
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">初级算法|字符串</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2021-03-20</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/leetcode/">leetcode</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>反转字符串</li>
+<li>整数反转</li>
+<li>字符串中的第一个唯一字符</li>
+<li>有效的字母异位词</li>
+<li>验证回文串</li>
+<li>字符串转换整数 (atoi)</li>
+<li>实现 strStr()</li>
+<li>外观数列</li>
+<li>无重复字符的最长子串</li>
+</ul>
+<h2 id="反转字符串"><a href="#反转字符串" class="headerlink" title="反转字符串"></a>反转字符串</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 char[] 的形式给出。</p>
+<p>不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。</p>
+<p>你可以假设数组中的所有字符都是 ASCII 码表中的可打印字符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">示例 1：</span><br><span class="line">输入：[&quot;h&quot;,&quot;e&quot;,&quot;l&quot;,&quot;l&quot;,&quot;o&quot;]</span><br><span class="line">输出：[&quot;o&quot;,&quot;l&quot;,&quot;l&quot;,&quot;e&quot;,&quot;h&quot;]</span><br><span class="line"></span><br><span class="line">示例 2：</span><br><span class="line">输入：[&quot;H&quot;,&quot;a&quot;,&quot;n&quot;,&quot;n&quot;,&quot;a&quot;,&quot;h&quot;]</span><br><span class="line">输出：[&quot;h&quot;,&quot;a&quot;,&quot;n&quot;,&quot;n&quot;,&quot;a&quot;,&quot;H&quot;]</span><br></pre></td></tr></table></figure>
+
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="双指针法"><a href="#双指针法" class="headerlink" title="双指针法"></a>双指针法</h4><p>首位各一个指针，同时向中间移动，并交换每个元素。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reverseString</span><span class="params">(self, s: List[str])</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        h=<span class="number">0</span>  <span class="comment"># 头指针</span></span><br><span class="line">        t=len(s)<span class="number">-1</span>  <span class="comment"># 尾指针</span></span><br><span class="line">        <span class="keyword">while</span> h&lt;=t:</span><br><span class="line">            s[h], s[t] = s[t], s[h]  <span class="comment"># 交换两个元素</span></span><br><span class="line">            h+=<span class="number">1</span></span><br><span class="line">            t-=<span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> s</span><br></pre></td></tr></table></figure>
+
+<h2 id="整数反转"><a href="#整数反转" class="headerlink" title="整数反转"></a>整数反转</h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你一个 32 位的有符号整数 x ，返回将 x 中的数字部分反转后的结果。<br>如果反转后整数超过 32 位的有符号整数的范围 [−231,  231 − 1] ，就返回 0。<br>假设环境不允许存储 64 位整数（有符号或无符号）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">示例 1：</span><br><span class="line">输入：x = 123</span><br><span class="line">输出：321</span><br><span class="line"></span><br><span class="line">示例 2：</span><br><span class="line">输入：x = -123</span><br><span class="line">输出：-321</span><br></pre></td></tr></table></figure>
+
+<h3 id="题解-1"><a href="#题解-1" class="headerlink" title="题解"></a>题解</h3><p>这道题一开始想的是把数字变成字符串，然后进行反转，再变成数字。但是这样对于最后的数字是否超过有效范围无法判断，因为假设环境不能存储64位整数，因此不能先得到反转后的数字，然后和$2^31-1$比较。所以就得在变换的过程中进行判断是否超出了有效范围。</p>
+<p>这里用num保存当前数，初始num=0，然后每次取x的最后一位记为temp，然后x//10。然后令num = num x 10 + temp，最后x的所有位都处理完，x变为0，num就变为了反转之后的数。<br>这其中，有可能会超过范围的只有num这个变量，因此，每次执行 num = mum x 10 + temp 之后，判断一下num是否超范围即可，也就是判断一下是否满足 $-2^{31} &lt; num \times 10 + temp &lt; 2^{31}-1$即可，如果满足，则没有超范围，否则就超范围了，返回0。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reverse</span><span class="params">(self, x: int)</span> -&gt; int:</span></span><br><span class="line">        num = <span class="number">0</span></span><br><span class="line">        sign = <span class="number">1</span> <span class="keyword">if</span> x&gt;=<span class="number">0</span> <span class="keyword">else</span> <span class="number">-1</span>  <span class="comment"># 取出符号，将x变为整数进行处理</span></span><br><span class="line">        x = abs(x)</span><br><span class="line">        <span class="keyword">while</span> x!=<span class="number">0</span>:</span><br><span class="line">            temp = x%<span class="number">10</span></span><br><span class="line">            x = x//<span class="number">10</span></span><br><span class="line">            <span class="keyword">if</span> num&lt;(<span class="number">2</span>**<span class="number">31</span><span class="number">-1</span>-temp)/<span class="number">10</span> <span class="keyword">and</span> num&gt;<span class="number">-2</span>**<span class="number">31</span>/<span class="number">10</span>:  <span class="comment"># 判断是否超范围</span></span><br><span class="line">                num = num*<span class="number">10</span> + temp</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        <span class="keyword">return</span> num*sign  <span class="comment"># 返回的时候记得带上符号</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="字符串中的第一个唯一字符"><a href="#字符串中的第一个唯一字符" class="headerlink" title="字符串中的第一个唯一字符"></a>字符串中的第一个唯一字符</h2><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个字符串，找到它的第一个不重复的字符，并返回它的索引。如果不存在，则返回 -1。</p>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = &quot;leetcode&quot;</span><br><span class="line">返回 0</span><br><span class="line"></span><br><span class="line">s = &quot;loveleetcode&quot;</span><br><span class="line">返回 2</span><br></pre></td></tr></table></figure>
+
+<h3 id="题解-2"><a href="#题解-2" class="headerlink" title="题解"></a>题解</h3><p>该题使用哈希表解即可。key是每个字符，value对应字符的出现次数，如果是第一次出现，则字符value设为1，否则设为-1。最后根据原字符串查找第一个为1的字符，返回下标即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">firstUniqChar</span><span class="params">(self, s: str)</span> -&gt; int:</span></span><br><span class="line">        dic = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(s)):</span><br><span class="line">            <span class="keyword">if</span> s[i] <span class="keyword">not</span> <span class="keyword">in</span> dic:</span><br><span class="line">                dic[s[i]] = <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dic[s[i]] = <span class="number">-1</span></span><br><span class="line">        <span class="keyword">for</span> i,c <span class="keyword">in</span> enumerate(s):</span><br><span class="line">            <span class="keyword">if</span> dic[c] == <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> i</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="有效的字母异位词"><a href="#有效的字母异位词" class="headerlink" title="有效的字母异位词"></a>有效的字母异位词</h2><h3 id="题目描述-3"><a href="#题目描述-3" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。</p>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">示例 1:</span><br><span class="line">输入: s = &quot;anagram&quot;, t = &quot;nagaram&quot;</span><br><span class="line">输出: true</span><br><span class="line"></span><br><span class="line">示例 2:</span><br><span class="line">输入: s = &quot;rat&quot;, t = &quot;car&quot;</span><br><span class="line">输出: false</span><br></pre></td></tr></table></figure>
+
+<h3 id="题解-3"><a href="#题解-3" class="headerlink" title="题解"></a>题解</h3><h4 id="哈希表法"><a href="#哈希表法" class="headerlink" title="哈希表法"></a>哈希表法</h4><p>对于第一个字符串，使用一个hashmap记录每个字符的次数。然后对于第二个字符串，遍历每个字符，对应字符的次数减1，如果出现哈希表中没有的字符或者最后哈希表中不全为0，则说明不是有效地字母异位次。如果最后哈希表中全为0，则说明两个字符串是有效的字母异位词。</p>
+<h4 id="排序比较法"><a href="#排序比较法" class="headerlink" title="排序比较法"></a>排序比较法</h4><p>对两个字符串进行排序，然后挨个比较每个字符是否相等，如果两个字符串是字母异位词，那么排序之后他们应该是相同的单词。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isAnagram</span><span class="params">(self, s: str, t: str)</span> -&gt; bool:</span></span><br><span class="line">        <span class="keyword">if</span> len(s)!=len(t):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        s = sorted(s)</span><br><span class="line">        t = sorted(t)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(s)):</span><br><span class="line">            <span class="keyword">if</span> s[i] != t[i]:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="验证回文串"><a href="#验证回文串" class="headerlink" title="验证回文串"></a>验证回文串</h2><h3 id="题目描述-4"><a href="#题目描述-4" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个字符串，验证它是否是回文串，只考虑字母和数字字符，可以忽略字母的大小写。<br>说明：本题中，我们将空字符串定义为有效的回文串。</p>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">示例 1:</span><br><span class="line">输入: &quot;A man, a plan, a canal: Panama&quot;</span><br><span class="line">输出: true</span><br><span class="line"></span><br><span class="line">示例 2:</span><br><span class="line">输入: &quot;race a car&quot;</span><br><span class="line">输出: false</span><br></pre></td></tr></table></figure>
+
+<h3 id="题解-4"><a href="#题解-4" class="headerlink" title="题解"></a>题解</h3><h4 id="双指针法-1"><a href="#双指针法-1" class="headerlink" title="双指针法"></a>双指针法</h4><p>定义头指针i和尾指针j。由于只考虑字母和数字字符，因此指针遇到其他字符直接跳过即可。然后对于一个回文字符串，应该具有头指针与尾指针同时移动，所指向的元素始终保持相同。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isPalindrome</span><span class="params">(self, s: str)</span> -&gt; bool:</span></span><br><span class="line">        i=<span class="number">0</span>  <span class="comment"># 头指针</span></span><br><span class="line">        j=len(s)<span class="number">-1</span>  <span class="comment"># 尾指针</span></span><br><span class="line">        <span class="keyword">while</span>(i&lt;j):</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> s[i].isalnum():  <span class="comment"># 如果头指针指向的不是字母或数字，则跳过</span></span><br><span class="line">                i+=<span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="keyword">not</span> s[j].isalnum():  <span class="comment"># 如果尾指针指向的不是字母或数字，则跳过</span></span><br><span class="line">                j-=<span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:  <span class="comment"># 头指针和尾指针指向的都是字母或数字， 则判断是否相同</span></span><br><span class="line">                <span class="keyword">if</span> s[i].lower() != s[j].lower():  <span class="comment"># 如果不同则不是回文</span></span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">                <span class="keyword">else</span>:  <span class="comment"># 如果相同则继续判断下一个字符</span></span><br><span class="line">                    i += <span class="number">1</span></span><br><span class="line">                    j -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="字符串转换整数-atoi"><a href="#字符串转换整数-atoi" class="headerlink" title="字符串转换整数 (atoi)"></a>字符串转换整数 (atoi)</h2><h3 id="题目描述-5"><a href="#题目描述-5" class="headerlink" title="题目描述"></a>题目描述</h3><p>请你来实现一个 myAtoi(string s) 函数，使其能将字符串转换成一个 32 位有符号整数（类似 C/C++ 中的 atoi 函数）。</p>
+<p>函数 myAtoi(string s) 的算法如下：</p>
+<ul>
+<li>读入字符串并丢弃无用的前导空格</li>
+<li>检查下一个字符（假设还未到字符末尾）为正还是负号，读取该字符（如果有）。 确定最终结果是负数还是正数。 如果两者都不存在，则假定结果为正。</li>
+<li>读入下一个字符，直到到达下一个非数字字符或到达输入的结尾。字符串的其余部分将被忽略。</li>
+<li>将前面步骤读入的这些数字转换为整数（即，”123” -&gt; 123， “0032” -&gt; 32）。如果没有读入数字，则整数为 0 。必要时更改符号（从步骤 2 开始）。</li>
+<li>如果整数数超过 32 位有符号整数范围 [$−2^31$,  $2^31 − 1$] ，需要截断这个整数，使其保持在这个范围内。具体来说，小于 $−2^31$ 的整数应该被固定为 $−2^31$ ，大于 $2^31 − 1$ 的整数应该被固定为 $2^31 − 1$ 。</li>
+<li>返回整数作为最终结果。</li>
+</ul>
+<p>注意：<br>本题中的空白字符只包括空格字符 ‘ ‘ 。<br>除前导空格或数字后的其余字符串外，请勿忽略 任何其他字符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">示例 1：</span><br><span class="line">输入：s = &quot;42&quot;</span><br><span class="line">输出：42</span><br><span class="line">解释：加粗的字符串为已经读入的字符，插入符号是当前读取的字符。</span><br><span class="line">第 1 步：&quot;42&quot;（当前没有读入字符，因为没有前导空格）</span><br><span class="line">         ^</span><br><span class="line">第 2 步：&quot;42&quot;（当前没有读入字符，因为这里不存在 &apos;-&apos; 或者 &apos;+&apos;）</span><br><span class="line">         ^</span><br><span class="line">第 3 步：&quot;42&quot;（读入 &quot;42&quot;）</span><br><span class="line">           ^</span><br><span class="line">解析得到整数 42 。</span><br><span class="line">由于 &quot;42&quot; 在范围 [-2^31, 2^31 - 1] 内，最终结果为 42 。</span><br><span class="line"></span><br><span class="line">示例 2：</span><br><span class="line">输入：s = &quot;   -42&quot;</span><br><span class="line">输出：-42</span><br><span class="line">解释：</span><br><span class="line">第 1 步：&quot;   -42&quot;（读入前导空格，但忽视掉）</span><br><span class="line">            ^</span><br><span class="line">第 2 步：&quot;   -42&quot;（读入 &apos;-&apos; 字符，所以结果应该是负数）</span><br><span class="line">             ^</span><br><span class="line">第 3 步：&quot;   -42&quot;（读入 &quot;42&quot;）</span><br><span class="line">               ^</span><br><span class="line">解析得到整数 -42 。</span><br><span class="line">由于 &quot;-42&quot; 在范围 [-2^31, 2^31 - 1] 内，最终结果为 -42 。</span><br><span class="line"></span><br><span class="line">示例 3：</span><br><span class="line">输入：s = &quot;4193 with words&quot;</span><br><span class="line">输出：4193</span><br><span class="line">解释：</span><br><span class="line">第 1 步：&quot;4193 with words&quot;（当前没有读入字符，因为没有前导空格）</span><br><span class="line">         ^</span><br><span class="line">第 2 步：&quot;4193 with words&quot;（当前没有读入字符，因为这里不存在 &apos;-&apos; 或者 &apos;+&apos;）</span><br><span class="line">         ^</span><br><span class="line">第 3 步：&quot;4193 with words&quot;（读入 &quot;4193&quot;；由于下一个字符不是一个数字，所以读入停止）</span><br><span class="line">             ^</span><br><span class="line">解析得到整数 4193 。</span><br><span class="line">由于 &quot;4193&quot; 在范围 [-2^31, 2^31 - 1] 内，最终结果为 4193 。</span><br><span class="line"></span><br><span class="line">示例 4：</span><br><span class="line">输入：s = &quot;words and 987&quot;</span><br><span class="line">输出：0</span><br><span class="line">解释：</span><br><span class="line">第 1 步：&quot;words and 987&quot;（当前没有读入字符，因为没有前导空格）</span><br><span class="line">         ^</span><br><span class="line">第 2 步：&quot;words and 987&quot;（当前没有读入字符，因为这里不存在 &apos;-&apos; 或者 &apos;+&apos;）</span><br><span class="line">         ^</span><br><span class="line">第 3 步：&quot;words and 987&quot;（由于当前字符 &apos;w&apos; 不是一个数字，所以读入停止）</span><br><span class="line">         ^</span><br><span class="line">解析得到整数 0 ，因为没有读入任何数字。</span><br><span class="line">由于 0 在范围 [-2^31, 2^31 - 1] 内，最终结果为 0 。</span><br><span class="line">示例 5：</span><br><span class="line"></span><br><span class="line">输入：s = &quot;-91283472332&quot;</span><br><span class="line">输出：-2147483648</span><br><span class="line">解释：</span><br><span class="line">第 1 步：&quot;-91283472332&quot;（当前没有读入字符，因为没有前导空格）</span><br><span class="line">         ^</span><br><span class="line">第 2 步：&quot;-91283472332&quot;（读入 &apos;-&apos; 字符，所以结果应该是负数）</span><br><span class="line">          ^</span><br><span class="line">第 3 步：&quot;-91283472332&quot;（读入 &quot;91283472332&quot;）</span><br><span class="line">                     ^</span><br><span class="line">解析得到整数 -91283472332 。</span><br><span class="line">由于 -91283472332 小于范围 [-2^31, 2^31 - 1] 的下界，最终结果被截断为 -2^31 = -2147483648 。</span><br></pre></td></tr></table></figure>
+
+<h3 id="题解-5"><a href="#题解-5" class="headerlink" title="题解"></a>题解</h3><p>题目中已经给出了算法的步骤，按照步骤写即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">myAtoi</span><span class="params">(self, s: str)</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">if</span> len(s) == <span class="number">0</span>:  <span class="comment"># 判断空字符串</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        sign = <span class="number">1</span>  <span class="comment"># 记录符号</span></span><br><span class="line">        num = <span class="number">0</span>  <span class="comment"># 记录数字</span></span><br><span class="line">        i = <span class="number">0</span>  <span class="comment"># 记录指针位置</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> i&lt;len(s) <span class="keyword">and</span> s[i] == <span class="string">' '</span>:  <span class="comment"># 去掉前导空白符</span></span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> i == len(s):  <span class="comment"># 排除 “   ” 情况</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> s[i] == <span class="string">'-'</span>:  <span class="comment"># 判断符号</span></span><br><span class="line">            sign = <span class="number">-1</span></span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">elif</span> s[i] == <span class="string">'+'</span>:</span><br><span class="line">            sign = <span class="number">1</span></span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> i &lt; len(s):</span><br><span class="line">            <span class="keyword">if</span> s[i].isnumeric():  <span class="comment"># 如果是数字，就读入处理</span></span><br><span class="line">                <span class="keyword">if</span> num &lt;= (<span class="number">2</span>**<span class="number">31</span><span class="number">-1</span>-int(s[i]))/<span class="number">10</span>:  <span class="comment"># 判断是否溢出</span></span><br><span class="line">                    num = num * <span class="number">10</span> + int(s[i])</span><br><span class="line">                <span class="keyword">else</span>:  <span class="comment"># 如果溢出了就截断</span></span><br><span class="line">                    <span class="keyword">return</span> <span class="number">2</span>**<span class="number">31</span><span class="number">-1</span> <span class="keyword">if</span> sign==<span class="number">1</span> <span class="keyword">else</span> <span class="number">-2</span>**<span class="number">31</span></span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:  <span class="comment"># 如果不是数字，则停止</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">return</span> num * sign  <span class="comment"># 返回的时候记得带符号</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="实现-strStr"><a href="#实现-strStr" class="headerlink" title="实现 strStr()"></a>实现 strStr()</h2><p>实现 strStr() 函数。<br>给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。<br>当 needle 是空字符串时我们应当返回 0 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">示例 1:</span><br><span class="line">输入: haystack = &quot;hello&quot;, needle = &quot;ll&quot;</span><br><span class="line">输出: 2</span><br><span class="line"></span><br><span class="line">示例 2:</span><br><span class="line">输入: haystack = &quot;aaaaa&quot;, needle = &quot;bba&quot;</span><br><span class="line">输出: -1</span><br></pre></td></tr></table></figure>
+
+<h3 id="题解-6"><a href="#题解-6" class="headerlink" title="题解"></a>题解</h3><h4 id="暴力解法"><a href="#暴力解法" class="headerlink" title="暴力解法"></a>暴力解法</h4><p>遍历haystack字符串，如果haystack中字符i与needle首字符相同，则比较i之后的几个字符与needle是否相同，如果相同，则找到了结果，返回位置i即可。如果不同，则继续遍历。如果最后还有没相同的字符串，则返回-1。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">strStr</span><span class="params">(self, haystack: str, needle: str)</span> -&gt; int:</span></span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> len(needle) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> i &lt; len(haystack):</span><br><span class="line">            <span class="keyword">if</span> haystack[i] == needle[<span class="number">0</span>]:</span><br><span class="line">                <span class="keyword">if</span> haystack[i:i+len(needle)] == needle[<span class="number">0</span>:]:</span><br><span class="line">                    <span class="keyword">return</span> i</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br></pre></td></tr></table></figure>
+
+<p>这种方法比较暴力，时间复杂度为O(MN)，其中M，N分别为haystack和needle字符串的长度。<br>下面有一种优化方法。</p>
+<h4 id="KMP算法"><a href="#KMP算法" class="headerlink" title="KMP算法"></a>KMP算法</h4><p><img src="KMP.PNG" alt="KMP"><br>KMP算法的一个关键点在于求nxt[]数组。<br>首先说一下nxt[]数组的含义，nxt[i]表示在nxt[0,i)范围内的字符串中，前缀与后缀的最长公共部分。比如字符串abcdabc，那么nxt[5]=1因为前缀有a，后缀有a，最长的公共子串为长度为1；而nxt[6]=2，因为前缀有ab，后缀也有ab，最长公共子串长度为2；以此类推。<br>因此，KMP的思想就是，我每次比较两个字符串，如果在位置k，子串与主串匹配不上了，那么不需要将子串前移一位，然后从头比；由于已经知道了子串的前k位组成的字符串的前缀和后缀共同的部分的最长的长度，因此，子串可以避免对这些相同的部分重新比较一遍，而是直接回溯到公共部分后一位（也就是nxt[k]所指示的位置），继续进行比较即可。而主串部分的指针则不需要回溯，因为前面的部分已经与子串k位之前的后缀匹配上了，所以肯定和子串的前缀也匹配（因为子串的前缀和后缀公共的部分我们已经求出来了）。因此，KMP算法减少了指针的回溯，从而提高了效率。</p>
+<p>那么接下来一个问题就是，如何求得这个nxt[]数组呢？这个问题就变成了如下问题：对于一个字符串s，求该字符串在前k位子串中的前缀与后缀公共部分的长度，分别保存在nxt[k]中。</p>
+<p>假设在第k位失配，那么nxt[k]实际上就是[0,k-1]这个子串中，前缀和后缀的重合长度。<br>首先定义一个指针i，其指向的位置就表示目前只看到[0,i-1]这个子串，前缀与后缀公共部分有多长。同时，i也指代要匹配的后缀的最后一位。用j表示公共前缀要匹配的最后一位。<br>一开始i指向0，j指向-1，这是初始状态。然后判断如果是初始状态（即j==-1）或者i和j匹配成功，那么就说明当前后缀与前缀匹配，那么i和j同时后移一位，同时我们可以更新nxt[]数组，因为我们现在已经知道了到第i位时，公共前缀和后缀的长度（就是当前j的长度），因此将j的位置赋给nxt[i]。另一方面，如果当前不在初始状态（即j!=-1）且i和j不匹配，那么说明在[0,i-1]这个子串中，公共前后缀长度达不到j，那么最长可以达到多长呢？令j回退一下试试，也就是如图中所示，不匹配了就缩小一下窗口，最简单的方法是j每次回退一位，即窗口缩小一位，然后再看看是否匹配。但是事实上我们是可以加速这个回溯的过程的。由于我们知道nxt[j]的值，也就是说知道子串[0,j-1]中，后缀与前缀公共的长度，而子串[0,j-1]的后缀又与主串[0,i-1]的后缀匹配，因此，子串[0,j-1]的前缀与主串[0,i-1]的后缀必定有nxt[j]位是匹配的，因此，我们直接令j回退到nxt[j]位置，继续比较是否匹配即可。所以这么看来，这个过程确实还有一点递归的意味在里面。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getNext</span><span class="params">(self, s)</span>:</span></span><br><span class="line">        nxt = [<span class="number">0</span>]*len(s)</span><br><span class="line">        i, j = <span class="number">0</span>, <span class="number">-1</span></span><br><span class="line">        nxt[<span class="number">0</span>] = <span class="number">-1</span></span><br><span class="line">        <span class="keyword">while</span> i&lt;len(s)<span class="number">-1</span>:</span><br><span class="line">            <span class="keyword">if</span> (j==<span class="number">-1</span> <span class="keyword">or</span> s[i]==s[j]):</span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">                j += <span class="number">1</span></span><br><span class="line">                nxt[i] = j</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                j = nxt[j]</span><br><span class="line">        <span class="keyword">return</span> nxt</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">strStr</span><span class="params">(self, haystack: str, needle: str)</span> -&gt; int:</span></span><br><span class="line">        i, j = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> len(needle) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        nxt = self.getNext(needle)</span><br><span class="line">        <span class="keyword">while</span> i &lt; len(haystack) <span class="keyword">and</span> j &lt; len(needle):</span><br><span class="line">            <span class="keyword">if</span> j==<span class="number">-1</span> <span class="keyword">or</span> haystack[i] == needle[j]:</span><br><span class="line">                i+=<span class="number">1</span></span><br><span class="line">                j+=<span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                j = nxt[j]</span><br><span class="line">            <span class="keyword">if</span> j&gt;=len(needle):</span><br><span class="line">                <span class="keyword">return</span> i-j</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="外观数列"><a href="#外观数列" class="headerlink" title="外观数列"></a>外观数列</h2><h3 id="题目描述-6"><a href="#题目描述-6" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个正整数 n ，输出外观数列的第 n 项。<br>「外观数列」是一个整数序列，从数字 1 开始，序列中的每一项都是对前一项的描述。</p>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1.     1</span><br><span class="line">2.     11</span><br><span class="line">3.     21</span><br><span class="line">4.     1211</span><br><span class="line">5.     111221</span><br><span class="line">第一项是数字 1 </span><br><span class="line">描述前一项，这个数是 1 即 “ 一 个 1 ”，记作 &quot;11&quot;</span><br><span class="line">描述前一项，这个数是 11 即 “ 二 个 1 ” ，记作 &quot;21&quot;</span><br><span class="line">描述前一项，这个数是 21 即 “ 一 个 2 + 一 个 1 ” ，记作 &quot;1211&quot;</span><br><span class="line">描述前一项，这个数是 1211 即 “ 一 个 1 + 一 个 2 + 二 个 1 ” ，记作 &quot;111221&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="题解-7"><a href="#题解-7" class="headerlink" title="题解"></a>题解</h3><p>要 描述 一个数字字符串，首先要将字符串分割为 <strong>最小</strong> 数量的组，每个组都由<strong>连续的最多 相同字符</strong> 组成。然后对于每个组，<strong>先描述字符的数量，然后描述字符，形成一个描述组</strong>。要将描述转换为数字字符串，先将每组中的字符数量用数字替换，再将所有描述组连接起来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">countAndSay</span><span class="params">(self, n: int)</span> -&gt; str:</span></span><br><span class="line">        num = <span class="string">"1"</span></span><br><span class="line">        <span class="keyword">while</span> n<span class="number">-1</span>&gt;<span class="number">0</span>:</span><br><span class="line">            i = <span class="number">0</span>  <span class="comment"># 字符串指针，从头到尾扫描字符串</span></span><br><span class="line">            temp = num[i]  <span class="comment"># temp保存当前字符</span></span><br><span class="line">            count = <span class="number">0</span>  <span class="comment"># count记录当前字符出现的次数</span></span><br><span class="line">            nextnum = <span class="string">""</span>  <span class="comment"># nextnum保存下一次要迭代的数字</span></span><br><span class="line">            <span class="keyword">while</span> i &lt; len(num):</span><br><span class="line">                <span class="keyword">if</span> num[i] == temp:  <span class="comment"># 如果当前第i个字符与当前字符temp一致，则计数加一</span></span><br><span class="line">                    count += <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:  <span class="comment"># 如果不一致，则第一波数统计完毕，将该数字的计数count和该数字temp保存到nextnum中</span></span><br><span class="line">                    nextnum += <span class="string">"&#123;&#125;&#123;&#125;"</span>.format(count, temp)</span><br><span class="line">                    temp = num[i]  <span class="comment"># 当前字符变为第i个字符</span></span><br><span class="line">                    count = <span class="number">1</span>  <span class="comment"># 该字符计数为1</span></span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">            nextnum += <span class="string">"&#123;&#125;&#123;&#125;"</span>.format(count, temp)  <span class="comment"># 最后循环结束，将最后一波数的结果加到nextnum中，就得到了完整的下一个数字</span></span><br><span class="line">            num = nextnum  <span class="comment"># 将其赋值给num，以进行下一轮循环</span></span><br><span class="line">            n -= <span class="number">1</span>  <span class="comment"># 计数减一</span></span><br><span class="line">        <span class="keyword">return</span> num</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-无重复字符的最长子串"><a href="#3-无重复字符的最长子串" class="headerlink" title="3 无重复字符的最长子串"></a>3 无重复字符的最长子串</h2><h3 id="题目描述-7"><a href="#题目描述-7" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。</p>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">输入: s = &quot;abcabcbb&quot;</span><br><span class="line">输出: 3 </span><br><span class="line">解释: 因为无重复字符的最长子串是 &quot;abc&quot;，所以其长度为 3。</span><br><span class="line"></span><br><span class="line">输入: s = &quot;bbbbb&quot;</span><br><span class="line">输出: 1</span><br><span class="line">解释: 因为无重复字符的最长子串是 &quot;b&quot;，所以其长度为 1。</span><br><span class="line"></span><br><span class="line">输入: s = &quot;pwwkew&quot;</span><br><span class="line">输出: 3</span><br><span class="line">解释: 因为无重复字符的最长子串是 &quot;wke&quot;，所以其长度为 3。</span><br><span class="line">     请注意，你的答案必须是 子串 的长度，&quot;pwke&quot; 是一个子序列，不是子串。</span><br><span class="line"></span><br><span class="line">输入: s = &quot;&quot;</span><br><span class="line">输出: 0</span><br></pre></td></tr></table></figure>
+
+<h3 id="题解-8"><a href="#题解-8" class="headerlink" title="题解"></a>题解</h3><h4 id="初始解法"><a href="#初始解法" class="headerlink" title="初始解法"></a>初始解法</h4><p>思考类似于求最长连续上升子序列，对于字符串的第i位，记录以该位为结尾的无重复最长子串的长度。这样整个字符串遍历完以后，就可以得到无重复子串最长的长度。<br>但是这样如果把查找有无重复的过程也算上，就相当于$O(N^2)$的时间复杂度。下面代码使用set来记录见过的字符。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(self, s: str)</span> -&gt; int:</span></span><br><span class="line">        maxlen = <span class="number">0</span>  <span class="comment"># 记录最长长度</span></span><br><span class="line">        dic = set()  <span class="comment"># 记录子串出现过的字符</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(s)):</span><br><span class="line">            dic.clear()  <span class="comment"># 对于以第i位为结尾的子串，首先清空集合，然后将第i位的字符加入集合</span></span><br><span class="line">            dic.add(s[i])</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(i<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):  <span class="comment"># 从第i-1位倒序往前挨个判断</span></span><br><span class="line">                <span class="keyword">if</span> s[j] <span class="keyword">not</span> <span class="keyword">in</span> dic:  <span class="comment"># 如果不重复，就加入集合</span></span><br><span class="line">                    dic.add(s[j])</span><br><span class="line">                <span class="keyword">else</span>:  <span class="comment"># 如果重复，则以第i位为结尾的最长无重复子串检测结束</span></span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">            maxlen = max(maxlen, len(dic))  <span class="comment"># 集合中元素的个数就是以第i位为结尾的无重复最长子串的长度</span></span><br><span class="line">        <span class="keyword">return</span> maxlen</span><br></pre></td></tr></table></figure>
+
+<h4 id="滑动窗口-哈希"><a href="#滑动窗口-哈希" class="headerlink" title="滑动窗口 + 哈希"></a>滑动窗口 + 哈希</h4><p>我们用两个指针l, h构成滑动窗口，同时使用一个hashmap来记录每个字符的位置。当h指针遇到重复的字符时，直接将l指针移动到之前见到的该重复字符的后一个位置（相当于缩小窗口）。同时在整个过程中，记录窗口的最大长度，就是无重复子串的最大长度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(self, s: str)</span> -&gt; int:</span></span><br><span class="line">        <span class="comment"># 滑动窗口 + hash</span></span><br><span class="line">        l, h = <span class="number">0</span>, <span class="number">0</span>  <span class="comment"># 窗口边界</span></span><br><span class="line">        hashmap = &#123;&#125;  <span class="comment"># 用hashmap记录每个字符的位置</span></span><br><span class="line">        maxlen = <span class="number">0</span>  <span class="comment"># 记录最大窗口长度</span></span><br><span class="line">        <span class="keyword">while</span> h&lt;len(s):</span><br><span class="line">            <span class="keyword">if</span> s[h] <span class="keyword">not</span> <span class="keyword">in</span> hashmap:  <span class="comment"># 如果字符不重复，则记录字符位置</span></span><br><span class="line">                hashmap[s[h]] = h</span><br><span class="line">            <span class="keyword">else</span>:  <span class="comment"># 如果字符重复</span></span><br><span class="line">                <span class="keyword">if</span> hashmap[s[h]] &gt;= l:  <span class="comment"># 这个条件限制l指针不会往回跳，只能往前跳</span></span><br><span class="line">                    l = hashmap[s[h]]+<span class="number">1</span></span><br><span class="line">                hashmap[s[h]] = h  <span class="comment"># 更新该字符出现的最后的位置</span></span><br><span class="line">            maxlen = max(maxlen, h-l+<span class="number">1</span>)</span><br><span class="line">            h += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> maxlen</span><br></pre></td></tr></table></figure></article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/01/初级算法-数学/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            初级算法|数学</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/03/18/初级算法-树/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">初级算法|树
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/04/01/初级算法-数学/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            初级算法|数学</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/03/18/初级算法-树/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">初级算法|树
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#目录"><span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#反转字符串"><span class="toc-text">反转字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#双指针法"><span class="toc-text">双指针法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#整数反转"><span class="toc-text">整数反转</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-1"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-1"><span class="toc-text">题解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串中的第一个唯一字符"><span class="toc-text">字符串中的第一个唯一字符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-2"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-2"><span class="toc-text">题解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#有效的字母异位词"><span class="toc-text">有效的字母异位词</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-3"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-3"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#哈希表法"><span class="toc-text">哈希表法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#排序比较法"><span class="toc-text">排序比较法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#验证回文串"><span class="toc-text">验证回文串</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-4"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-4"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#双指针法-1"><span class="toc-text">双指针法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串转换整数-atoi"><span class="toc-text">字符串转换整数 (atoi)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-5"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-5"><span class="toc-text">题解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现-strStr"><span class="toc-text">实现 strStr()</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-6"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#暴力解法"><span class="toc-text">暴力解法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#KMP算法"><span class="toc-text">KMP算法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#外观数列"><span class="toc-text">外观数列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-6"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-7"><span class="toc-text">题解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-无重复字符的最长子串"><span class="toc-text">3 无重复字符的最长子串</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-7"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-8"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#初始解法"><span class="toc-text">初始解法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#滑动窗口-哈希"><span class="toc-text">滑动窗口 + 哈希</span></a></li></ol></li></ol></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>
