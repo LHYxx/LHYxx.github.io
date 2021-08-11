@@ -126,6 +126,60 @@
                     
                     <div class="row">
     <div class="col">
+        <a href="/2020/02/11/pytorch-optimizer与学习率/" class="index-card-link">
+            <div class="card-body index-card-box">
+                <h4 class="card-title text-dark article-title">pytorch|optimizer与学习率</h4>
+                <h6 class="card-subtitle mt-2 text-muted">
+                    By 小新; 
+                    Published on 2020-02-11</h6>
+                <p class="card-text text-dark mt-2 article-text">
+                    Pytorch 学习率调整学习率设置对于学习过程来说相当重要。学习率过低会导致学习速度太慢，学习率过高又容易导致难以收敛。在很多学习过程中，都会采用动态调整学习率的方法。刚开始训练的时候，学习率设置大一点，以加快学习速度；之后逐渐减小学习率，来寻找最优解。那么在Pytorch中，如在训练过程中动态地调整学习率呢？
+优化器Optimizer在说学习率调整方法之前，先来了解一下Pytorch中的...
+                </p>
+            </div>
+        </a>
+    </div>
+</div>
+                    <hr class="row">
+                    
+                    <div class="row">
+    <div class="col">
+        <a href="/2020/02/08/Pytorch常用损失函数拆解/" class="index-card-link">
+            <div class="card-body index-card-box">
+                <h4 class="card-title text-dark article-title">Pytorch常用损失函数拆解</h4>
+                <h6 class="card-subtitle mt-2 text-muted">
+                    By 小新; 
+                    Published on 2020-02-08</h6>
+                <p class="card-text text-dark mt-2 article-text">
+                    Pytorch常用损失函数拆解本文从理论和实践两方面来全面梳理一下常用的损失函数。（避免自己总是一瓶子不满半瓶子晃荡……）。要么理论满分，编码时不会用；要么编码是会调包，但是不明白其中的计算原理。本文来科普一下。我们将每个损失函数分别从理论和pytorch中的实现两个方面来拆解一下。
+另外，解释一下torch.nn.Module 和 torch.nn.functional(俗称F)中损失函数...
+                </p>
+            </div>
+        </a>
+    </div>
+</div>
+                    <hr class="row">
+                    
+                    <div class="row">
+    <div class="col">
+        <a href="/2019/11/30/配置cuda和pytorch-gpu/" class="index-card-link">
+            <div class="card-body index-card-box">
+                <h4 class="card-title text-dark article-title">配置cuda和pytorch-gpu</h4>
+                <h6 class="card-subtitle mt-2 text-muted">
+                    By 小新; 
+                    Published on 2019-11-30</h6>
+                <p class="card-text text-dark mt-2 article-text">
+                    要安装GPU版pytorch并用GPU跑实验，首先你得有一块GPU。。。也就是保证你的机器上有GPU。本机是windows 10，所以以windows 10 的安装配置为例。
+1. CUDA下载与安装首先需要下载并安装CUDA。CUDA版本需要选择正确，否则后面各种问题，太难受了。官网 cuda toolkit release note上有cuda版本与显卡驱动的对应关系图，如下：那么如何查...
+                </p>
+            </div>
+        </a>
+    </div>
+</div>
+                    <hr class="row">
+                    
+                    <div class="row">
+    <div class="col">
         <a href="/2019/11/17/Windows环境下配置ROUGE填坑/" class="index-card-link">
             <div class="card-body index-card-box">
                 <h4 class="card-title text-dark article-title">Windows环境下配置ROUGE填坑</h4>
@@ -256,67 +310,6 @@ cmd中切...
 </div>
                     <hr class="row">
                     
-                    <div class="row">
-    <div class="col">
-        <a href="/2019/10/05/ubuntu下配置pytorch使用GPU计算的一些坑/" class="index-card-link">
-            <div class="card-body index-card-box">
-                <h4 class="card-title text-dark article-title">ubuntu下配置pytorch使用GPU计算的一些坑</h4>
-                <h6 class="card-subtitle mt-2 text-muted">
-                    By 小新; 
-                    Published on 2019-10-05</h6>
-                <p class="card-text text-dark mt-2 article-text">
-                    conda管理包时出现Permission denied将anaconda的权限加入我的用户及其用户组中，代码如下
-1sudo chown -R your_username:your_username /home/train04/anaconda3
-
-使用pytorch配置GPU的时候，cuda toolkit和cudnn都安装正确的情况下nvidia-smi, nvcc –version,...
-                </p>
-            </div>
-        </a>
-    </div>
-</div>
-                    <hr class="row">
-                    
-                    <div class="row">
-    <div class="col">
-        <a href="/2019/09/15/信息论基础-熵/" class="index-card-link">
-            <div class="card-body index-card-box">
-                <h4 class="card-title text-dark article-title">信息论基础-信息熵、条件熵、相对熵、交叉熵</h4>
-                <h6 class="card-subtitle mt-2 text-muted">
-                    By 小新; 
-                    Published on 2019-09-15</h6>
-                <p class="card-text text-dark mt-2 article-text">
-                    1948年，克劳德·爱尔伍德·香农将热力学中的熵引入信息论，所以也被称为香农熵 (Shannon entropy)，信息熵 (information entropy)。我们有时需要定量的来度量信息量的大小，因此提出了信息熵，用来度量包含的信息量的多少。
-自信息熵（self-information entropy）考虑一个随机变量x，它的分布概率为p(x)。我们令$$I(x)=-log(p(x...
-                </p>
-            </div>
-        </a>
-    </div>
-</div>
-                    <hr class="row">
-                    
-                    <div class="row">
-    <div class="col">
-        <a href="/2019/09/06/matplotlib基础教程-3/" class="index-card-link">
-            <div class="card-body index-card-box">
-                <h4 class="card-title text-dark article-title">matplotlib基础教程-3</h4>
-                <h6 class="card-subtitle mt-2 text-muted">
-                    By 小新; 
-                    Published on 2019-09-06</h6>
-                <p class="card-text text-dark mt-2 article-text">
-                    本期学习内容：
-
-画柱状图
-annotation标注
-自定义子图大小及位置
-
-测试数据1234x = np.array([i for i in range(4)])y1 = [0.44043, 0.44814, 0.44947, 0.45318]y2 = [0.11813, 0.13223, 0.13403, 0.14040]y3 = [0.41772, 0.42667, 0.42757, ...
-                </p>
-            </div>
-        </a>
-    </div>
-</div>
-                    <hr class="row">
-                    
                 </div>
             </div>
             <div class="row">
@@ -392,7 +385,7 @@ annotation标注
     <div class="col">
         <h6>FEATURED TAGS</h6>
         <div class="tags">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/paper/">paper</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/">leetcode</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pytorch/">pytorch</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/summarization/">summarization</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/可视化/">可视化</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/环境配置/">环境配置</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/matplotlib/">matplotlib</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/心情/">心情</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCN/">GCN</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/numpy/">numpy</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/embedding/">embedding</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cuda/">cuda</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/introduction/">introduction</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息论/">信息论</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数学/">数学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/social-media/">social_media</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/损失函数/">损失函数</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/社会理论/">社会理论</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图/">图</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c语言/">c语言</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/networkx/">networkx</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/">leetcode</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paper/">paper</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pytorch/">pytorch</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/summarization/">summarization</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/可视化/">可视化</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/matplotlib/">matplotlib</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/环境配置/">环境配置</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/心情/">心情</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCN/">GCN</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/numpy/">numpy</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/embedding/">embedding</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cuda/">cuda</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/introduction/">introduction</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息论/">信息论</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/social-media/">social_media</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数学/">数学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/损失函数/">损失函数</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c语言/">c语言</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/社会理论/">社会理论</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图/">图</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/networkx/">networkx</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 </div>

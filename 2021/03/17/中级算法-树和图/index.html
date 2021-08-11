@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>中级算法-树和图-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<!-- <body style="background: url('/') no-repeat; background-size: 100%;"> 带背景-->
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">中级算法-树和图</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2021-03-17</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/leetcode/">leetcode</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><h2 id="本文目录"><a href="#本文目录" class="headerlink" title="本文目录"></a>本文目录</h2><ol>
+<li><a href="#208">实现 Trie (前缀树)</a></li>
+<li><a href="#二叉树的中序遍历">二叉树的中序遍历</a></li>
+<li><a href="#二叉树锯齿形层次遍历">二叉树锯齿形层次遍历</a></li>
+<li><a href="#从前序与中序遍历序列构造二叉树">从前序与中序遍历序列构造二叉树</a></li>
+<li><a href="#填充每个节点的下一个右侧节点指针">填充每个节点的下一个右侧节点指针</a></li>
+<li><a href="#二叉搜索树中第K小的元素">二叉搜索树中第K小的元素</a></li>
+<li><a href="#岛屿数量">岛屿数量</a></li>
+</ol>
+<h2 id="208-实现-Trie-前缀树"><a href="#208-实现-Trie-前缀树" class="headerlink" title="208. 实现 Trie (前缀树)"></a><span id="208">208. 实现 Trie (前缀树)</span></h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>Trie（发音类似 “try”）或者说 <strong>前缀树</strong> 是一种树形数据结构，用于高效地存储和检索字符串数据集中的键。这一数据结构有相当多的应用情景，例如<strong>自动补完和拼写检查</strong>。</p>
+<p>请你实现 Trie 类：</p>
+<ul>
+<li>Trie() 初始化前缀树对象。</li>
+<li>void insert(String word) 向前缀树中插入字符串 word 。</li>
+<li>boolean search(String word) 如果字符串 word 在前缀树中，返回 true（即，在检索之前已经插入）；否则，返回 false 。</li>
+<li>boolean startsWith(String prefix) 如果之前已经插入的字符串 word 的前缀之一为 prefix ，返回 true ；否则，返回 false 。</li>
+</ul>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">输入</span><br><span class="line">[&quot;Trie&quot;, &quot;insert&quot;, &quot;search&quot;, &quot;search&quot;, &quot;startsWith&quot;, &quot;insert&quot;, &quot;search&quot;]</span><br><span class="line">[[], [&quot;apple&quot;], [&quot;apple&quot;], [&quot;app&quot;], [&quot;app&quot;], [&quot;app&quot;], [&quot;app&quot;]]</span><br><span class="line">输出</span><br><span class="line">[null, null, true, false, true, null, true]</span><br><span class="line"></span><br><span class="line">解释</span><br><span class="line">Trie trie = new Trie();</span><br><span class="line">trie.insert(&quot;apple&quot;);</span><br><span class="line">trie.search(&quot;apple&quot;);   // 返回 True</span><br><span class="line">trie.search(&quot;app&quot;);     // 返回 False</span><br><span class="line">trie.startsWith(&quot;app&quot;); // 返回 True</span><br><span class="line">trie.insert(&quot;app&quot;);</span><br><span class="line">trie.search(&quot;app&quot;);     // 返回 True</span><br></pre></td></tr></table></figure>
+
+<p>提示</p>
+<ul>
+<li>1 &lt;= word.length, prefix.length &lt;= 2000</li>
+<li>word 和 prefix 仅由小写英文字母组成</li>
+<li>insert、search 和 startsWith 调用次数 总计 不超过 $3 * 10^4$ 次</li>
+</ul>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="前缀树法"><a href="#前缀树法" class="headerlink" title="前缀树法"></a>前缀树法</h4><p>将每个字符看做一个节点，将单词组织成树的结构，这样既节省了存储单词的空间，又节省了查询的时间。以树结构存储，查询时间不再和保存的单词数量有关，而是和单词的长度有关。因为单词的长度对应着树的深度。如图所示，图中树结构保存了四个单词[apple, app, all, almost]。<br>红色节点表示单词末尾。如果不对单词末尾进行标记，则无法区分前缀单词（如apple与app）。<br><img src="208.png" alt="208.png"></p>
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义树节点类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, mark=False)</span>:</span></span><br><span class="line">        self.children = &#123;&#125;  <span class="comment"># 每个节点可能有多个孩子，保存为&#123;key: node&#125;形式。</span></span><br><span class="line">        self.mark = mark</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Trie</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Initialize your data structure here.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.root = TreeNode(<span class="literal">False</span>)  <span class="comment"># 根节点</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">insert</span><span class="params">(self, word: str)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Inserts a word into the trie.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        root = self.root</span><br><span class="line">        <span class="keyword">for</span> w <span class="keyword">in</span> word:</span><br><span class="line">            <span class="keyword">if</span> w <span class="keyword">in</span> root.children:  <span class="comment"># 如果当前字符存在，则令root指向对应节点，继续查找下一字符</span></span><br><span class="line">                root = root.children[w]</span><br><span class="line">            <span class="keyword">else</span>:  <span class="comment"># 如果当前字符不存在，则插入对应节点，并令root指向该节点</span></span><br><span class="line">                root.children[w] = TreeNode(<span class="literal">False</span>)</span><br><span class="line">                root = root.children[w]</span><br><span class="line">        root.mark = <span class="literal">True</span>  <span class="comment"># 插入单词结束，将单词末尾字符对应的节点标记，表明到此为一个完整的单词</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(self, word: str)</span> -&gt; bool:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Returns if the word is in the trie.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        root = self.root</span><br><span class="line">        <span class="keyword">for</span> w <span class="keyword">in</span> word:</span><br><span class="line">            <span class="keyword">if</span> w <span class="keyword">in</span> root.children:  <span class="comment"># 如果当前字符存在，则继续搜索</span></span><br><span class="line">                root = root.children[w]</span><br><span class="line">            <span class="keyword">else</span>:  <span class="comment"># 如果当前字符不存在，则说明不存在这个单词，返回False</span></span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span> root.mark  <span class="comment"># 如果word中所有单词都存在，则判断一下单词的最后一位字符节点的标记。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">startsWith</span><span class="params">(self, prefix: str)</span> -&gt; bool:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Returns if there is any word in the trie that starts with the given prefix.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        root = self.root</span><br><span class="line">        <span class="keyword">for</span> w <span class="keyword">in</span> prefix:</span><br><span class="line">            <span class="keyword">if</span> w <span class="keyword">in</span> root.children:</span><br><span class="line">                root = root.children[w]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span>  <span class="comment"># 该函数与search函数不同点仅仅在于，不需要判断末尾标记，如果路径存在，就表明前缀存在，直接返回True即可。</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="二叉树的中序遍历"><a href="#二叉树的中序遍历" class="headerlink" title="二叉树的中序遍历"></a><span id="二叉树的中序遍历">二叉树的中序遍历</span></h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个二叉树的根节点 root ，返回它的 <strong>中序</strong> 遍历。</p>
+<p>提示：</p>
+<ul>
+<li>树中节点数目在范围 [0, 100] 内</li>
+<li>-100 &lt;= Node.val &lt;= 100</li>
+</ul>
+<h3 id="题解-1"><a href="#题解-1" class="headerlink" title="题解"></a>题解</h3><h4 id="递归法"><a href="#递归法" class="headerlink" title="递归法"></a>递归法</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inorder</span><span class="params">(self, root, result)</span>:</span>  <span class="comment"># 递归法辅助函数</span></span><br><span class="line">        <span class="keyword">if</span> root:</span><br><span class="line">            self.inorder(root.left, result)  <span class="comment"># 遍历左子树</span></span><br><span class="line">            result.append(root.val)  <span class="comment"># 访问当前几点</span></span><br><span class="line">            self.inorder(root.right, result)  <span class="comment"># 遍历右子树</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inorderTraversal</span><span class="params">(self, root: TreeNode)</span> -&gt; List[int]:</span></span><br><span class="line">        result = []</span><br><span class="line">        self.inorder(root, result)</span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+
+<h4 id="迭代法"><a href="#迭代法" class="headerlink" title="迭代法"></a>迭代法</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inorderTraversal</span><span class="params">(self, root: TreeNode)</span> -&gt; List[int]:</span></span><br><span class="line">        head = root</span><br><span class="line">        stk = []  <span class="comment"># 手动维护一个堆栈</span></span><br><span class="line">        res = []  <span class="comment"># 保存结果数组</span></span><br><span class="line">        <span class="keyword">while</span> head <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">or</span> len(stk)!=<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">while</span> head <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                stk.append(head)</span><br><span class="line">                head = head.left  <span class="comment"># 优先遍历节点的左子树</span></span><br><span class="line">            <span class="comment"># 当左子树为空时，取栈顶元素进行访问</span></span><br><span class="line">            top = stk.pop(<span class="number">-1</span>)</span><br><span class="line">            res.append(top.val)</span><br><span class="line">            <span class="comment"># 然后遍历节点的右子树</span></span><br><span class="line">            head = top.right</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+<h2 id="二叉树锯齿形层次遍历"><a href="#二叉树锯齿形层次遍历" class="headerlink" title="二叉树锯齿形层次遍历"></a><span id="二叉树锯齿形层次遍历">二叉树锯齿形层次遍历</span></h2><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个二叉树，返回其节点值的锯齿形层序遍历。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。<br>也就是 ZigZag Binary Tree</p>
+<p>例如：<br>给定二叉树 [3,9,20,null,null,15,7],</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  3</span><br><span class="line"> / \</span><br><span class="line">9  20</span><br><span class="line">  /  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  [3],</span><br><span class="line">  [20,9],</span><br><span class="line">  [15,7]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="题解-2"><a href="#题解-2" class="headerlink" title="题解"></a>题解</h3><h4 id="迭代法-1"><a href="#迭代法-1" class="headerlink" title="迭代法"></a>迭代法</h4><p>进行二叉树的层次遍历，然后记录一下层号，奇数层就正着输出，偶数层倒序输出即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">zigzagLevelOrder</span><span class="params">(self, root: TreeNode)</span> -&gt; List[List[int]]:</span></span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        lst = [root]  <span class="comment"># 队列</span></span><br><span class="line">        res = []</span><br><span class="line">        layer = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> len(lst)&gt;<span class="number">0</span>:</span><br><span class="line">            size = len(lst)  <span class="comment"># 该层的节点数</span></span><br><span class="line">            layer_res = []  <span class="comment"># 记录当前层的输出结果</span></span><br><span class="line">            layer += <span class="number">1</span>  <span class="comment"># 记录层号</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(size):   <span class="comment"># 遍历当前层</span></span><br><span class="line">                cur = lst.pop(<span class="number">0</span>)</span><br><span class="line">                layer_res.append(cur.val)</span><br><span class="line">                <span class="keyword">if</span> cur.left:</span><br><span class="line">                    lst.append(cur.left)</span><br><span class="line">                <span class="keyword">if</span> cur.right:</span><br><span class="line">                    lst.append(cur.right)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> layer % <span class="number">2</span> == <span class="number">0</span>:  <span class="comment"># 倒序输出</span></span><br><span class="line">                res.append(layer_res[::<span class="number">-1</span>])</span><br><span class="line">            <span class="keyword">else</span>:  <span class="comment"># 正序输出</span></span><br><span class="line">                res.append(layer_res)</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+<h2 id="从前序与中序遍历序列构造二叉树"><a href="#从前序与中序遍历序列构造二叉树" class="headerlink" title="从前序与中序遍历序列构造二叉树"></a><span id="从前序与中序遍历序列构造二叉树">从前序与中序遍历序列构造二叉树</span></h2><h3 id="题目描述-3"><a href="#题目描述-3" class="headerlink" title="题目描述"></a>题目描述</h3><p>根据一棵树的前序遍历与中序遍历构造二叉树。<br>你可以假设树中没有重复的元素。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">前序遍历 preorder = [3,9,20,15,7]</span><br><span class="line">中序遍历 inorder = [9,3,15,20,7]</span><br><span class="line"></span><br><span class="line">返回如下二叉树</span><br><span class="line">    3</span><br><span class="line">   / \</span><br><span class="line">  9  20</span><br><span class="line">    /  \</span><br><span class="line">   15   7</span><br></pre></td></tr></table></figure>
+
+<h3 id="题解-3"><a href="#题解-3" class="headerlink" title="题解"></a>题解</h3><p>二叉树的前序遍历即先访问当前节点，然后访问左子树与右子树；中序遍历即先访问左子树，再访问当前节点，最后访问右子树。<br>因此，前序遍历中每个节点就可以看做是一个子树的头结点，特殊的，第一个节点就是整棵树的头结点，因此找到了头结点，再去中序遍历中就可以根据头结点来将整个中序遍历序列分为左右两个部分，左边即对应其左子树，右边即对应其右子树。再分别构建左右子树即可，这样递归地构建整棵树。</p>
+<p>python 代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">buildTree</span><span class="params">(self, preorder: List[int], inorder: List[int])</span> -&gt; TreeNode:</span></span><br><span class="line">        <span class="keyword">if</span> len(preorder)==<span class="number">0</span>:  <span class="comment"># 递归终止条件</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        head = preorder[<span class="number">0</span>]  <span class="comment"># 前序遍历第一个节点，也就是当前的头结点</span></span><br><span class="line">        node = TreeNode(head)</span><br><span class="line">        <span class="keyword">if</span> len(inorder)&lt;=<span class="number">1</span>:  <span class="comment"># 如果中序遍历中只有一个节点，即当前节点，说明当前节点已经是叶子节点，直接返回</span></span><br><span class="line">            <span class="keyword">return</span> node</span><br><span class="line">        pos = inorder.index(head)  <span class="comment"># 找到头结点在中序遍历中的位置</span></span><br><span class="line">        node.left = self.buildTree(preorder[<span class="number">1</span>:pos+<span class="number">1</span>], inorder[:pos])  <span class="comment"># 递归地构建左子树，注意左子树对应的前序遍历序列和中序遍历序列对应的位置</span></span><br><span class="line">        node.right = self.buildTree(preorder[pos+<span class="number">1</span>:], inorder[pos+<span class="number">1</span>:])  <span class="comment"># 递归地构建右子树</span></span><br><span class="line">        <span class="keyword">return</span> node</span><br></pre></td></tr></table></figure>
+
+<h2 id="填充每个节点的下一个右侧节点指针"><a href="#填充每个节点的下一个右侧节点指针" class="headerlink" title="填充每个节点的下一个右侧节点指针"></a><span id="填充每个节点的下一个右侧节点指针">填充每个节点的下一个右侧节点指针</span></h2><h3 id="题目描述-4"><a href="#题目描述-4" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个 完美二叉树 ，其所有叶子节点都在同一层，每个父节点都有两个子节点。二叉树定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct Node &#123;</span><br><span class="line">  int val;</span><br><span class="line">  Node *left;</span><br><span class="line">  Node *right;</span><br><span class="line">  Node *next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL。</p>
+<p>初始状态下，所有 next 指针都被设置为 NULL。</p>
+<p>进阶：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">你只能使用常量级额外空间。</span><br><span class="line">使用递归解题也符合要求，本题中递归程序占用的栈空间不算做额外的空间复杂度。</span><br></pre></td></tr></table></figure>
+
+<p>示例：<br><img src="%E4%B8%AD%E7%BA%A7%E6%A0%91%E5%92%8C%E5%9B%BE-%E5%A1%AB%E5%85%85%E6%AF%8F%E4%B8%AA%E8%8A%82%E7%82%B9%E7%9A%84%E4%B8%8B%E4%B8%80%E4%B8%AA%E5%8F%B3%E4%BE%A7%E8%8A%82%E7%82%B9%E6%8C%87%E9%92%88.png" alt="中级树和图-填充每个节点的下一个右侧节点指针"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：root = [1,2,3,4,5,6,7]</span><br><span class="line">输出：[1,#,2,3,#,4,5,6,7,#]</span><br><span class="line">解释：给定二叉树如图 A 所示，你的函数应该填充它的每个 next 指针，以指向其下一个右侧节点，如图 B 所示。序列化的输出按层序遍历排列，同一层节点由 next 指针连接，&apos;#&apos; 标志着每一层的结束。</span><br></pre></td></tr></table></figure>
+
+<h3 id="题解-4"><a href="#题解-4" class="headerlink" title="题解"></a>题解</h3><h4 id="基础法：层次遍历"><a href="#基础法：层次遍历" class="headerlink" title="基础法：层次遍历"></a>基础法：层次遍历</h4><p>对二叉树进行层次遍历，每一行从左到右用指针连上即可。<br>python代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"># Definition for a Node.</span></span><br><span class="line"><span class="string">class Node:</span></span><br><span class="line"><span class="string">    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):</span></span><br><span class="line"><span class="string">        self.val = val</span></span><br><span class="line"><span class="string">        self.left = left</span></span><br><span class="line"><span class="string">        self.right = right</span></span><br><span class="line"><span class="string">        self.next = next</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">connect</span><span class="params">(self, root: <span class="string">'Node'</span>)</span> -&gt; 'Node':</span></span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        stk = [root]</span><br><span class="line">        <span class="keyword">while</span> len(stk)&gt;<span class="number">0</span>:</span><br><span class="line">            size = len(stk)</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(size):</span><br><span class="line">                cur = stk.pop(<span class="number">0</span>)</span><br><span class="line">                cur.next = stk[<span class="number">0</span>] <span class="keyword">if</span> i!=size<span class="number">-1</span> <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line">                <span class="keyword">if</span> cur.left:</span><br><span class="line">                    stk.append(cur.left)</span><br><span class="line">                <span class="keyword">if</span> cur.right:</span><br><span class="line">                    stk.append(cur.right)</span><br><span class="line">        <span class="keyword">return</span> root</span><br></pre></td></tr></table></figure>
+
+<p>但是这样的空间复杂度不是常数级，需要进一步改进。</p>
+<h4 id="进阶法"><a href="#进阶法" class="headerlink" title="进阶法"></a>进阶法</h4><p>对于完美二叉树的next指针，其实只有两种：<br>一种是同一个父亲节点的两个节点，只需要左孩子连上右孩子即可：father.left.next=father.right<br>另一个种是不同父亲节点之间的两个节点，如果父亲节点之间的next指针已经构建好，那么只需要：father.right.next=father.next.left<br>所以我们层次地进行构建，先构建上一层，然后基于上一层构建下一层。</p>
+<p>假设我们在第k层，如果第k层的next指针都已经建立好了，那么我们从第k层来构建k+1层。<br>python代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">connect</span><span class="params">(self, root: <span class="string">'Node'</span>)</span> -&gt; 'Node':</span></span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        root.next = <span class="literal">None</span></span><br><span class="line">        most_left_node = root</span><br><span class="line">        <span class="keyword">while</span> most_left_node <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            cur = most_left_node</span><br><span class="line">            <span class="keyword">if</span> cur.left <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">and</span> cur.right <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">while</span> cur <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                cur.left.next = cur.right</span><br><span class="line">                cur.right.next = cur.next.left <span class="keyword">if</span> cur.next <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line">                cur = cur.next</span><br><span class="line">            most_left_node = most_left_node.left</span><br><span class="line">        <span class="keyword">return</span> root</span><br></pre></td></tr></table></figure>
+
+<h2 id="二叉搜索树中第K小的元素"><a href="#二叉搜索树中第K小的元素" class="headerlink" title="二叉搜索树中第K小的元素"></a><span id="二叉搜索树中第K小的元素">二叉搜索树中第K小的元素</span></h2><h3 id="题目描述-5"><a href="#题目描述-5" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个二叉搜索树的根节点 root ，和一个整数 k ，请你设计一个算法查找其中第 k 个最小元素（从 1 开始计数）。</p>
+<p>示例<br><img src="%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E4%B8%AD%E7%AC%ACK%E5%B0%8F%E7%9A%84%E5%85%83%E7%B4%A0.jpg" alt="二叉搜索树中第K小的元素"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：root = [5,3,6,2,4,null,null,1], k = 3</span><br><span class="line">输出：3</span><br></pre></td></tr></table></figure>
+
+<p>提示：</p>
+<ul>
+<li>树中的节点数为 n 。</li>
+<li>1 &lt;= k &lt;= n &lt;= $10^4$</li>
+<li>0 &lt;= Node.val &lt;= $10^4$</li>
+</ul>
+<p>进阶：如果二叉搜索树经常被修改（插入/删除操作）并且你需要频繁地查找第 k 小的值，你将如何优化算法？</p>
+<h3 id="题解-5"><a href="#题解-5" class="headerlink" title="题解"></a>题解</h3><h4 id="中序遍历法"><a href="#中序遍历法" class="headerlink" title="中序遍历法"></a>中序遍历法</h4><p>一个二叉搜索树的定义是：任何一个节点，它的左孩子一定比他小，右孩子一定比他大。<br>因此根据二叉搜索树的这个性质可知，对二叉搜索树进行中序遍历，得到的一定是一个严格升序的有序序列。<br>所以要求第k小的值，只需要对二叉搜索树进行中序遍历，然后取第k个值即可。<br>python 代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">kthSmallest</span><span class="params">(self, root: TreeNode, k: int)</span> -&gt; int:</span></span><br><span class="line">        node = root</span><br><span class="line">        stk = []</span><br><span class="line">        res = []</span><br><span class="line">        <span class="comment"># 中序遍历的迭代写法</span></span><br><span class="line">        <span class="keyword">while</span> node <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">or</span> len(stk)&gt;<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">while</span> node <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                stk.append(node)</span><br><span class="line">                node = node.left</span><br><span class="line">            node = stk.pop(<span class="number">-1</span>)</span><br><span class="line">            res.append(node.val)</span><br><span class="line">            node = node.right</span><br><span class="line">        <span class="keyword">return</span> res[k<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+
+<h2 id="岛屿数量"><a href="#岛屿数量" class="headerlink" title="岛屿数量"></a><span id="岛屿数量">岛屿数量</span></h2><h3 id="题目描述-6"><a href="#题目描述-6" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你一个由 ‘1’（陆地）和 ‘0’（水）组成的的二维网格，请你计算网格中岛屿的数量。</p>
+<p>岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。</p>
+<p>此外，你可以假设该网格的四条边均被水包围。</p>
+<p>示例 1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入：grid = [</span><br><span class="line">  [&quot;1&quot;,&quot;1&quot;,&quot;1&quot;,&quot;1&quot;,&quot;0&quot;],</span><br><span class="line">  [&quot;1&quot;,&quot;1&quot;,&quot;0&quot;,&quot;1&quot;,&quot;0&quot;],</span><br><span class="line">  [&quot;1&quot;,&quot;1&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;],</span><br><span class="line">  [&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;]</span><br><span class="line">]</span><br><span class="line">输出：1</span><br></pre></td></tr></table></figure>
+
+<p>示例 2：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入：grid = [</span><br><span class="line">  [&quot;1&quot;,&quot;1&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;],</span><br><span class="line">  [&quot;1&quot;,&quot;1&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;],</span><br><span class="line">  [&quot;0&quot;,&quot;0&quot;,&quot;1&quot;,&quot;0&quot;,&quot;0&quot;],</span><br><span class="line">  [&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;1&quot;,&quot;1&quot;]</span><br><span class="line">]</span><br><span class="line">输出：3</span><br></pre></td></tr></table></figure>
+
+<p>提示：</p>
+<ul>
+<li>m == grid.length</li>
+<li>n == grid[i].length</li>
+<li>1 &lt;= m, n &lt;= 300</li>
+<li>grid[i][j] 的值为 ‘0’ 或 ‘1’</li>
+</ul>
+<h3 id="题解-6"><a href="#题解-6" class="headerlink" title="题解"></a>题解</h3><h4 id="DFS-or-BFS"><a href="#DFS-or-BFS" class="headerlink" title="DFS or BFS"></a>DFS or BFS</h4><p>这是一道图的连通性的问题，使用深度优先搜索DFS或者宽度优先搜索BFS都可以。</p>
+<p>python 代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dfs</span><span class="params">(self, grid, i, j)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> i&lt;len(grid) <span class="keyword">and</span> j&lt;len(grid[<span class="number">0</span>]) <span class="keyword">and</span> i&gt;=<span class="number">0</span> <span class="keyword">and</span> j&gt;=<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">if</span> grid[i][j] == <span class="string">'1'</span>:</span><br><span class="line">                grid[i][j] = <span class="string">'0'</span></span><br><span class="line">                self.dfs(grid, i+<span class="number">1</span>, j)</span><br><span class="line">                self.dfs(grid, i<span class="number">-1</span>, j)</span><br><span class="line">                self.dfs(grid, i, j+<span class="number">1</span>)</span><br><span class="line">                self.dfs(grid, i, j<span class="number">-1</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bfs</span><span class="params">(self, grid, i, j)</span>:</span></span><br><span class="line">        queue = [(i, j)]  <span class="comment"># bfs维护一个访问队列</span></span><br><span class="line">        <span class="keyword">while</span> len(queue)&gt;<span class="number">0</span>:</span><br><span class="line">            i, j = queue.pop(<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">if</span> i&lt;len(grid) <span class="keyword">and</span> j&lt;len(grid[<span class="number">0</span>]) <span class="keyword">and</span> i&gt;=<span class="number">0</span> <span class="keyword">and</span> j&gt;=<span class="number">0</span>:</span><br><span class="line">                <span class="keyword">if</span> grid[i][j] == <span class="string">'1'</span>:</span><br><span class="line">                    grid[i][j] = <span class="string">'0'</span></span><br><span class="line">                    queue.append((i+<span class="number">1</span>, j))</span><br><span class="line">                    queue.append((i<span class="number">-1</span>, j))</span><br><span class="line">                    queue.append((i, j+<span class="number">1</span>))</span><br><span class="line">                    queue.append((i, j<span class="number">-1</span>))</span><br><span class="line">                </span><br><span class="line">            </span><br><span class="line">    <span class="comment"># 基本思想就是遇到一个'1'，就从该点开始搜索，将与其连通的位置都设置为'0'，同时统计岛屿的个数。</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">numIslands</span><span class="params">(self, grid: List[List[str]])</span> -&gt; int:</span></span><br><span class="line">        count = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(grid)):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(len(grid[<span class="number">0</span>])):</span><br><span class="line">                <span class="keyword">if</span> grid[i][j] == <span class="string">'1'</span>:</span><br><span class="line">                    self.bfs(grid, i, j)  <span class="comment"># self.dfs(grid, i, j)</span></span><br><span class="line">                    count+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> count</span><br></pre></td></tr></table></figure></article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/03/18/初级算法-树/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            初级算法|树</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/03/17/初级算法-链表/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">初级算法|链表
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/03/18/初级算法-树/"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            初级算法|树</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/03/17/初级算法-链表/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">初级算法|链表
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#本文目录"><span class="toc-text">本文目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#208-实现-Trie-前缀树"><span class="toc-text">208. 实现 Trie (前缀树)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#前缀树法"><span class="toc-text">前缀树法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二叉树的中序遍历"><span class="toc-text">二叉树的中序遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-1"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-1"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#递归法"><span class="toc-text">递归法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#迭代法"><span class="toc-text">迭代法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二叉树锯齿形层次遍历"><span class="toc-text">二叉树锯齿形层次遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-2"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-2"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#迭代法-1"><span class="toc-text">迭代法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从前序与中序遍历序列构造二叉树"><span class="toc-text">从前序与中序遍历序列构造二叉树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-3"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-3"><span class="toc-text">题解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#填充每个节点的下一个右侧节点指针"><span class="toc-text">填充每个节点的下一个右侧节点指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-4"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-4"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#基础法：层次遍历"><span class="toc-text">基础法：层次遍历</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#进阶法"><span class="toc-text">进阶法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二叉搜索树中第K小的元素"><span class="toc-text">二叉搜索树中第K小的元素</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-5"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-5"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#中序遍历法"><span class="toc-text">中序遍历法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#岛屿数量"><span class="toc-text">岛屿数量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-6"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-6"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#DFS-or-BFS"><span class="toc-text">DFS or BFS</span></a></li></ol></li></ol></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>

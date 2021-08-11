@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <link rel="shortcut icon" href="/img/book.png">
+    <title>中级算法-回溯-小新xx</title>
+    
+        
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/academicons/1.8.6/css/academicons.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+        
+    
+    <link rel="stylesheet" href="/css/adagio.css">
+
+    <style type="text/css">
+        .jumbotron{
+            background: url();
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .tag-list{
+            font-weight: bold;
+            font-size: 200;
+            color: red;
+        }
+    </style>
+
+<!-- 下面是对mathjax的设置 -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      linebreaks: {automatic: ['\\']}
+    },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+         SVG: { linebreaks: { automatic: true } }
+  });
+</script>
+
+
+
+</head>
+<!-- <body style="background: url('/') no-repeat; background-size: 100%;"> 带背景-->
+<body>
+    <div class="container-fluid">
+    <nav class="nav">
+        <div class="collapse navbar-collapse" id="navbar-sm">
+            
+            
+            <div class="navbar-nav">
+                <a href="/index.html" class="nav-item nav-link">主页</a>
+            </div>
+            
+            <div class="navbar-nav">
+                <a href="/others/aboutme.html" class="nav-item nav-link">LHYxx</a>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+
+<div class="d-flex d-md-none" style="width: 100%; background-color: #e9ecef">
+    <div class="nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-sm"
+            aria-expanded="false" aria-label="Toggle Navigation">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="navbar ml-auto">
+        <a class="navbar-brand" href="/">
+            
+            LHYxx
+            
+        </a>
+    </nav>
+</div>
+
+
+<div class="container d-none d-md-block my-navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-transparent">
+        <a class="navbar-brand " href="/">
+            
+            LHYxx
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/index.html">主页</a>
+                </li>
+                
+                <li class="nav-item pl-2 pr-2 ">
+                    <a class="nav-link" href="/others/aboutme.html">LHYxx</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid" style="background-image: url()"> -->
+    <div class="container" >
+        
+        <h1 class="mt-4 article-title page-title" style="font-weight: bold; color: black">中级算法-回溯</h1>
+        
+        <p class="lead text-gray mt-3" style="color: black">By 小新; Published on 2021-07-18</p>
+        
+        <div class="tags">
+            <ul class="tag-list">
+                
+                <li class="tag-list-item">
+                    <a class="tag-list-link" href="/tags/leetcode/">leetcode</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <main>
+                            <article class="article-text page-content"><h2 id="本文目录"><a href="#本文目录" class="headerlink" title="本文目录"></a>本文目录</h2><ol>
+<li><a href="#电话号码的字母组合">电话号码的字母组合</a></li>
+<li><a href="#括号生成">括号生成</a></li>
+<li><a href="#全排列">全排列</a></li>
+<li><a href="#子集">子集</a></li>
+<li><a href="#单词搜索">单词搜索</a></li>
+</ol>
+<h2 id="电话号码的字母组合"><a href="#电话号码的字母组合" class="headerlink" title="电话号码的字母组合"></a><span id="电话号码的字母组合">电话号码的字母组合</span></h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。</p>
+<p>给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：digits = &quot;23&quot;</span><br><span class="line">输出：[&quot;ad&quot;,&quot;ae&quot;,&quot;af&quot;,&quot;bd&quot;,&quot;be&quot;,&quot;bf&quot;,&quot;cd&quot;,&quot;ce&quot;,&quot;cf&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>提示：</p>
+<ul>
+<li>0 &lt;= digits.length &lt;= 4</li>
+<li>digits[i] 是范围 [‘2’, ‘9’] 的一个数字。</li>
+</ul>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><h4 id="迭代法"><a href="#迭代法" class="headerlink" title="迭代法"></a>迭代法</h4><p>我们需要列举出所有可能的字母组合，因此我们维护一个队里保存所有可能的字符串组合，然后遍历输入的数字，然后每次将对应的所有可能的字母加到当前的字符串后面，然后将所有的可能的字符串添加到队列中，直到遍历完所有数字。<br>python代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">letterCombinations</span><span class="params">(self, digits: str)</span> -&gt; List[str]:</span></span><br><span class="line">        dic = &#123;<span class="string">'2'</span>:<span class="string">'abc'</span>, <span class="string">'3'</span>:<span class="string">'def'</span>, <span class="string">'4'</span>:<span class="string">'ghi'</span>,<span class="string">'5'</span>:<span class="string">'jkl'</span>,<span class="string">'6'</span>:<span class="string">'mno'</span>,<span class="string">'7'</span>:<span class="string">'pqrs'</span>,<span class="string">'8'</span>:<span class="string">'tuv'</span>,<span class="string">'9'</span>:<span class="string">'wxyz'</span>&#125;</span><br><span class="line">        q = []  <span class="comment"># 维护组合队列</span></span><br><span class="line">        <span class="keyword">for</span> d <span class="keyword">in</span> digits:</span><br><span class="line">            cur = dic[d]  <span class="comment"># 当前可能的输入字母</span></span><br><span class="line">            size = len(q)  <span class="comment"># 当前队列中组合的个数</span></span><br><span class="line">            cur_len = len(cur)  <span class="comment"># 当前可能输入的字母的个数</span></span><br><span class="line">            <span class="keyword">if</span> size==<span class="number">0</span>:  <span class="comment"># 如果队列为空，也就是一开始的时候</span></span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> range(cur_len):  <span class="comment"># 就将所有可能的字母加入队列</span></span><br><span class="line">                    q.append(cur[j])</span><br><span class="line">            <span class="keyword">else</span>:  <span class="comment"># 如果队列不为空</span></span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> range(size):  <span class="comment"># 遍历目前队列中所有的size个组合</span></span><br><span class="line">                    top = q.pop(<span class="number">0</span>)  <span class="comment"># 取出第一个组合</span></span><br><span class="line">                    <span class="keyword">for</span> j <span class="keyword">in</span> range(cur_len):  <span class="comment"># 将此次所有可能的输入字符加到后面，然后加到队列中</span></span><br><span class="line">                        q.append(top+cur[j])</span><br><span class="line">        <span class="keyword">return</span> q  <span class="comment"># 遍历结束之后，所有的组合都保存在队列q中</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="回溯法"><a href="#回溯法" class="headerlink" title="回溯法"></a>回溯法</h3><p>回溯法就是要枚举所有可能的答案。<br>回溯算法的模板如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def backtrack(参数) &#123;</span><br><span class="line">    if (终止条件) &#123;</span><br><span class="line">        存放结果;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for (本层的所有元素) &#123;</span><br><span class="line">        处理元素;</span><br><span class="line">        backtrack(下一层); // 递归</span><br><span class="line">        回退，撤销处理结果</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在本题中的具体代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">letterCombinations</span><span class="params">(self, digits: str)</span> -&gt; List[str]:</span></span><br><span class="line">        dic = &#123;<span class="string">'2'</span>:<span class="string">'abc'</span>, <span class="string">'3'</span>:<span class="string">'def'</span>, <span class="string">'4'</span>:<span class="string">'ghi'</span>,<span class="string">'5'</span>:<span class="string">'jkl'</span>,<span class="string">'6'</span>:<span class="string">'mno'</span>,<span class="string">'7'</span>:<span class="string">'pqrs'</span>,<span class="string">'8'</span>:<span class="string">'tuv'</span>,<span class="string">'9'</span>:<span class="string">'wxyz'</span>&#125;</span><br><span class="line">        q = []  <span class="comment"># 保存所有组合</span></span><br><span class="line">        cur = <span class="string">""</span>  <span class="comment"># 维护一个到当前未知的字符组合</span></span><br><span class="line">        <span class="keyword">if</span> len(digits)==<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> q</span><br><span class="line"></span><br><span class="line">        <span class="comment"># index 表示目前访问到的数字的下标，cur为到index前一个为止的字符组合</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">backtrack</span><span class="params">(index, cur)</span>:</span></span><br><span class="line">            <span class="keyword">if</span> index == len(digits):  <span class="comment"># 终止条件：digits中的所有元素都被访问了</span></span><br><span class="line">                q.append(cur)  <span class="comment"># 则形成一个可行答案</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                toadd = dic[digits[index]]  <span class="comment"># 此次可能输入的字符</span></span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> range(len(toadd)):  <span class="comment"># 依次处理每个可能输入的字符</span></span><br><span class="line">                    cur = cur + toadd[i]  <span class="comment"># 把当前字符加上</span></span><br><span class="line">                    backtrack(index+<span class="number">1</span>, cur)  <span class="comment"># 继续搜索下一个</span></span><br><span class="line">                    cur = cur[:<span class="number">-1</span>]  <span class="comment"># 回退，去掉最后加上的字符</span></span><br><span class="line"></span><br><span class="line">        backtrack(<span class="number">0</span>, cur)</span><br><span class="line">        <span class="keyword">return</span> q</span><br></pre></td></tr></table></figure>
+
+<h2 id="括号生成"><a href="#括号生成" class="headerlink" title="括号生成"></a><span id="括号生成">括号生成</span></h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">示例 1：</span><br><span class="line">输入：n = 3</span><br><span class="line">输出：[&quot;((()))&quot;,&quot;(()())&quot;,&quot;(())()&quot;,&quot;()(())&quot;,&quot;()()()&quot;]</span><br><span class="line"></span><br><span class="line">示例 2：</span><br><span class="line">输入：n = 1</span><br><span class="line">输出：[&quot;()&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>提示：</p>
+<ul>
+<li>1 &lt;= n &lt;= 8</li>
+</ul>
+<h3 id="题解-1"><a href="#题解-1" class="headerlink" title="题解"></a>题解</h3><h4 id="回溯法-1"><a href="#回溯法-1" class="headerlink" title="回溯法"></a>回溯法</h4><p>利用回溯法穷举所有的可能，如果是有效的括号组合则保存下来。<br>因此需要设计一个函数<code>is_valid(str)</code>来判断所生成的字符串是否是有效的括号组合，这可以利用栈来实现。<br>具体python代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">generateParenthesis</span><span class="params">(self, n: int)</span> -&gt; List[str]:</span></span><br><span class="line">        res = []  <span class="comment"># 保存结果</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 判断给定的字符串ans是否是有效的括号组合</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">is_valid</span><span class="params">(ans)</span>:</span></span><br><span class="line">            stk = []</span><br><span class="line">            <span class="keyword">for</span> c <span class="keyword">in</span> ans:</span><br><span class="line">                <span class="keyword">if</span> c==<span class="string">'('</span>:</span><br><span class="line">                    stk.append(c)</span><br><span class="line">                <span class="keyword">elif</span> c==<span class="string">')'</span>:</span><br><span class="line">                    <span class="keyword">if</span> len(stk)==<span class="number">0</span>:</span><br><span class="line">                        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">                    top = stk.pop(<span class="number">-1</span>)</span><br><span class="line">                    <span class="keyword">if</span> top==<span class="string">')'</span>:</span><br><span class="line">                        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            <span class="keyword">if</span> len(stk)==<span class="number">0</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 回溯算法，index是当前访问的字符串的下标数，cur保存到目前为止生成的字符串</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">backtrack</span><span class="params">(index, cur)</span>:</span></span><br><span class="line">            <span class="keyword">if</span> index == n*<span class="number">2</span>:  <span class="comment"># 注意因为一个括号有两个字符，因此长度为n*2</span></span><br><span class="line">                <span class="keyword">if</span> is_valid(cur):  <span class="comment"># 如果是有效的括号组合，则添加到结果中</span></span><br><span class="line">                    res.append(cur)</span><br><span class="line">            <span class="keyword">else</span>:  <span class="comment"># 下面分别处理这一层的元素，一层有两个元素，分别为左括号'('和右括号')'</span></span><br><span class="line">                cur = cur + <span class="string">'('</span>  <span class="comment"># 尝试左括号</span></span><br><span class="line">                backtrack(index+<span class="number">1</span>, cur)</span><br><span class="line">                cur = cur[:<span class="number">-1</span>]  <span class="comment"># 回退</span></span><br><span class="line"></span><br><span class="line">                cur = cur + <span class="string">')'</span>  <span class="comment"># 尝试右括号</span></span><br><span class="line">                backtrack(index+<span class="number">1</span>, cur)</span><br><span class="line">                cur = cur[:<span class="number">-1</span>]  <span class="comment"># 回退</span></span><br><span class="line"></span><br><span class="line">        backtrack(<span class="number">0</span>, <span class="string">""</span>)</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+<p>不过该方法要穷举所有可能的括号组合，因此效率并不高。</p>
+<h4 id="回溯优化"><a href="#回溯优化" class="headerlink" title="回溯优化"></a>回溯优化</h4><p>实际上我们不需要枚举出所有的可能的括号组合方式，然后对每个进行判断是否有效。<br>一个有效的括号组合是有一定的规则的：</p>
+<ol>
+<li>总共n个括号，有效的括号组合一定有n个左括号和n个右括号</li>
+<li>每个右括号一定有一个左括号优先于它加入</li>
+<li>在得到最终答案之前，左括号的数量一定比右括号的数量多</li>
+</ol>
+<p>根据上面三个规则，我们可以直接判断当前字符串是否是一个有效的括号组合。<br>同时，在生成字符串的时候，优先生成左括号，然后再生成右括号进行匹配。<br>python代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">generateParenthesis</span><span class="params">(self, n: int)</span> -&gt; List[str]:</span></span><br><span class="line">        res = []  <span class="comment"># 保存结果列表</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">backtrack</span><span class="params">(left, right, cur)</span>:</span>  <span class="comment"># left与right分别记录当前左括号和右括号的数量</span></span><br><span class="line">            <span class="keyword">if</span> left + right == <span class="number">2</span>*n:  <span class="comment"># 如果左右括号之和为2n，说明这是一条有效的结果</span></span><br><span class="line">                res.append(cur)</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            <span class="keyword">if</span> left &lt; n:  <span class="comment"># 如果左括号小于n，就一直加入左括号</span></span><br><span class="line">                cur = cur + <span class="string">'('</span></span><br><span class="line">                backtrack(left+<span class="number">1</span>, right, cur)</span><br><span class="line">                cur = cur[:<span class="number">-1</span>]</span><br><span class="line">            <span class="keyword">if</span> right &lt; left:  <span class="comment"># 左括号会挨个弹出，然后尝试加入右括号，依次尝试每个可能的组合</span></span><br><span class="line">                cur = cur + <span class="string">')'</span></span><br><span class="line">                backtrack(left, right+<span class="number">1</span>, cur)</span><br><span class="line">                cur = cur[:<span class="number">-1</span>]</span><br><span class="line">            </span><br><span class="line">        backtrack(<span class="number">0</span>, <span class="number">0</span>, <span class="string">""</span>)</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+<h2 id="全排列"><a href="#全排列" class="headerlink" title="全排列"></a><span id="全排列">全排列</span></h2><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个不含重复数字的数组 nums ，返回其 所有可能的全排列 。你可以 按任意顺序 返回答案。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">示例 1：</span><br><span class="line">输入：nums = [1,2,3]</span><br><span class="line">输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]</span><br><span class="line"></span><br><span class="line">示例 2：</span><br><span class="line">输入：nums = [0,1]</span><br><span class="line">输出：[[0,1],[1,0]]</span><br><span class="line"></span><br><span class="line">示例 3：</span><br><span class="line">输入：nums = [1]</span><br><span class="line">输出：[[1]]</span><br></pre></td></tr></table></figure>
+
+<p>提示</p>
+<ul>
+<li>1 &lt;= nums.length &lt;= 6</li>
+<li>-10 &lt;= nums[i] &lt;= 10</li>
+<li>nums 中的所有整数 互不相同</li>
+</ul>
+<h3 id="题解-2"><a href="#题解-2" class="headerlink" title="题解"></a>题解</h3><h4 id="回溯法-2"><a href="#回溯法-2" class="headerlink" title="回溯法"></a>回溯法</h4><p>求解全排列，可以看做是每次从原列表中选择一个数，有多少种不同的选择方案，而且是不放回选择。<br>使用回溯方法来解，使用一个index来记录当前要选择的是第几个数，当所有数都选择完毕（即index==len(nums))时，则得到一个答案，并将它记录下来。<br>每次选择数字的时候，因为是不放回抽取，因此需要排除掉已经选择的数字。<br>第index个位置有(len(nums)-index)个选择方案，因此需要尝试每个不同的方案。</p>
+<p>python代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">permute</span><span class="params">(self, nums: List[int])</span> -&gt; List[List[int]]:</span></span><br><span class="line">        res = []  <span class="comment"># 维护答案列表</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">backtrack</span><span class="params">(index, ans)</span>:</span>  <span class="comment"># index表示目前在选第index个数，ans为目前已经选择了的数字列表</span></span><br><span class="line">            <span class="keyword">if</span> index == len(nums):  <span class="comment"># 如果所有数都选择完毕</span></span><br><span class="line">                res.append([x <span class="keyword">for</span> x <span class="keyword">in</span> ans])  <span class="comment"># 记录答案</span></span><br><span class="line">                <span class="keyword">return</span> </span><br><span class="line">            <span class="keyword">for</span> n <span class="keyword">in</span> nums:  <span class="comment"># 第index个位置有(len(nums)-index)个选择方案</span></span><br><span class="line">                <span class="keyword">if</span> n <span class="keyword">not</span> <span class="keyword">in</span> ans:  <span class="comment"># 排除了已经选择的数字</span></span><br><span class="line">                    ans.append(n)</span><br><span class="line">                    backtrack(index+<span class="number">1</span>, ans)</span><br><span class="line">                    ans.pop(<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">        backtrack(<span class="number">0</span>, [])</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+<h4 id="swap选择法"><a href="#swap选择法" class="headerlink" title="swap选择法"></a>swap选择法</h4><p>上面的方法在选择每一个数字时，还需要判断该数字是否已经被选过<code>if n not in ans</code>，当数字个数很多的时候，这种判断可能会非常耗时。<br>一种避免这种判断的方法：</p>
+<p>因为第index个位置有(len(nums)-index)个选择，所以我们在循环的时候，保证一定的顺序访问，就可以只访问剩下的这些元素。<br>例如，我们将所有已经选择了的元素移动到index之前（因为我们选择了index-1个元素，所以这index-1个元素可以放到index位置之前），而index之后放剩余的没有被选择的元素。<br>这样，我们在每次选择一个元素时，只需要遍历[index, N-1]这些元素即可。</p>
+<p>这就是使用swap来选择元素的一个好处。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">permute</span><span class="params">(self, nums: List[int])</span> -&gt; List[List[int]]:</span></span><br><span class="line">        res = []  <span class="comment"># 维护答案列表</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">backtrack</span><span class="params">(index)</span>:</span>  <span class="comment"># 填位置index的元素</span></span><br><span class="line">            <span class="keyword">if</span> index == len(nums):  <span class="comment"># 如果所有位置都填完，则记录答案</span></span><br><span class="line">                res.append([x <span class="keyword">for</span> x <span class="keyword">in</span> nums])</span><br><span class="line">                <span class="keyword">return</span> </span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(index, len(nums)):  <span class="comment"># 对于位置index，只遍历[index, len(nums)-1]的元素（这些是没有被选择过的）</span></span><br><span class="line">                nums[index], nums[i] = nums[i], nums[index]  <span class="comment"># 交换index与i的元素，这样相当于在位置index原则了第i个元素nums[i]，同时将nums[i]移动到了index之前，表示该元素已经选择过了。原来index位置的元素移动到了index之后（位置i），表示该元素还没有选择过。</span></span><br><span class="line">                backtrack(index+<span class="number">1</span>)  <span class="comment"># 接着递归填下一个元素</span></span><br><span class="line">                nums[index], nums[i] = nums[i], nums[index]  <span class="comment"># 回退</span></span><br><span class="line"></span><br><span class="line">        backtrack(<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+<h2 id="子集"><a href="#子集" class="headerlink" title="子集"></a><span id="子集">子集</span></h2><h3 id="题目描述-3"><a href="#题目描述-3" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。</p>
+<p>解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">示例 1：</span><br><span class="line">输入：nums = [1,2,3]</span><br><span class="line">输出：[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]</span><br><span class="line"></span><br><span class="line">示例 2：</span><br><span class="line">输入：nums = [0]</span><br><span class="line">输出：[[],[0]]</span><br></pre></td></tr></table></figure>
+
+<p>提示：</p>
+<ul>
+<li>1 &lt;= nums.length &lt;= 10</li>
+<li>-10 &lt;= nums[i] &lt;= 10</li>
+<li>nums 中的所有元素 互不相同</li>
+</ul>
+<h3 id="题解-3"><a href="#题解-3" class="headerlink" title="题解"></a>题解</h3><h4 id="回溯法-3"><a href="#回溯法-3" class="headerlink" title="回溯法"></a>回溯法</h4><p>这道题乍一看和全排列有点像，但是仔细一想又有很多不一样的地方。<br>之前的回溯题，大多会使用一个index来指示目前访问到了哪一个位置，这时会发现，之前的答案元素个数大多都是固定的值，即给定固定个数个空位，去给每个空位填上对应的内容。<br>例如<code>全排列</code>，每个答案的元素个数就是所有数的个数N，即为N个空位填上相应的数字；<br><code>括号生成</code>中答案的字符数都是2n，可以理解为为每个空位填上相应的括号（左括号or右括号）；<br><code>电话号码的随机数组合</code>中index也用来指示目前处理到的数字的位置，也是一个定值（数字个数N），而答案中字符个数也和数字个数相同，即给N个空位，填上相应的字符。</p>
+<p>而这道题中，答案的元素个数却不一样，元素个数从0个到N个都有。于是就不知道从何下手了。</p>
+<p>其实，这个题换种思考方式，会发现这道题也可以转换为这种“为固定长度的空位填答案”的模式。<br>例如示例中<code>nums=[1,2,3]</code>，可以理解为，我们需要处理长度为3的空位，每个空位只能填0或1,0表示不选择当前位置的元素，1则表示选择当前位置的元素。<br>因此在这里，index仍然表示空位的位置，只是对每个空位来说，只有两种可能的选择（0 or 1）。</p>
+<p>于是，python 回溯代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">subsets</span><span class="params">(self, nums: List[int])</span> -&gt; List[List[int]]:</span></span><br><span class="line">        res = []  <span class="comment"># 维护答案列表</span></span><br><span class="line">        N = len(nums)  <span class="comment"># 空位个数，也就是元素个数</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">backtrack</span><span class="params">(index, ans)</span>:</span>  <span class="comment"># index指示空位下标，ans为当前答案</span></span><br><span class="line">            <span class="keyword">if</span> index == N:  <span class="comment"># 如果所有空位都选择完毕（即每个位置0或1都已经确定，则确定了一个答案）</span></span><br><span class="line">                res.append([x <span class="keyword">for</span> x <span class="keyword">in</span> ans])</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">            <span class="comment"># 因为每个index位置有两种选择，下面分别处理两种选择</span></span><br><span class="line">            <span class="comment"># 第一种，index位置为1，则选择nums[index]</span></span><br><span class="line">            ans.append(nums[index])</span><br><span class="line">            backtrack(index+<span class="number">1</span>, ans)</span><br><span class="line">            ans.pop(<span class="number">-1</span>)</span><br><span class="line">            <span class="comment"># 第二中，index位置为0，则不添加任何元素，直接填下一个空</span></span><br><span class="line">            backtrack(index+<span class="number">1</span>, ans)</span><br><span class="line">        backtrack(<span class="number">0</span>, [])</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+<h2 id="单词搜索"><a href="#单词搜索" class="headerlink" title="单词搜索"></a><span id="单词搜索">单词搜索</span></h2><h3 id="题目描述-4"><a href="#题目描述-4" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false 。</p>
+<p>单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。</p>
+<p>示例</p>
+<p><img src="%E5%8D%95%E8%AF%8D%E6%90%9C%E7%B4%A2_%E4%B8%AD%E7%BA%A7_%E5%9B%9E%E6%BA%AF.jpg" alt="单词搜索_中级_回溯.jpg"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：board = [[&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;E&quot;],[&quot;S&quot;,&quot;F&quot;,&quot;C&quot;,&quot;S&quot;],[&quot;A&quot;,&quot;D&quot;,&quot;E&quot;,&quot;E&quot;]], word = &quot;ABCCED&quot;</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
+
+<p>提示：</p>
+<ul>
+<li>m == board.length</li>
+<li>n = board[i].length</li>
+<li>1 &lt;= m, n &lt;= 6</li>
+<li>1 &lt;= word.length &lt;= 15</li>
+<li>board 和 word 仅由大小写英文字母组成</li>
+</ul>
+<p>进阶：你可以使用搜索剪枝的技术来优化解决方案，使其在 board 更大的情况下可以更快解决问题？</p>
+<h3 id="题解-4"><a href="#题解-4" class="headerlink" title="题解"></a>题解</h3><h4 id="回溯-DFS"><a href="#回溯-DFS" class="headerlink" title="回溯+DFS"></a>回溯+DFS</h4><p>给定一个长度为N的目标单词word，相当于我们需要在图中搜索一个长度为N的路径，且路径上的单词正好能够填在N个空里。<br>我们要在图上进行搜索，枚举可能的答案，因此可以使用DFS+回溯的思想来进行搜索。<br>同时由于题目有很多限制，我们可以在搜索过程中进行剪枝，来提高效率。</p>
+<p>python代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">exist</span><span class="params">(self, board: List[List[str]], word: str)</span> -&gt; bool:</span></span><br><span class="line">        N = len(word)</span><br><span class="line">        row = len(board)</span><br><span class="line">        col = len(board[<span class="number">0</span>])</span><br><span class="line">        res = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">backtrack</span><span class="params">(n, r, c, ans)</span>:</span>  <span class="comment"># n表示空位下标，即目前要搜索的目标是word[n]这个字符。r,c分别表示当前要访问的行列号，ans表示当前的答案</span></span><br><span class="line">            <span class="keyword">nonlocal</span> res</span><br><span class="line">            <span class="keyword">if</span> word == ans:  <span class="comment"># 终止条件：找到了答案，则对res进行标记。</span></span><br><span class="line">                res = <span class="literal">True</span></span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            <span class="keyword">if</span> res:  <span class="comment"># 剪枝1：如果已经找到了一个答案，就不找了</span></span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            <span class="keyword">if</span> r&gt;=row <span class="keyword">or</span> r&lt;<span class="number">0</span> <span class="keyword">or</span> c&gt;=col <span class="keyword">or</span> c&lt;<span class="number">0</span> <span class="keyword">or</span> n&gt;=N:  <span class="comment"># 剪枝2：对于行列需要在图内，且如果当前答案长度已经超过目标长度，肯定不符合</span></span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            <span class="keyword">if</span> board[r][c] == <span class="number">0</span>:  <span class="comment"># 剪枝3：如果该位置已经访问过，则不再访问。（一个单元格不能重复使用）</span></span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            <span class="keyword">if</span> board[r][c] == word[n]:  <span class="comment"># 剪枝4：如果当前位置是要找的目标字符，才进行访问</span></span><br><span class="line">                ans += board[r][c]</span><br><span class="line">                temp = board[r][c]  <span class="comment"># 使用temp临时标记该位置的元素，然后将该位置置0，表示已经访问过</span></span><br><span class="line">                board[r][c] = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># dfs 搜索相邻位置</span></span><br><span class="line">                backtrack(n+<span class="number">1</span>, r+<span class="number">1</span>, c, ans)</span><br><span class="line">                backtrack(n+<span class="number">1</span>, r<span class="number">-1</span>, c, ans)</span><br><span class="line">                backtrack(n+<span class="number">1</span>, r, c+<span class="number">1</span>, ans)</span><br><span class="line">                backtrack(n+<span class="number">1</span>, r, c<span class="number">-1</span>, ans)</span><br><span class="line">                ans = ans[:<span class="number">-1</span>]  <span class="comment"># 回退</span></span><br><span class="line">                board[r][c] = temp  <span class="comment"># 回复该位置的值，表示该位置还没有被访问过</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 从第一个字符匹配的位置开始搜索</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(row):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(col):</span><br><span class="line">                <span class="keyword">if</span> board[i][j] == word[<span class="number">0</span>]:</span><br><span class="line">                    backtrack(<span class="number">0</span>, i, j, <span class="string">""</span>)</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure></article>
+                        </main>
+                        
+                        
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-12">
+                        <div class="row">
+    <div class="col">
+        <nav aria-label="paginator" class="paginator">
+            <ul class="pagination d-none d-md-flex pagination-lg justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/07/05/中级算法-数组和字符串/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">中级算法-数组和字符串
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pagination d-md-none justify-content-center">
+                <li class="page-item  disabled ">
+                    <a class="page-link"
+                        href=""
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;
+                            No more</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                        href="/2021/07/05/中级算法-数组和字符串/"
+                        aria-label="Next">
+                        <span
+                            aria-hidden="true">中级算法-数组和字符串
+                            &raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="vcomment"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="container pt-4 page-sidebar">
+                    
+                    <div class="row">
+    <div class="col">
+        <h6>APPLAUSE FOR ME</h6>
+        <div id="applause-easy"></div>
+    </div>
+</div>
+                    
+                    <hr class="row">
+                    <div class="row toc-container">
+                        <div class="col-12">
+                            <h6>NAVIGATION</h6>
+                            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#本文目录"><span class="toc-text">本文目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#电话号码的字母组合"><span class="toc-text">电话号码的字母组合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#迭代法"><span class="toc-text">迭代法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#回溯法"><span class="toc-text">回溯法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#括号生成"><span class="toc-text">括号生成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-1"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-1"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#回溯法-1"><span class="toc-text">回溯法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#回溯优化"><span class="toc-text">回溯优化</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#全排列"><span class="toc-text">全排列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-2"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-2"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#回溯法-2"><span class="toc-text">回溯法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#swap选择法"><span class="toc-text">swap选择法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#子集"><span class="toc-text">子集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-3"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-3"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#回溯法-3"><span class="toc-text">回溯法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单词搜索"><span class="toc-text">单词搜索</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述-4"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题解-4"><span class="toc-text">题解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#回溯-DFS"><span class="toc-text">回溯+DFS</span></a></li></ol></li></ol></li></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container-fluid">
+            <div class="col text-center">
+                <div class="bottom-social">
+                    <div class="row">
+    <div class="col text-center">
+        <ul class="list-inline">
+            
+            <li class="list-inline-item">
+                
+                <a href="https://github.com/LHYxx">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+            <li class="list-inline-item">
+                
+                <a href="https://www.zhihu.com/people/zhihu_name">
+                    <span class="fa-stack fa-2x icon-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-zhihu fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <p class="copyright text-muted">
+                    Copyright &copy; 小新xx
+                    <br>
+                    感谢支持！
+                    <br>
+                    <a href="http://cs.scu.edu.cn/">海纳百川</a>, 
+                    <a href="http://www.tju.edu.cn/">实事求是</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcss.com/font-awesome/5.9.0/js/all.min.js"></script>
+         
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    CommonHTML: { linebreaks: { automatic: true } },
+                    "HTML-CSS": { linebreaks: { automatic: true } },
+                    SVG: { linebreaks: { automatic: true } }
+                });
+            </script>
+            <script src='https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        
+    
+
+
+<script src="/js/av.min.js"></script>
+<script src="/js/valine.min.js"></script>
+<script src="/js/applause-easy.js"></script>
+
+<script>
+$(document).ready(function() {
+    var a = new ApplauseEasy({
+        id: 'applause-easy',
+        appId: "xxxxxxxxxx",
+        appKey: "xxxxxxxxxx",
+        img_src: "http://img.hanlindong.com/blog/site/clap.png",
+        img_width: "50px",
+        img_height: "50px"
+    })
+})
+</script>
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8a203f609d8ced2c71c3eee859b6941";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+    
+</body>
+</html>
